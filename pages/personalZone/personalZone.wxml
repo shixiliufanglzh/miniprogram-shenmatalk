@@ -7,7 +7,7 @@
   </view>
   <view class="menu">
     <view class="navigator" hover-class="none" url="" bind:tap="showPointInstruction">
-      <image mode="aspectFit" class="tab_icon" src="../../images/zone_wallet.png"></image>
+      <image mode="aspectFit" class="tab_icon" src="../../images/zone_virtual.png"></image>
       <text class="title">神马分数</text>
       <text class="prompt">{{pointInfo && pointInfo.point ? pointInfo.point : 0 }}</text>
     </view>
