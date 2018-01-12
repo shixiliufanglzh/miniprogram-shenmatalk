@@ -1,0 +1,40 @@
+/* pages/q&a/q&a.wxss */
+.list .item {
+  width: 650rpx;
+  padding: 0 20rpx;
+  margin: 30rpx auto;
+  background-color: #fff;
+  border-radius: 6rpx;
+}
+.list .item .answer {
+  font-size: 26rpx;
+  color: #888;
+  border-top: 1px solid #f0f0f0;
+  padding: 16rpx 0;
+  text-align: justify;
+}
+.list .item .question text {
+  font-size: 26rpx;
+  line-height: 68rpx;
+}
+.list .item .question image {
+  width: 28rpx;
+  height: 28rpx;
+  float: right;
+  transform: rotate(90deg);
+  margin-top: 20rpx;
+  transition: all .3s ease;
+}
+.list .item.active .question image {
+  transform: rotate(-90deg);
+}
+.contact {
+  margin-top: 50rpx;
+  text-align: center;
+}
+.contact .service {
+  width: 690rpx;
+  height: 72rpx;
+  font-size: 26rpx;
+  line-height: 72rpx;
+}

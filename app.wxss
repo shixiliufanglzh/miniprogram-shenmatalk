@@ -1,0 +1,75 @@
+/**app.wxss**/
+page{
+  background-color: #f0f0f0;
+  height: 100%;
+}
+
+.flex-wrp{
+  display: flex;
+}
+.flex-tab{
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: stretch;
+}
+.flex-item{
+  flex-grow: 1;
+  text-align: center;
+}
+
+
+/* .mask {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0);
+  z-index: 99;
+} */
+.point_instru {
+  min-height: 570rpx;
+  position: fixed;
+  bottom: -575rpx;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 -2px 3px rgba(0,0,0,0.1);
+}
+.point_instru icon {
+  position: absolute;
+  right: 16rpx;
+  top: 16rpx;
+}
+.point_instru .text_wrp {
+  padding: 25rpx 30rpx;
+}
+.point_instru .text_wrp .title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #353535;
+  margin-top: 10rpx;
+}
+.point_instru .text_wrp p {
+  display: block;
+  font-size: 28rpx;
+  text-indent: 2em;
+  color: #888;
+}
+.point_instru .btn-area {
+  position: absolute;
+  margin: 0 0 0 -345rpx;
+  left: 50%;
+  bottom: 10rpx;
+}
+
+.btn-area {
+  margin: 10rpx auto;
+  width: 690rpx;
+}
+.btn-area .submit {
+  width: 100%;
+  background-color: #ec5e3a;
+  color: #fff;
+}

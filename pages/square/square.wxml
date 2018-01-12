@@ -1,0 +1,61 @@
+<!--pages/square/square.wxml-->
+<view class="square"  bind:tap="{{pointInstruState ? 'hidePointInstruction' : null}}">
+  <!-- <view class="header">
+    <view class="amount_list">
+      <view class="amount_wrp my_point" bind:tap="showPointInstruction">
+        <span class="amount">0</span>
+        <span class="desc">我的神马分<image src="../../images/q_point.png" class="q_point"></image></span>
+      </view>
+      <view class="amount_wrp grab_count">
+        <span class="amount">0</span>
+        <span class="desc">抢到人次</span>
+      </view>
+      <view class="amount_wrp visitors_count">
+        <span class="amount">0w</span>
+        <span class="desc">今日访问量</span>
+      </view>
+    </view>
+  </view> -->
+  <view class="header_simple">
+    <view class="left">
+      <span bind:tap="showPointInstruction">我的神马分 {{pointInfo.point}} <image src="../../images/q_point.png" mode="aspectFit"></image></span>
+    </view>
+    <view class="right">
+      <label bind:tap="toggleCheck" ><checkbox value="anonymous" checked="{{showPart}}" />仅显示未领红包</label>
+    </view>
+  </view>
+  <view class="content_list">
+    <view class="content_item {{itemName.leftAmount <= 0 ? 'disabled' : ''}}" wx:for="{{redPacketsList}}" wx:for-index="idx" wx:for-item="itemName" data-id="{{itemName.id}}" wx:key="{{itemName.id}}" bind:tap="goToDetail" hidden="{{itemName.redStatus == 1 ? false : true}}">
+      <image src="{{itemName.isHide == 2 ? itemName.userPortrait : '../../images/avatar_ano.jpg'}}" mode="aspectFill"></image>
+      <view class="buble">
+        <span class="angle"></span>
+        <view class="content_box">
+          <view class="content">
+            <image mode="aspectFit" src="../../images/{{itemName.redType == 1 ? 'record_white.png' : 'answer_question.png' }}"></image>
+            <p class="msg">{{itemName.content}}</p>
+            <p class="count">{{itemName.money}}元{{itemName.amount}}份，剩余{{itemName.leftAmount}}份</p>
+          </view>
+          <view class="from">来自 {{itemName.isHide == 2 ? itemName.userName : '神秘人'}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- <view class="mask" hidden="{{hidePointInstru}}" animation="{{animationMask}}"> -->
+  <view class="point_instru" animation="{{animationData}}">
+    <icon type="clear" size="20" bind:tap="hidePointInstruction"></icon>
+    <view class="text_wrp">
+      <text class="title">神马分有什么用？</text>
+      <p>神马分用于抢广场红包，每抢一次广场红包将消耗1个神马分。</p>
+      <text class="title">如何获得神马分？</text>
+      <p>分享口令红包或红包广场页面到群聊邀请朋友来玩，每当有一个新用户点进来您可以获得3个神马分。</p>
+      <text class="title">每天神马分奖励</text>
+      <p>活动期间，每日凌晨将为神马分不足10个的用户补满10个神马分，即每人每天最多可获得10个神马分的奖励。</p>
+    </view>
+    <view class="btn-area">
+      <button class="submit" open-type="share">邀请朋友获取神马分</button>
+    </view>
+  </view>
+<!-- </view> -->
+

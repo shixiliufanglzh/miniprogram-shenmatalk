@@ -1,0 +1,40 @@
+<!--pages/share/share.wxml-->
+<!-- <template name="shareTem"> -->
+  <!-- <view class="info">
+    <image class="avatar" src="{{redPacketDetail.isHide == 2 ? '../../images/example.jpg' : redPacketDetail.userPortrait}}" mode="respectFill"></image>
+    <text>发了一个语音口令</text>
+    <view class="token">{{redPacketDetail.redType != 2 ? redPacketDetail.content : ''}}</view>
+    <image class="packet" src="../../images/packet.png" mode="respectFill"></image>
+    <view class="code">
+      <image></image>
+    </view>
+  </view>
+  <view class="bottom_prompt">
+    <image class="thumb" src="../../images/thumb.png" mode="aspectFit"></image>
+    <text>长按识别小程序，领取红包</text>
+  </view> -->
+<!-- </template> -->
+
+<!-- <view class="share">
+  <view class="canvas_wrp">
+    <canvas canvas-id="sharePage" style="width: 750rpx; height: 1100rpx;">
+    </canvas>
+  </view>
+</view> -->
+
+<view class="manipulate">
+  <button class="forward " type="primary" open-type="share">转发好友或群聊</button>
+  <button class="convert" type="default" data-pic-url="{{sharePic}}" bind:tap="showPic">生成朋友圈分享图</button>
+  <navigator delta="1" open-type="navigateBack" hover-class="none">
+    <image src="../../images/arrow.png" mode="aspectFit"></image>
+    <text>返回</text>
+  </navigator>
+</view>    
+
+ <view class="picMask" data-pic-url="{{sharePic}}" bind:tap="showPic">
+  <image src="{{sharePic}}" mode="aspectFit"></image>
+</view>  
+
+<view class="bottom_sug">
+  <button class="suggest" plain="{{true}}" size="mini" bind:tap="goSuggest">投诉</button>
+</view>

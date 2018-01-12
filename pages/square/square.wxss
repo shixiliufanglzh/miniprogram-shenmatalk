@@ -1,0 +1,149 @@
+/* pages/square/square.wxss */
+.header {
+  background-color: #ec5e3a;
+  padding: 0 30rpx 30rpx 30rpx;
+  position: fixed;
+  top: 0;
+  height: 120rpx;
+  z-index: 9;
+}
+.header .amount_list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 690rpx;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 10rpx;
+  padding: 10rpx 0;
+}
+.header .amount_list .amount_wrp {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 0;
+}
+.header .amount_list .amount_wrp .amount {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 700;
+}
+.header .amount_list .amount_wrp .desc {
+  font-size: 28rpx;
+  color: #b2b2b2;
+}
+.header .amount_list .q_point {
+  width: 26rpx;
+  height: 26rpx;
+  vertical-align: middle;
+  margin-top: -4rpx;
+  margin-left: 4rpx;
+}
+
+.header_simple {
+  position: fixed;
+  top: 0;
+  width: 690rpx;
+  z-index: 9;
+  background-color: #fff;
+  height: 90rpx;
+  padding: 0 30rpx;
+  line-height: 90rpx;
+}
+.header_simple .left {
+  float: left;
+}
+.header_simple .left span {
+  color: #888;
+  font-size: 28rpx;
+}
+.header_simple .left image {
+  width: 26rpx;
+  height: 26rpx;
+  vertical-align: middle;
+  margin-top: -4rpx;
+  margin-left: 4rpx;
+}
+.header_simple .right {
+  float: right;
+}
+.header_simple label {
+  color: #888;
+  font-size: 28rpx;
+}
+.header_simple label checkbox {
+  zoom:60%;
+  vertical-align: middle;
+  margin-top: -12rpx;
+}
+
+.content_list {
+  padding: 0 30rpx;
+  margin-top: 120rpx;
+}
+.content_list .content_item {
+  margin-bottom: 40rpx;
+}
+.content_list .content_item image {
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 10rpx;
+  vertical-align: top;
+}
+.content_list .content_item .buble {
+  display: inline-block;
+  width: 450rpx;
+  border-radius: 10rpx;
+  background-color: #DF654D;
+  vertical-align: top;
+  margin-left: 40rpx;
+  position: relative;
+}
+.content_list .content_item.disabled .buble,
+.content_list .content_item.disabled .buble .angle {
+  background-color: #f3af9c;
+}
+.content_list .content_item .buble .angle {
+  display: inline-block;
+  width: 40rpx;
+  height: 40rpx;
+  transform: rotate(45deg);
+  background-color: #DF654D;
+  position: absolute;
+  left: -12rpx;
+  top: 30rpx;
+  z-index: -1;
+}
+.content_list .buble .content_box .content {
+  color: #fff;
+  padding: 20rpx 20rpx 20rpx 100rpx;
+  position: relative;
+}
+.content_list .buble .content_box .content image {
+  position: absolute;
+  width: 68rpx;
+  height: 68rpx;
+  left: 18rpx;
+  top: 20rpx;
+}
+.content_list .buble .content_box .content .msg {
+  display: block;
+  font-size: 30rpx;
+  line-height: 1.1em;
+  height: 1.1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.content_list .buble .content_box .content .count {
+  font-size: 24rpx;
+}
+.content_list .buble .content_box .from {
+  background-color: #fff;
+  font-size: 24rpx;
+  color: #b2b2b2;
+  padding: 10rpx 20rpx;
+  border-radius: 0 0 10rpx 10rpx;
+}
+

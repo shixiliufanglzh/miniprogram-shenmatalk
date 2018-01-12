@@ -1,0 +1,185 @@
+const reLogin = require('login.js');
+// const app = getApp();
+const apiAdmin = "http://47.96.186.64/red-api"; //test
+// const apiAdmin = "https://www.mypies.cn/red-api"; //prod
+// const apiAdmin = "";  //prod
+
+const apiUrl = {
+  ADMIN: apiAdmin,
+  UPLOAD_FILE: apiAdmin + "/util/uploadFile.jhtml",  //上传文件
+
+  LOGIN: apiAdmin + "/user/wxlogin.jhtml",  //微信登录***
+  REGISTER: apiAdmin + "/user/wxRegister.jhtml",  //微信注册***
+  ADD_ALIPAY: apiAdmin + "/user/addAlipay.jhtml",  //绑定支付宝***
+  DRAW_ALIPAY: apiAdmin + "/user/drawAlipay.jhtml",  //提现到支付宝***
+  ADD_TXT_RED: apiAdmin + "/red/addRed.jhtml",  //添加红包
+  GET_SELF_VOICE_RED: apiAdmin + "/red/getSelfRed.jhtml",  //获取自己发出的语音红包***
+  GET_SELF_SEND_TOTAL: apiAdmin + "/user/getUserSendRedTotal.jhtml",  //获取用户发送红包数据统计***
+  GET_WIN_VOICE_RED: apiAdmin + "/red/getWinRed.jhtml",  //用户获取抽到的语音红包***
+  GET_WIN_TOTAL: apiAdmin + "/user/getUserGetRedTotal.jhtml",  //获取用户抢到红包数据统计***
+  
+  GET_VOICE_RED_DETAIL: apiAdmin + "/red/getRedDetail.jhtml",  //获取语音红包详情***
+  GET_VOICE_WIN_RECORD: apiAdmin + "/red/getWinRecord.jhtml",  //获取语音红包领取记录***
+  GET_PUBLIC_VOICE_RED: apiAdmin + "/red/getPublicRed.jhtml",  //获取广场语音红包***
+  // GET_TODAY_VOICE_RED: apiAdmin + "/red/getTodayRedData.jhtml",  //获取今日语音红包统计数据
+  WIN_RED_PACKET: apiAdmin + "/red/winRed.jhtml",  //抢红包***
+  GET_TODAY_LIST: apiAdmin + "/red/getTodaylist.jhtml",  //获取今日土豪/最佳榜***
+  GET_MY_RANKING: apiAdmin + "/user/getMyRanking.jhtml",  //获取自己今日土豪/最佳榜 排名***
+  GET_USER_INFO: apiAdmin + "/user/getUserInfo.jhtml",  //获取用户信息***
+
+  GET_WX_CODE: apiAdmin + "/util/getWxjsCode.jhtml",  //获取小程序二维码***
+  GET_ADVER: apiAdmin + "/util/getAvder.jhtml",  //获取广告链接
+
+  responseCodeCallback: function (responseCode, responseDesc, data){
+    // console.log('错误码', responseCode, responseDesc, data)
+    switch(responseCode){
+      case "2000":
+        break;
+      case "4000":
+        //登录
+        reLogin(null,apiUrl);
+        break;
+      case "4001":
+        wx.showModal({
+          title: '提示',
+          content: responseDesc,
+          showCancel: false
+        })
+        break;
+      case "4002":
+        register(null, apiUrl)
+        // wx.showToast({
+        //   title: responseDesc,
+        //   icon: 'loading',
+        //   duration: 1500
+        // })
+        break;
+      case "4003":
+        wx.showModal({
+          title: '提示',
+          content: responseDesc,
+          showCancel: false
+        })
+        break;
+      case "4004":
+        wx.showModal({
+          title: '提示',
+          content: responseDesc,
+          showCancel: false
+        })
+        break;
+      case "4005":
+        wx.showModal({
+          title: '提示',
+          content: responseDesc,
+          showCancel: false
+        })
+        break;
+      case "5000":
+        wx.showModal({
+          title: '提示',
+          content: responseDesc,
+          showCancel: false
+        })
+        break;
+      case "5001":
+        wx.showModal({
+          title: '提示',
+          content: responseDesc,
+          showCancel: false
+        })
+        break;
+      // default:
+      //   wx.showModal({
+      //     title: '提示',
+      //     content: '错误：'+ responseCode,
+      //     showCancel: false
+      //   })
+
+    }
+  }
+}
+
+function register(app, apiUrl){
+  wx.showLoading({
+    title: "登录中..."
+  });
+
+  let _app = app;
+  if (!app) {
+    _app = getApp();
+  }
+
+  console.log('准备注册');
+
+  wx.getUserInfo({
+    data: {
+      lang: 'zh_CN',
+      withCredentials: true
+    },
+    success: function (userMsg) {
+      console.log(userMsg)
+      _app.globalData.userInfo = userMsg.userInfo
+      wx.request({
+        url: apiUrl.REGISTER,
+        method: "POST",
+        header: {
+          'content-type': 'application/x-www-form-urlencoded', // 默认值
+          'sessionKey': _app.globalData.sessionKey
+        },
+        data: {
+          encryptedData: userMsg.encryptedData,
+          iv: userMsg.iv,
+          shareUserOpenId: _app.globalData.sessionKey
+        },
+        success: function (regData) {
+          wx.hideLoading();
+          console.log(regData, _app.globalData.sessionKey)
+          apiUrl.responseCodeCallback(regData.data.responseCode, regData.data.responseDesc, regData.data.data);
+          if (regData.data.responseCode == 2000) {
+            wx.request({
+              url: apiUrl.GET_USER_INFO,
+              method: "GET",
+              header: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'sessionKey': _app.globalData.sessionKey
+              },
+              success: function (res) {
+                apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                if (res.data.responseCode == 2000) {
+                  console.log('pointInfo', res);
+                  app.globalData.pointInfo = {
+                    aliAccount: res.data.data.aliAccount,
+                    point: res.data.data.userPoint,
+                    money: res.data.data.userMoney,
+                    id: res.data.data.id
+                  }
+                }
+              }
+            })
+          }
+        },
+        fail: function(err){
+          wx.hideLoading();
+          wx.showToast({
+            title: '登录失败',
+            duration: 1500,
+            image: '../images/caution.png'
+          })
+          console.log('apiUrl.REGISTER fail ',err);
+        }
+      })
+    },
+    fail: function (err) {
+      wx.hideLoading();
+      wx.showToast({
+        title: '登录失败',
+        duration: 1500,
+        image: '../images/caution.png'
+      })
+      console.log(err)
+    }
+  })
+}
+
+module.exports = apiUrl;

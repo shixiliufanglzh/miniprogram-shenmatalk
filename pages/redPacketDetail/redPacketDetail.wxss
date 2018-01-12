@@ -1,0 +1,189 @@
+/* pages/redPacketDetail/redPacketDetail.wxss */
+.header {
+  background-color: #D95940;
+  text-align: center;
+}
+.header .avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 6rpx;
+  margin: 30rpx 0 6rpx;
+}
+.header .name {
+  display: block;
+  font-size: 30rpx;
+  color: #fff;
+}
+.header .token_wrp {
+  margin-top: 46rpx;
+}
+.header .token_wrp .icon_record {
+  width: 48rpx;
+  height: 48rpx;
+  vertical-align: top;
+  margin-top: 10rpx;
+  margin-right: 10rpx;
+}
+.header .token_wrp text {
+  display: inline-block;
+  max-width: 620rpx;
+  font-size: 48rpx;
+  color: #fff;
+}
+.header .record {
+  margin: 50rpx auto 20rpx;
+  border-radius: 50rpx;
+  width: 670rpx;
+}
+.header .record.finish {
+  background-color: rgba(255,255,255,0.8);
+  color: #000;
+}
+.header .prompt {
+  font-size: 26rpx;
+  color: #fff;
+}
+.header .interaction {
+  padding: 10rpx 30rpx;
+}
+.header .interaction .flex-item {
+  text-align: center;
+  font-size: 30rpx;
+  color: #fff;
+  background-color: transparent;
+  border: none;
+}
+.header .interaction .flex-item::after {
+  border: none;
+}
+.header .interaction .flex-item image {
+  width: 26rpx;
+  height: 26rpx;
+  vertical-align: middle;
+  margin-right: 6rpx;
+}
+
+.adver_pic image {
+  width: 100%;
+  height: 190rpx;
+}
+
+.process_prompt {
+  /* text-align: center; */
+  line-height: 72rpx;
+  font-size: 28rpx;
+  color: #888;
+  margin-left: 30rpx;
+}
+.process_prompt .suggest {
+  color: #576895;
+  border: none;
+  font-size: 28rpx;
+  float: right;
+  line-height: 72rpx;
+  height: 72rpx;
+}
+.grab_list {
+  background-color: #fff;
+}
+.grab_list .grab_item {
+  height: 146rpx;
+  border-bottom: 1px solid #f0f0f0;
+  padding-left: 152rpx;
+  padding-right: 30rpx;
+  position: relative;
+}
+.grab_list .grab_item .avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 10rpx;
+  position: absolute;
+  left: 30rpx;
+  top: 18rpx;
+}
+.grab_list .grab_item .info {
+  position: relative;
+  height: 100%;
+}
+.grab_list .grab_item .info .player {
+  display: inline-block;
+  width: 128rpx;
+  height: 54rpx;
+  background-color: #eee;
+  border-radius: 6rpx;
+  margin-top: 12rpx;
+  font-size: 0;
+  padding: 0 20rpx;
+  box-shadow: 0px 0px 2px rgba(0,0,0,0.3); 
+}
+.grab_list .grab_item .info .player image  {
+  width: 32rpx;
+  height: 32rpx;
+  vertical-align: middle;
+  margin-top: -20rpx;
+  margin-right: 10rpx;
+}
+.grab_list .grab_item .info .player text  {
+  font-size: 26rpx;
+  line-height: 54rpx;
+}
+.grab_list .grab_item .info .gainer .name {
+  display: inline-block;
+  font-size: 28rpx;
+  margin-top: 20rpx;
+}
+.grab_list .grab_item .info .gainer image {
+  width: 28rpx;
+  height: 28rpx;
+  vertical-align: middle;
+  margin-right: 6rpx;
+  margin-left: 6rpx;
+}
+.grab_list .grab_item .info .money {
+  position: absolute;
+  right: 0;
+  top: 20rpx;
+  font-size: 28rpx;
+}
+.grab_list .grab_item .info .time {
+  position: absolute;
+  right: 0;
+  bottom: 30rpx;
+  display: block;
+  font-size: 28rpx;
+  line-height: 30rpx;
+  color: #aaa;
+}
+
+.toast_wrp {
+  width: 200rpx;
+  height: 200rpx;
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 10rpx;
+  position: fixed;
+  top: 20rpx;
+  left: 50%;
+  margin-left: -100rpx;
+}
+.toast_wrp .toast image {
+  width: 120rpx;
+  height: 120rpx;
+  margin: 40rpx;
+}
+
+
+.fixed_btn {
+  background-color: #D95940;
+  position: fixed;
+  right: 0;
+  bottom: 100rpx;
+  width: 120rpx;
+  /* height: 90rpx; */
+  border-radius: 10rpx 0 0 10rpx;
+  padding: 8rpx 12rpx;
+}
+.fixed_btn navigator {
+  font-size: 26rpx;
+  text-align: center;
+  color: #fff;
+}

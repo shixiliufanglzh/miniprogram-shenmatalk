@@ -1,0 +1,92 @@
+/* pages/ranking/ranking.wxss */
+.top-tab{
+  width: 750rpx;
+  height: 100rpx;
+  background: #fff;
+  color: #888;
+  font-size: 30rpx;
+  line-height: 100rpx;
+  margin: 0 0 1rpx 0;
+  position: fixed;
+  top: 0;
+  z-index: 9;
+  border-bottom: 1px solid #f0f0f0;
+}
+.toptab.active{
+  color: #EC5E3A;
+  border-bottom: solid 2px #EC5E3A;
+}
+
+.container {
+  height: 100%;
+  box-sizing: border-box;
+  color: #000;
+}
+.container.withtab{
+  margin: 101rpx 0 0 0;
+  background-color: #fff;
+}
+.container.withtab .total_list{
+  padding-left: 30rpx;
+}
+.container .content .no_rank {
+  font-size: 26rpx;
+  color: #888;
+  line-height: 100rpx;
+  text-align: center
+}
+.container .content .item.my_position {
+  padding: 20rpx 0 20rpx 200rpx;
+  border-bottom: 8px solid #f0f0f0;
+}
+.container .content .item {
+  padding: 20rpx 0 20rpx 170rpx;
+  position: relative;
+  height: 80rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+.container .content .item .order{
+  position: absolute;
+  width: 66rpx;
+  text-align: center;
+  left: 0;
+  line-height: 80rpx;
+  font-size: 34rpx;
+}
+.container .content .item.top .order{
+  color: #EC5E3A;
+}
+.container .content .item image {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 6rpx;
+  position: absolute;
+  left: 66rpx;
+  top: 20rpx;
+}
+.container .content .item.my_position image {
+  left: 96rpx;
+}
+ .container .content .item .info .name {
+  font-size: 28rpx;
+  line-height: 80rpx;
+} 
+ .container .content .item.my_position .info .name {
+  line-height: 1.2em;
+  /* margin-top: 20rpx; */
+  display: block;
+}
+.container .content .item.my_position .info .desc {
+  font-size: 24rpx;
+  color: #888;
+}
+.container .content .item.my_position .info .desc.active {
+  color: #EC5E3A;
+}
+.container .content .item .money {
+  font-size: 28rpx;
+  position: absolute;
+  right: 30rpx;
+  top: 0;
+  line-height: 120rpx; 
+}

@@ -1,0 +1,55 @@
+{
+  "pages": [
+    "pages/createRedPacket/createRedPacket",
+    "pages/square/square",
+    "pages/ranking/ranking",
+    "pages/personalZone/personalZone",
+    "pages/redPacketDetail/redPacketDetail",
+    "pages/record/record",
+    "pages/q&a/q&a",
+    "pages/enchashment/enchashment",
+    "pages/logs/logs",
+    "pages/share/share",
+    "pages/webView/webView",
+    "pages/suggestion/suggestion"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#D95940",
+    "navigationBarTitleText": "神马说说",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#D95940"
+  },
+  "tabBar": {
+    "selectedColor": "#D95940",
+    "backgroundColor": "#fff",
+    "borderStyle": "white",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/createRedPacket/createRedPacket",
+        "text": "发红包",
+        "iconPath": "images/tab_01_normal.png",
+        "selectedIconPath": "images/tab_01_selected.png"
+      },
+      {
+        "pagePath": "pages/square/square",
+        "text": "红包广场",
+        "iconPath": "images/tab_02_normal.png",
+        "selectedIconPath": "images/tab_02_selected.png"
+      },
+      {
+        "pagePath": "pages/ranking/ranking",
+        "text": "排行榜",
+        "iconPath": "images/tab_03_normal.png",
+        "selectedIconPath": "images/tab_03_selected.png"
+      },
+      {
+        "pagePath": "pages/personalZone/personalZone",
+        "text": "我的",
+        "iconPath": "images/tab_04_normal.png",
+        "selectedIconPath": "images/tab_04_selected.png"
+      }
+    ]
+  }
+}

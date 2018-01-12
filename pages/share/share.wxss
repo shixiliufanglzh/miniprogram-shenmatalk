@@ -1,0 +1,141 @@
+/* pages/share/share.wxss */
+page {
+  background-color: #D95940;
+}
+.share {
+  background-color: #D95940;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.share canvas {
+   position: fixed;
+  top: -1500rpx;
+  left: 0; 
+  width: 750rpx;
+  background-color: #D95940; 
+  height: 1100rpx;
+}
+.share canvas .info {
+  text-align: center;
+  padding-top: 70rpx;
+  position: relative;
+}
+.share canvas .info .avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 10rpx;
+}
+.share canvas .info text {
+  display: block;
+  font-size: 28rpx;
+  color: #FFDFB1;
+  margin-top: 10rpx;
+}
+.share canvas .info .token {
+  font-size: 48rpx;
+  color: #FFDFB1;
+  max-width: 668rpx;
+  text-align: center;
+  margin: 20rpx auto 10rpx;
+}
+.share canvas .info .packet {
+  position: absolute;
+  top: 400rpx;
+  left: -1%;
+  width: 102%;
+  height: 147rpx;
+}
+.share canvas .info .code {
+  width: 216rpx;
+  height: 216rpx;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  text-align: center;
+  padding: 12rpx;
+  position: absolute;
+  top: 400rpx;
+  left: 50%;
+  margin-left: -120rpx;
+}
+.share canvas .info .code image {
+  width: 216rpx;
+  height: 216rpx;
+  background-color: #fff;
+  border-radius: 50%;
+}
+.share canvas .bottom_prompt {
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  bottom: 60rpx; 
+}
+.share canvas .bottom_prompt .thumb {
+  width: 92rpx;
+  height: 92rpx;
+  margin-bottom: 10rpx;
+}
+.share canvas .bottom_prompt text {
+  display: block;
+  font-size: 34rpx;
+  color: #FFDFB1;
+}
+.manipulate {
+  position: fixed;
+  left: 50%;
+  margin-left: -345rpx;
+  bottom: 120rpx;
+  width: 600rpx;
+  height: 268rpx;
+  background-color: #fff;
+  border-radius: 10rpx;
+  padding: 36rpx 45rpx;
+  z-index: 999;
+}
+.manipulate .convert {
+  color: #888;
+  margin-top: 26rpx;
+}
+.manipulate navigator {
+  text-align: center;
+  margin-top: 10rpx;
+}
+.manipulate navigator image {
+  width: 16rpx;
+  height: 26rpx;
+  transform: rotate(180deg);
+  vertical-align: middle;
+  margin-bottom: -2rpx;
+  margin-right: 10rpx;
+}
+.manipulate navigator text {
+  font-size: 26rpx;
+  color: #9b9b9b;
+}
+
+.picMask {
+  /* width: 750rpx;
+  height: 1100rpx; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 998;
+}
+.picMask image {
+  width: 750rpx;
+  height: 1100rpx;
+}
+
+.bottom_sug {
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+.bottom_sug .suggest {
+  color: #eee;
+  border: none;
+  font-size: 28rpx;
+  line-height: 72rpx;
+  height: 72rpx;
+}

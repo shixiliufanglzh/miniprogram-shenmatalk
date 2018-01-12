@@ -1,0 +1,103 @@
+/* pages/personalZone/personalZone.wxss */
+.header {
+  height: 200rpx;
+  position: relative;
+  padding-left: 210rpx;
+  background-color: #fff; 
+  margin-bottom: 10rpx;
+  overflow: hidden;
+}
+.header .bg_wall {
+  width: 110%;
+  height: 110%;
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  z-index: -1;
+  -webkit-filter: blur(10px); /* Chrome, Opera */
+  -moz-filter: blur(10px);
+  -ms-filter: blur(10px);    
+  filter: blur(10px);
+  opacity: 0.5;
+}
+.header .avatar {
+  position: absolute;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  left: 40rpx;
+  top: 30rpx;
+}
+.header .user_name {
+  font-size: 30rpx;
+  line-height: 200rpx;
+}
+
+.menu {
+  background-color: #fff;
+  margin-bottom: 10rpx;
+}
+.menu navigator {
+  height: 88rpx;
+  border-bottom: 1px solid #f0f0f0;
+  position: relative;
+  padding-left: 30rpx;
+}
+.menu navigator .tab_icon {
+  width: 58rpx;
+  height: 58rpx;
+  vertical-align: middle;
+}
+.menu navigator .title {
+  line-height: 88rpx;
+  font-size: 34rpx;
+  margin-left: 20rpx;
+}
+.menu navigator .arrow {
+  width: 16rpx;
+  height: 26rpx;
+  position: absolute;
+  right: 30rpx;
+  top: 31rpx;
+}
+
+.menu .navigator {
+  height: 88rpx;
+  border-bottom: 1px solid #f0f0f0;
+  position: relative;
+  padding-left: 30rpx;
+}
+.menu .navigator .tab_icon {
+  width: 58rpx;
+  height: 58rpx;
+  vertical-align: middle;
+}
+.menu .navigator .title {
+  line-height: 88rpx;
+  font-size: 34rpx;
+  margin-left: 20rpx;
+}
+.menu .navigator .prompt {
+  position: absolute;
+  right: 30rpx;
+  line-height: 88rpx;
+  color: #EC5E3A;
+  font-size: 26rpx;
+}
+
+.code {
+  /* background-color: #fff; */
+  height: 330rpx;
+  text-align: center;
+}
+.code image {
+  width: 208rpx;
+  height: 208rpx;
+  margin: 32rpx auto 10rpx;
+}
+.code text {
+  display: block;
+  text-align: center;
+  font-size: 26rpx;
+  color: #888;
+}
