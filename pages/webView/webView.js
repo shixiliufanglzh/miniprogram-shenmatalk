@@ -7,9 +7,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    adver: apiUrl.GET_ADVER + '?url=1'
     // adver: apiUrl.GET_ADVER + '?url=http://www.jianbid.com/public/index.html'
     // adver: 'https://www.jianbid.com'
-    adver: 'https://mp.weixin.qq.com/s/Bj0t-5hniBq0-1QCnIWkAg'
+    // adver: 'https://mp.weixin.qq.com/s/Bj0t-5hniBq0-1QCnIWkAg'
   },
 
   /**

@@ -10,7 +10,7 @@
 </view>
 
 <view bind:tap="{{!optionsState ? 'hideOptions' : 'null'}}">
-  <form class="send_red_packet" bindsubmit="formSubmit">
+  <form class="send_red_packet" bindsubmit="formSubmit" report-submit="{{true}}">
     <block>
       <view class="section token_wrp">
         <label class="title" for="token">语音口令</label>

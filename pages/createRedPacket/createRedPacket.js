@@ -13,6 +13,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    formId: 0,
     hideCropper: true,
     pointInfo: {},
     optionsState: true,
@@ -180,6 +181,7 @@ Page({
         console.log(`current canvas context:`, ctx)
       })
       .updateCanvas()
+      
   },
   // bindPickerChange: function (e) {
   //   this.setData({
@@ -307,7 +309,10 @@ Page({
    */
   formSubmit: function (e) {
     let that = this;
-    // console.log('form发生了submit事件，携带数据为：', e.detail.value);
+    console.log('form发生了submit事件：', e.detail.formId);
+    this.setData({
+      formId: e.detail.formId
+    })
     const token = e.detail.value.token.replace(/(^\s*)|(\s*$)/g, "");
     let isOpen = 2, isAnonymous = 2, useCash = 2;
     if (e.detail.value.checkbox.indexOf('open') != -1){ isOpen = 1 }
@@ -339,7 +344,7 @@ Page({
         if (e.detail.value.money < 100 || (e.detail.value.money / e.detail.value.count) < 0.1){
           wx.showModal({
             title: '提示',
-            content: '带宣传图片红包总金额不少于100元且人均不少于0.1元',
+            content: '上传宣传图片的推广红包总金额不少于100元且人均不少于0.1元',
             showCancel: false
           })
         }else {
@@ -375,7 +380,7 @@ Page({
               title: '支付中...',
               mask: true
             });
-            if (res.confirm) {
+            // if (res.confirm) {
               const submitMsg = {
                 content: token,
                 money: e.detail.value.money,
@@ -384,8 +389,9 @@ Page({
                 isHide: isAnonymous,
                 redType: 1,
                 payType: useCash,
-                adverPic: that.data.picUrl
+                adverPic: that.data.picUrl,
                 // adverLink: ''
+                prepayId: e.detail.formId
               }
               console.log('发红包参数', submitMsg);
 
@@ -398,6 +404,7 @@ Page({
                 },
                 data: submitMsg,
                 success: function (res) {
+                  wx.hideLoading();
                   apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                   if (res.data.responseCode == 2000) {
                     console.log(res);
@@ -408,7 +415,6 @@ Page({
                     that.setData({
                       pointInfo: app.globalData.pointInfo
                     })
-                    wx.hideLoading();
                     if (payType == 1) {
                       wx.requestPayment({
                         'timeStamp': payMsg.timeStamp,
@@ -446,6 +452,12 @@ Page({
                         }
                       })
                     }
+                  }else {
+                    wx.showToast({
+                      title: '支付失败',
+                      image: '../../images/caution.png',
+                      duration: 2000
+                    })
                   }
                 },
                 fail:function(){
@@ -457,9 +469,9 @@ Page({
                   })
                 }
               })
-            } else if (res.cancel) {
-              console.log('用户点击取消')
-            }
+            // } else if (res.cancel) {
+            //   console.log('用户点击取消')
+            // }
           }
         },
       })

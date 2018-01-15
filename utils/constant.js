@@ -1,7 +1,8 @@
 const reLogin = require('login.js');
 // const app = getApp();
-const apiAdmin = "http://47.96.186.64/red-api"; //test
+// const apiAdmin = "http://47.96.186.64/red-api"; //test
 // const apiAdmin = "https://www.mypies.cn/red-api"; //prod
+const apiAdmin = "https://red.jianbid.com/red-api"; //prod
 // const apiAdmin = "";  //prod
 
 const apiUrl = {
@@ -29,15 +30,17 @@ const apiUrl = {
 
   GET_WX_CODE: apiAdmin + "/util/getWxjsCode.jhtml",  //获取小程序二维码***
   GET_ADVER: apiAdmin + "/util/getAvder.jhtml",  //获取广告链接
+  GET_FORM_ID: apiAdmin + "/util/getFormId.jhtml",  //获取微信formId
 
-  responseCodeCallback: function (responseCode, responseDesc, data){
+  responseCodeCallback: function (responseCode, responseDesc, data, that){
     // console.log('错误码', responseCode, responseDesc, data)
     switch(responseCode){
       case "2000":
         break;
       case "4000":
         //登录
-        reLogin(null,apiUrl);
+        // if(that)
+        reLogin(null,apiUrl,that);
         break;
       case "4001":
         wx.showModal({
@@ -130,7 +133,7 @@ function register(app, apiUrl){
         data: {
           encryptedData: userMsg.encryptedData,
           iv: userMsg.iv,
-          shareUserOpenId: _app.globalData.sessionKey
+          shareUserOpenId: _app.globalData.shareId
         },
         success: function (regData) {
           wx.hideLoading();

@@ -79,6 +79,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    let that = this;
+    console.log('初始化广场红包数据')
     this.setData({
       pointInfo: app.globalData.pointInfo,
     })
@@ -180,7 +182,7 @@ Page({
         redStatus: redStatus
       },
       success: function (res) {
-        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data, that);
         if (res.data.responseCode == 2000) {
           const resData = res.data.data;
           console.log('获取红包第' + pageNum + '页列表', redStatus,resData);

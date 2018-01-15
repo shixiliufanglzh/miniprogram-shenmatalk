@@ -87,7 +87,7 @@ Page({
     return {
       title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
       path: '/pages/redPacketDetail/redPacketDetail?redId=' + this.data.redId + '&id=' + app.globalData.pointInfo.id,
-      imageUrl: '../../images/share_cut.jpg',
+      // imageUrl: '../../images/share_cut.jpg',
       success: function (res) {
         // 转发成功
         wx.showToast({

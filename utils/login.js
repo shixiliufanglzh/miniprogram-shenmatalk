@@ -1,7 +1,7 @@
 // const app = getApp();
 // const apiUrl = require('constant.js');
 
-module.exports = (app,apiUrl) => {
+module.exports = (app, apiUrl, that) => {
   let _app = app;
   if(!app){
     _app = getApp();
@@ -61,7 +61,7 @@ module.exports = (app,apiUrl) => {
                           data: {
                             encryptedData: userMsg.encryptedData,
                             iv: userMsg.iv,
-                            shareUserOpenId: _app.globalData.sessionKey
+                            shareUserOpenId: _app.globalData.shareId
                           },
                           success: function (regData) {
                             console.log(regData, _app.globalData.sessionKey)
@@ -84,6 +84,7 @@ module.exports = (app,apiUrl) => {
                                       money: res.data.data.userMoney,
                                       id: res.data.data.id
                                     }
+                                    if (that && that.onShow) that.onShow();
                                   }
                                 }
                               })
@@ -125,6 +126,8 @@ module.exports = (app,apiUrl) => {
                             money: res.data.data.userMoney,
                             id: res.data.data.id
                           }
+                          console.log(111111111, that)
+                          if (that && that.onShow) that.onShow();
                         }
                       }
                     })

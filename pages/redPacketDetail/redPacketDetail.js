@@ -83,7 +83,7 @@ Page({
   },
 
   voiceEndRecordMove(e) {
-    if (e.changedTouches[0].pageY > this.data.pageY + 20){
+    if (e.changedTouches[0].pageY > this.data.pageY + 7){
       // console.log(e)
       console.log('stop record');
       this.setData({
@@ -383,7 +383,7 @@ Page({
         redId: that.data.redId
       },
       success: function (res) {
-        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data, that);
         if (res.data.responseCode == 2000) {
           const resData = res.data.data;
           console.log(res);
