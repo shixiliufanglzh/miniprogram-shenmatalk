@@ -86,6 +86,14 @@ Page({
     }
   },
 
+  changeAliAccount: function(){
+    let that = this;
+    app.globalData.pointInfo.aliAccount = ''
+    this.setData({
+      pointInfo: app.globalData.pointInfo
+    })
+  },
+
   //提现
   enchashSubmit: function(){
     let that = this;
@@ -155,7 +163,7 @@ Page({
   },
   goQA: function () {
     wx.navigateTo({
-      url: '/pages/q&a/q&a'
+      url: '/pages/QA/QA'
     })
   },
 
@@ -210,6 +218,26 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+    return {
+      title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
+      path: '/pages/square/square?id=' + app.globalData.pointInfo.id,
+      imageUrl: '../../images/share_cut.jpg',
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: '分享成功',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享失败',
+          image: '../../images/caution.png',
+          duration: 2000
+        })
+      }
+    }
   }
 })

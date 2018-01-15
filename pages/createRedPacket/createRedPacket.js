@@ -49,19 +49,23 @@ Page({
     recommendMoney: [
       {
         id: 0,
-        value: "1",
-        state: "unselected"
-      }, {
-        id: 1,
         value: "5",
         state: "unselected"
       }, {
-        id: 2,
+        id: 1,
         value: "10",
+        state: "unselected"
+      }, {
+        id: 2,
+        value: "20",
         state: "unselected"
       }, {
         id: 3,
         value: "50",
+        state: "unselected"
+      }, {
+        id: 4,
+        value: "100",
         state: "unselected"
       }
     ],
@@ -234,7 +238,27 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+    return {
+      title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
+      path: '/pages/square/square?id=' + app.globalData.pointInfo.id,
+      imageUrl: '../../images/share_cut.jpg',
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: '分享成功',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享失败',
+          image: '../../images/caution.png',
+          duration: 2000
+        })
+      }
+    }
   },
 
   limitInput: (e) => {
@@ -346,95 +370,98 @@ Page({
         title: '提示',
         content: !!this.data.picUrl ? '添加宣传图片的推广红包需额外加收10%服务费，普通红包不收取服务费' : '确认支付'+ e.detail.value.money+'元',
         success: function (res) {
-          wx.showLoading({
-            title: '支付中...'
-          });
           if (res.confirm) {
-            const submitMsg = {
-              content: token,
-              money: e.detail.value.money,
-              amount: e.detail.value.count,
-              isPublic: isOpen,
-              isHide: isAnonymous,
-              redType: 1,
-              payType: useCash,
-              adverPic: that.data.picUrl
-              // adverLink: ''
-            }
-            console.log('发红包参数', submitMsg);
-
-            wx.request({
-              url: apiUrl.ADD_TXT_RED,
-              method: "POST",
-              header: {
-                'content-type': 'application/x-www-form-urlencoded', // 默认值
-                'sessionKey': app.globalData.sessionKey
-              },
-              data: submitMsg,
-              success: function (res) {
-                apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
-                if (res.data.responseCode == 2000) {
-                  console.log(res);
-                  const payMsg = res.data.data.payResult;
-                  const payType = res.data.data.payType;
-                  // console.log(payMsg)
-                  app.globalData.pointInfo.money = res.data.data.money;
-                  that.setData({
-                    pointInfo: app.globalData.pointInfo
-                  })
-                  wx.hideLoading();
-                  if (payType == 1) {
-                    wx.requestPayment({
-                      'timeStamp': payMsg.timeStamp,
-                      'nonceStr': payMsg.nonceStr,
-                      'package': payMsg.package,
-                      'signType': 'MD5',
-                      'paySign': payMsg.paySign,
-                      'success': function (res) {
-                        //微信支付成功
-                        wx.showToast({
-                          title: '支付成功',
-                          icon: 'success',
-                          duration: 1500,
-                          complete: function () {
-                            wx.navigateTo({
-                              url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
-                            })
-                          }
-                        })
-                      },
-                      'fail': function (res) {
-
-                      }
-                    })
-                  } else if (payType == 3) {
-                    //余额支付完成
-                    wx.showToast({
-                      title: '支付成功',
-                      icon: 'success',
-                      duration: 1500,
-                      complete: function () {
-                        wx.navigateTo({
-                          url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
-                        })
-                      }
-                    })
-                  }
-                }
-              },
-              fail:function(){
-                wx.hideLoading();
-                wx.showToast({
-                  title: '支付失败',
-                  image: '../../images/caution.png',
-                  duration: 2000
-                })
+            wx.showLoading({
+              title: '支付中...',
+              mask: true
+            });
+            if (res.confirm) {
+              const submitMsg = {
+                content: token,
+                money: e.detail.value.money,
+                amount: e.detail.value.count,
+                isPublic: isOpen,
+                isHide: isAnonymous,
+                redType: 1,
+                payType: useCash,
+                adverPic: that.data.picUrl
+                // adverLink: ''
               }
-            })
-          } else if (res.cancel) {
-            console.log('用户点击取消')
+              console.log('发红包参数', submitMsg);
+
+              wx.request({
+                url: apiUrl.ADD_TXT_RED,
+                method: "POST",
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded', // 默认值
+                  'sessionKey': app.globalData.sessionKey
+                },
+                data: submitMsg,
+                success: function (res) {
+                  apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                  if (res.data.responseCode == 2000) {
+                    console.log(res);
+                    const payMsg = res.data.data.payResult;
+                    const payType = res.data.data.payType;
+                    // console.log(payMsg)
+                    app.globalData.pointInfo.money = res.data.data.money;
+                    that.setData({
+                      pointInfo: app.globalData.pointInfo
+                    })
+                    wx.hideLoading();
+                    if (payType == 1) {
+                      wx.requestPayment({
+                        'timeStamp': payMsg.timeStamp,
+                        'nonceStr': payMsg.nonceStr,
+                        'package': payMsg.package,
+                        'signType': 'MD5',
+                        'paySign': payMsg.paySign,
+                        'success': function (res) {
+                          //微信支付成功
+                          wx.showToast({
+                            title: '支付成功',
+                            icon: 'success',
+                            duration: 1500,
+                            complete: function () {
+                              wx.navigateTo({
+                                url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
+                              })
+                            }
+                          })
+                        },
+                        'fail': function (res) {
+
+                        }
+                      })
+                    } else if (payType == 3) {
+                      //余额支付完成
+                      wx.showToast({
+                        title: '支付成功',
+                        icon: 'success',
+                        duration: 1500,
+                        complete: function () {
+                          wx.navigateTo({
+                            url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
+                          })
+                        }
+                      })
+                    }
+                  }
+                },
+                fail:function(){
+                  wx.hideLoading();
+                  wx.showToast({
+                    title: '支付失败',
+                    image: '../../images/caution.png',
+                    duration: 2000
+                  })
+                }
+              })
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
           }
-        }
+        },
       })
 
       

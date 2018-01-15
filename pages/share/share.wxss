@@ -84,7 +84,7 @@ page {
   position: fixed;
   left: 50%;
   margin-left: -345rpx;
-  bottom: 120rpx;
+  bottom: 140rpx;
   width: 600rpx;
   height: 268rpx;
   background-color: #fff;
@@ -116,20 +116,20 @@ page {
 .picMask {
   /* width: 750rpx;
   height: 1100rpx; */
-  position: fixed;
+  /* position: relative;
   top: 0;
-  left: 0;
+  left: 0; */
   z-index: 998;
 }
 .picMask image {
   width: 750rpx;
-  height: 1100rpx;
+  height: 1000rpx;
 }
 
 .bottom_sug {
   text-align: center;
   position: fixed;
-  bottom: 0;
+  bottom: 10rpx;
   width: 100%;
 }
 .bottom_sug .suggest {

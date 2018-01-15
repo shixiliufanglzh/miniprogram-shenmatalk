@@ -21,16 +21,21 @@
       <text class="title">红包记录</text>
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
     </navigator>
-    <navigator hover-class="none" url="/pages/q&a/q&a" open-type="navigate">
+    <navigator hover-class="none" url="/pages/QA/QA" open-type="navigate">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_q_a.png"></image>
       <text class="title">新手帮助</text>
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
     </navigator>
-    <navigator hover-class="none" url="/pages/suggestion/suggestion" open-type="navigate">
+    <navigator hover-class="none" url="/pages/webView/webView" open-type="navigate">
+      <image mode="aspectFit" class="tab_icon" src="../../images/zone_q_a.png"></image>
+      <text class="title">减价拍商城</text>
+      <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
+    </navigator>
+    <button  class="navigator" open-type="contact">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_service.png"></image>
       <text class="title">联系客服</text>
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
-    </navigator>
+    </button>
   </view>
   <view class="code">
     <image src="../../images/qr_code.png" mode="aspectFit" bind:tap="showPic"></image>

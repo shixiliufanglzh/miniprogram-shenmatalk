@@ -1,6 +1,6 @@
 <!--pages/q&a/q&a.wxml-->
 <view class="all">
-  <view class="list">
+  <view class="qa_list">
     <view wx:for="{{listContent}}" wx:key="{{idx}}" wx:for-index="idx" wx:for-item="itemName" class="item {{itemName.showAnswer ? 'active' : ''}}">
       <view class="question" data-idx="{{idx}}" bind:tap="toggleAnswer">
         <text>{{itemName.q}}</text>

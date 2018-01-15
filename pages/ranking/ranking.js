@@ -12,7 +12,7 @@ Page({
   data: {
     sendPageNum: 1,
     receivePageNum: 1,
-    navTab: ["今日土豪榜", "今日运气榜"],
+    navTab: ["今日土豪榜", "今日口才榜"],
     currentNavtab: "0",
     userSend: {
       name: "",
@@ -178,7 +178,27 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+    return {
+      title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
+      path: '/pages/square/square?id=' + app.globalData.pointInfo.id,
+      imageUrl: '../../images/share_cut.jpg',
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: '分享成功',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享失败',
+          image: '../../images/caution.png',
+          duration: 2000
+        })
+      }
+    }
   },
 
   getSendList: function (pageSize, pageNum) {

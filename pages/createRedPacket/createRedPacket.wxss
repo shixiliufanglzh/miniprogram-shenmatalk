@@ -83,7 +83,7 @@ form {
 }
 .recommend .item {
   display: inline-block;
-  width: 120rpx;
+  width: 100rpx;
   border: 1px solid #ddd;
   font-size: 26rpx;
   color: #b2b2b2;

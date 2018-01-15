@@ -21,7 +21,8 @@ Page({
     animationData: {},
     hideRecordToast: true,
     pointInstruState: false,
-    grabList: []
+    grabList: [],
+    pageY: 0
   },
 
   /**
@@ -39,8 +40,11 @@ Page({
     // });
   },
 
-  voiceStartRecord() {
+  voiceStartRecord(e) {                
     let that = this;
+    this.setData({
+      pageY: e.changedTouches[0].pageY
+    })
     if (this.data.pointInfo.point > 0){
       this.setData({
         hideRecordToast: false
@@ -69,12 +73,24 @@ Page({
     }
   },
 
-  voiceEndRecord() {
+  voiceEndRecord(e) {
+    // console.log(e)
     console.log('stop record');
     this.setData({
       hideRecordToast: true
     })
     recorderManager.stop();
+  },
+
+  voiceEndRecordMove(e) {
+    if (e.changedTouches[0].pageY > this.data.pageY + 20){
+      // console.log(e)
+      console.log('stop record');
+      this.setData({
+        hideRecordToast: true
+      })
+      recorderManager.stop();
+    }
   },
 
   onVoiceStop(voiceInfo) {
@@ -87,12 +103,14 @@ Page({
       wx.showToast({
         title: '录制时间太短',
         duration: 1500,
+        mask: true,
         image: '../../images/caution.png'
       })
       return;
     }else {
       wx.showLoading({
-        title: '语音识别中...'
+        title: '语音识别中...',
+        mask: true
       });
       // wx.saveFile({
       //   tempFilePath: tempFilePath,
@@ -425,6 +443,13 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+    if (!!recorderManager){
+      this.setData({
+        hideRecordToast: true
+      })
+      recorderManager.stop();
+    }
+
     let that = this;
     wx.showLoading({
       title: "加载中...",
@@ -433,9 +458,8 @@ Page({
         that.setData({
           pageNum: 1
         })
-        that.onLoad({
-          redId: that.data.redId
-        });
+        that.onShow();
+
         wx.hideLoading()
         wx.stopPullDownRefresh()
       }
@@ -459,6 +483,27 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+    return {
+      title: this.data.redPacketDetail.userName +'发了一个语音口令红包，赶快去领赏吧！',
+      path: '/pages/redPacketDetail/redPacketDetail?redId='+this.data.redId+'&id=' + app.globalData.pointInfo.id,
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: '分享成功',
+          icon: 'success',
+          mask: true,
+          duration: 2000
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享失败',
+          mask: true,
+          image: '../../images/caution.png',
+          duration: 2000
+        })
+      }
+    }
   }
 })
