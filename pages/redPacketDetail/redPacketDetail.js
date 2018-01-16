@@ -29,6 +29,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+
     this.setData({
       redId: options.redId
     })
@@ -40,37 +41,72 @@ Page({
     // });
   },
 
-  voiceStartRecord(e) {                
+  voiceStartRecord(e) {   
     let that = this;
-    this.setData({
-      pageY: e.changedTouches[0].pageY
-    })
-    if (this.data.pointInfo.point > 0){
-      this.setData({
-        hideRecordToast: false
-      })
-      console.log('start record');
-      recorderManager.start({
-        duration: 30000,
-        format: 'mp3',
-        sampleRate: 16000,
-        encodeBitRate: 25600,  //75000
-        // frameSize: 2048,s
-        numberOfChannels: 1
-      });
-    }else {
-      wx.showModal({
-        title: '提示',
-        content: '您的芝麻分不足,点【确定】查看如何获得芝麻分',
-        success: function (res) {
-          if (res.confirm) {
-            that.showPointInstruction();
-          } else if (res.cancel) {
-            
+    
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting['scope.record']) {
+          wx.showModal({
+            title: '提示',
+            content: '小程序录音功能需要获取录音权限',
+            showCancel: false,
+            success: function (res) {
+              if (res.confirm) {
+                wx.openSetting({
+                  success: function (data) {
+                    if (data) {
+                      if (data.authSetting["scope.record"] == true) {
+                        wx.showToast({
+                          title: '授权成功',
+                          icon: 'success',
+                          duration: 1500,
+                          mask: true
+                        })
+                      }
+                    }
+                  },
+                  fail: function () {
+                    console.info("设置失败返回数据");
+                  }
+                });
+              }
+            }
+          })
+        }else {
+          that.setData({
+            pageY: e.changedTouches[0].pageY
+          })
+          if (that.data.pointInfo.point > 0) {
+            that.setData({
+              hideRecordToast: false
+            })
+            console.log('start record');
+            recorderManager.start({
+              duration: 30000,
+              format: 'mp3',
+              sampleRate: 16000,
+              encodeBitRate: 25600,  //75000
+              // frameSize: 2048,s
+              numberOfChannels: 1
+            });
+          } else {
+            wx.showModal({
+              title: '提示',
+              content: '您的神马分不足,点【确定】查看如何获得神马分',
+              success: function (res) {
+                if (res.confirm) {
+                  that.showPointInstruction();
+                } else if (res.cancel) {
+
+                }
+              }
+            })
           }
         }
-      })
-    }
+      }
+    })
+    
   },
 
   voiceEndRecord(e) {
@@ -135,7 +171,7 @@ Page({
               wx.hideLoading();
               apiUrl.responseCodeCallback(parsrData.responseCode, parsrData.responseDesc, parsrData.data);
               if (parsrData.responseCode == 2000) {
-                getUserInfo(app, that, null);
+                // getUserInfo(app, that, null);
                 wx.request({
                   url: apiUrl.WIN_RED_PACKET,
                   method: "POST",
@@ -152,7 +188,7 @@ Page({
                   },
                   success: function (res) {
                     console.log('抢红包返回数据' + JSON.stringify(res))
-                    
+                    getUserInfo(app, that, null);
                     apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                     if (res.data.responseCode == 2000) {
                       // console.log(res);
@@ -331,7 +367,7 @@ Page({
     })
   },
 
-  //显示芝麻分说明
+  //显示神马分说明
   showPointInstruction: function () {
     const animation = wx.createAnimation({
       duration: 500,
@@ -344,7 +380,7 @@ Page({
       pointInstruState: true
     })
   },
-  //隐藏芝麻分说明
+  //隐藏神马分说明
   hidePointInstruction: function () {
     const animation = wx.createAnimation({
       duration: 500,
