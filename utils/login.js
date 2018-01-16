@@ -50,13 +50,13 @@ module.exports = (app, apiUrl, that) => {
                     method: "GET",
                     header: {
                       'content-type': 'application/x-www-form-urlencoded',
-                      'sessionKey': that.globalData.sessionKey
+                      'sessionKey': _app.globalData.sessionKey
                     },
                     success: function (res) {
                       apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                       if (res.data.responseCode == 2000) {
                         console.log('自己后台拉取用户信息pointInfo', res);
-                        that.globalData.pointInfo = {
+                        _app.globalData.pointInfo = {
                           aliAccount: res.data.data.aliAccount,
                           point: res.data.data.userPoint,
                           money: res.data.data.userMoney,
@@ -71,7 +71,7 @@ module.exports = (app, apiUrl, that) => {
                   console.log('getuserinfo错误信息', err);
                   wx.showModal({
                     title: '提示',
-                    content: '小程序需要获取用户信息权限才能正常使用login',
+                    content: '小程序需要获取用户信息权限才能正常使用',
                     showCancel: false,
                     success: function (res) {
                       if (res.confirm) {

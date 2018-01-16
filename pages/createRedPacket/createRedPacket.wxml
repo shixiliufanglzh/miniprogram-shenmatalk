@@ -9,14 +9,14 @@
     </view>
 </view> 
 
- <!-- <view class="top-tab flex-wrp flex-tab " >
+  <view class="top-tab flex-wrp flex-tab " >
   <view class="toptab flex-item {{currentNavtab==idx ? 'active' : ''}}" wx:key="{{idx}}" wx:for="{{navTab}}" wx:for-index="idx" wx:for-item="itemName" data-idx="{{idx}}" bind:tap="switchTab">
     {{itemName}}
   </view>
-</view>  -->
+</view>  
 
-<!-- <scroll-view scroll-y="true" class="container withtab">
-  <view class="content" hidden="{{currentNavtab==0 ? '' : true}}"> -->
+ <scroll-view scroll-y="true" class="container withtab">
+  <view class="content" hidden="{{currentNavtab==0 ? '' : true}}"> 
     <view bind:tap="{{!optionsState ? 'hideOptions' : 'null'}}">
       <form class="send_red_packet" bindsubmit="formSubmit" report-submit="{{true}}">
         <block>
@@ -70,9 +70,9 @@
 
       </form>
     </view>
-  <!-- </view> -->
+   </view> 
 
-  <!-- <view class="content" hidden="{{currentNavtab==1 ? '' : true}}">
+   <view class="content" hidden="{{currentNavtab==1 ? '' : true}}">
     <view bind:tap="{{!optionsState ? 'hideOptions' : 'null'}}">
       <form class="send_red_packet" bindsubmit="formSubmit" report-submit="{{true}}">
         <block>
@@ -130,7 +130,7 @@
       </form>
     </view>
   </view>
-</scroll-view> -->
+</scroll-view> 
 
 <view class="token_options" hidden="{{optionsState}}">
   <view class="title">常用口令</view>

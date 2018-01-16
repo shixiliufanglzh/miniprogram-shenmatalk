@@ -56,7 +56,12 @@ module.exports = (app, that, callBack) => {
                       data: { lang: 'zh_CN' },
                       success: res => {
                         console.log('微信后台拉取用户信息', res)
-                        that.globalData.userInfo = res.userInfo
+                        app.globalData.userInfo = res.userInfo
+                        if (that.data.userInfo){
+                          that.setData({
+                            userInfo: app.globalData.userInfo
+                          })
+                        }
                       }
                     })
                     wx.request({
@@ -64,13 +69,13 @@ module.exports = (app, that, callBack) => {
                       method: "GET",
                       header: {
                         'content-type': 'application/x-www-form-urlencoded',
-                        'sessionKey': that.globalData.sessionKey
+                        'sessionKey': app.globalData.sessionKey
                       },
                       success: function (res) {
                         apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                         if (res.data.responseCode == 2000) {
                           console.log('自己后台拉取用户信息pointInfo', res);
-                          that.globalData.pointInfo = {
+                          app.globalData.pointInfo = {
                             aliAccount: res.data.data.aliAccount,
                             point: res.data.data.userPoint,
                             money: res.data.data.userMoney,

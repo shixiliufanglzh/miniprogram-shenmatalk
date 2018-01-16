@@ -14,6 +14,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    recordAuth: false,
     pageNum: 1,
     redId: 0,
     redPacketDetail: {},
@@ -29,6 +30,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    let that = this;
+    wx.getSetting({
+      success(res) {
+        if (res.authSetting['scope.record']) {
+          that.setData({ recordAuth: false })
+        }
+      }
+    })
 
     this.setData({
       redId: options.redId
@@ -43,70 +52,62 @@ Page({
 
   voiceStartRecord(e) {   
     let that = this;
-    
-    wx.getSetting({
-      success(res) {
-        if (!res.authSetting['scope.record']) {
-          wx.showModal({
-            title: '提示',
-            content: '小程序录音功能需要获取录音权限',
-            showCancel: false,
-            success: function (res) {
-              if (res.confirm) {
-                wx.openSetting({
-                  success: function (data) {
-                    if (data) {
-                      if (data.authSetting["scope.record"] == true) {
-                        wx.showToast({
-                          title: '授权成功',
-                          icon: 'success',
-                          duration: 1500,
-                          mask: true
-                        })
-                      }
-                    }
-                  },
-                  fail: function () {
-                    console.info("设置失败返回数据");
-                  }
-                });
-              }
-            }
-          })
-        }else {
-          that.setData({
-            pageY: e.changedTouches[0].pageY
-          })
-          if (that.data.pointInfo.point > 0) {
-            that.setData({
-              hideRecordToast: false
-            })
-            console.log('start record');
-            recorderManager.start({
-              duration: 30000,
-              format: 'mp3',
-              sampleRate: 16000,
-              encodeBitRate: 25600,  //75000
-              // frameSize: 2048,s
-              numberOfChannels: 1
-            });
-          } else {
-            wx.showModal({
-              title: '提示',
-              content: '您的神马分不足,点【确定】查看如何获得神马分',
-              success: function (res) {
-                if (res.confirm) {
-                  that.showPointInstruction();
-                } else if (res.cancel) {
 
+    if(this.data.recordAuth){
+      this.setData({
+        pageY: e.changedTouches[0].pageY
+      })
+      if (this.data.pointInfo.point > 0) {
+        this.setData({
+          hideRecordToast: false
+        })
+        console.log('start record');
+        recorderManager.start({
+          duration: 30000,
+          format: 'mp3',
+          sampleRate: 16000,
+          encodeBitRate: 25600,  //75000
+          numberOfChannels: 1
+        });
+      } else {
+        wx.showModal({
+          title: '提示',
+          content: '您的神马分不足,点【确定】查看如何获得神马分',
+          success: function (res) {
+            if (res.confirm) {
+              that.showPointInstruction();
+            } else if (res.cancel) {
+
+            }
+          }
+        })
+      }
+    }else {
+      wx.showModal({
+        title: '提示',
+        content: '小程序录音功能需要获取录音权限',
+        showCancel: false,
+        success: function (res) {
+          if (res.confirm) {
+            wx.openSetting({
+              success: function (data) {
+                if (data) {
+                  if (data.authSetting["scope.record"] == true) {
+                    that.setData({
+                      recordAuth: true
+                    })
+                  }else {
+                    that.setData({
+                      recordAuth: false
+                    })
+                  }
                 }
               }
-            })
+            });
           }
         }
-      }
-    })
-    
+      })
+    }
   },
 
   voiceEndRecord(e) {

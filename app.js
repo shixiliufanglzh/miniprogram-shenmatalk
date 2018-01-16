@@ -78,7 +78,7 @@ App({
                       console.log('getuserinfo错误信息',err);
                       wx.showModal({
                         title: '提示',
-                        content: '小程序需要获取用户信息权限才能正常使用app',
+                        content: '小程序需要获取用户信息权限才能正常使用',
                         showCancel: false,
                         success: function (res) {
                           if (res.confirm) {

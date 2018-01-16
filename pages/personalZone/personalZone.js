@@ -84,8 +84,13 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    console.log('调用了onshow')
     let that = this;
     getUserInfo(app, that, null);
+    // console.log('微信数据',app.globalData.userInfo)
+    // that.setData({
+    //   userInfo: app.globalData.userInfo
+    // })
   },
 
   /**
