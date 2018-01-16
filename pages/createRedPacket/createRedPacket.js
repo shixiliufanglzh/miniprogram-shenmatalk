@@ -13,6 +13,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTab: ["口令红包", "问答红包"],
+    currentNavtab: "0",
     formId: 0,
     hideCropper: true,
     pointInfo: {},
@@ -87,6 +89,16 @@ Page({
     }
   },
 
+  switchTab: function (e) {
+    wx.pageScrollTo({
+      scrollTop: 0
+    })
+    const curIndex = e.currentTarget.dataset.idx;
+    this.setData({
+      currentNavtab: curIndex
+    });
+  },
+  
   touchStart(e) {
     this.wecropper.touchStart(e)
   },

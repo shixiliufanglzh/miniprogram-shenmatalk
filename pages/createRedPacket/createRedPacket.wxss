@@ -1,9 +1,35 @@
 /* pages/createRedPacket/createRedPacket.wxss */
+.top-tab{
+  width: 750rpx;
+  height: 100rpx;
+  background: #fff;
+  color: #888;
+  font-size: 30rpx;
+  line-height: 100rpx;
+  margin: 0 0 1rpx 0;
+  position: fixed;
+  top: 0;
+  z-index: 9;
+  border-bottom: 1px solid #f0f0f0;
+}
+.toptab.active{
+  color: #EC5E3A;
+  border-bottom: solid 2px #EC5E3A;
+}
+.container {
+  height: 100%;
+  box-sizing: border-box;
+  color: #000;
+}
+.container.withtab{
+  margin: 101rpx 0 0 0;
+}
+
 form {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  padding: 30rpx;
+  padding: 0 30rpx 30rpx;
 }
 .send_red_packet .token_wrp {
   width: 662rpx;

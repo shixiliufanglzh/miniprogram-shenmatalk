@@ -61,7 +61,7 @@ Page({
     }else {
       wx.showModal({
         title: '提示',
-        content: '您的芝麻分不足,点【确定】查看如何获得芝麻分',
+        content: '您的神马分不足,点【确定】查看如何获得芝麻分',
         success: function (res) {
           if (res.confirm) {
             that.showPointInstruction();
@@ -135,7 +135,7 @@ Page({
               wx.hideLoading();
               apiUrl.responseCodeCallback(parsrData.responseCode, parsrData.responseDesc, parsrData.data);
               if (parsrData.responseCode == 2000) {
-                getUserInfo(app, that, null);
+                // getUserInfo(app, that, null);
                 wx.request({
                   url: apiUrl.WIN_RED_PACKET,
                   method: "POST",
@@ -152,7 +152,7 @@ Page({
                   },
                   success: function (res) {
                     console.log('抢红包返回数据' + JSON.stringify(res))
-                    
+                    getUserInfo(app, that, null);
                     apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                     if (res.data.responseCode == 2000) {
                       // console.log(res);
