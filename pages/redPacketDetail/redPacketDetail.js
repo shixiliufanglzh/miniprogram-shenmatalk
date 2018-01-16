@@ -34,7 +34,7 @@ Page({
     wx.getSetting({
       success(res) {
         if (res.authSetting['scope.record']) {
-          that.setData({ recordAuth: false })
+          that.setData({ recordAuth: true })
         }
       }
     })
@@ -103,7 +103,7 @@ Page({
                   }
                 }
               }
-            });
+            })
           }
         }
       })

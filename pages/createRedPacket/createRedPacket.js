@@ -329,6 +329,8 @@ Page({
       formId: e.detail.formId
     })
     const token = e.detail.value.token.replace(/(^\s*)|(\s*$)/g, "");
+    const question = e.detail.value.token.replace(/(^\s*)|(\s*$)/g, "");
+    const answer = e.detail.value.token.replace(/(^\s*)|(\s*$)/g, "");
     let isOpen = 2, isAnonymous = 2, useCash = 2;
     if (e.detail.value.checkbox.indexOf('open') != -1){ isOpen = 1 }
     if (e.detail.value.checkbox.indexOf('anonymous') != -1) { isAnonymous = 1 }
@@ -336,10 +338,22 @@ Page({
     
     let isRight = false;
 
-    if (!token || token === 0) {
+    if (!token && this.data.currentNavtab == 0) {
       wx.showModal({
         title: '提示',
         content: '请输入语音口令',
+        showCancel: false
+      })
+    } else if (!question && this.data.currentNavtab == 1) {
+      wx.showModal({
+        title: '提示',
+        content: '请输入你的问题',
+        showCancel: false
+      })
+    } else if (!answer && this.data.currentNavtab == 1) {
+      wx.showModal({
+        title: '提示',
+        content: '请输入你的答案',
         showCancel: false
       })
     } else if (!e.detail.value.money) {
@@ -396,7 +410,9 @@ Page({
               mask: true
             });
             // if (res.confirm) {
-              const submitMsg = {
+            let submitMsg = {};
+            if (that.data.currentNavtab == 0){
+              submitMsg = {
                 content: token,
                 money: e.detail.value.money,
                 amount: e.detail.value.count,
@@ -408,6 +424,21 @@ Page({
                 adverLink: that.data.picUrl ? e.detail.value.link : '',
                 prepayId: e.detail.formId
               }
+            }else {
+              submitMsg = {
+                content: question,
+                questionResult: answer,
+                money: e.detail.value.money,
+                amount: e.detail.value.count,
+                isPublic: isOpen,
+                isHide: isAnonymous,
+                redType: 3,
+                payType: useCash,
+                adverPic: that.data.picUrl,
+                adverLink: that.data.picUrl ? e.detail.value.link : '',
+                prepayId: e.detail.formId
+              }
+            }
               console.log('发红包参数', submitMsg);
 
               wx.request({

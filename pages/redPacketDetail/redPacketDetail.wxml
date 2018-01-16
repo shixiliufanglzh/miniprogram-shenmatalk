@@ -9,7 +9,7 @@
       <text>{{redPacketDetail.redType != 2 ? redPacketDetail.content : ''}}</text>
     </view>
     <button class="record finish" wx:if="{{redPacketDetail.redStatus == 2}}" type="primary">该红包已失效</button>
-    <button class="record" wx:elif="{{redPacketDetail.leftAmount > 0 && redPacketDetail.winStatus == 2}}" type="primary" bind:touchstart="voiceStartRecord" bind:touchend="voiceEndRecord" bind:touchmove="voiceEndRecordMove">长按此处说出以上口令领取奖金</button>
+    <button class="record" wx:elif="{{redPacketDetail.leftAmount > 0 && redPacketDetail.winStatus == 2}}" type="primary" bind:touchstart="voiceStartRecord" bind:touchend="voiceEndRecord" bind:touchmove="voiceEndRecordMove">长按此处说出{{redPacketDetail.redType == 3 ? '问题答案' :'以上口令'}}领取奖金</button>
     <button class="record finish" wx:elif="{{redPacketDetail.leftAmount <= 0}}" type="primary">赏金已经被抢光了</button>
     <button class="record finish" wx:elif="{{redPacketDetail.leftAmount > 0 && redPacketDetail.winStatus == 1}}" type="primary">您已经领过该红包</button>
 

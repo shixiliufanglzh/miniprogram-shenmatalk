@@ -1,5 +1,5 @@
 /* pages/createRedPacket/createRedPacket.wxss */
-  .top-tab{
+.top-tab{
   width: 750rpx;
   height: 100rpx;
   background: #fff;
@@ -29,7 +29,7 @@ form {
   display: block;
   width: 100%;
   box-sizing: border-box;
-   padding: 0 30rpx 30rpx; 
+   padding: 30rpx; 
 }
 .send_red_packet .token_wrp {
   width: 662rpx;
