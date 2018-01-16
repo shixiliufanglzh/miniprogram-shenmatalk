@@ -1,22 +1,22 @@
 <!--pages/createRedPacket/createRedPacket.wxml-->
 <import src="../assets/we-cropper/we-cropper.wxml"/>
 
-<view class="cropper-wrapper" hidden="{{hideCropper}}">
+ <view class="cropper-wrapper" hidden="{{hideCropper}}">
     <template is="we-cropper" data="{{...cropperOpt}}"/>
     <view class="cropper-buttons">
          <view class="upload" bindtap="cancelSelected">取消</view> 
         <view class="getCropperImage" bindtap="getCropperImage">上传</view>
     </view>
-</view>
+</view> 
 
-<!-- <view class="top-tab flex-wrp flex-tab " >
+ <!-- <view class="top-tab flex-wrp flex-tab " >
   <view class="toptab flex-item {{currentNavtab==idx ? 'active' : ''}}" wx:key="{{idx}}" wx:for="{{navTab}}" wx:for-index="idx" wx:for-item="itemName" data-idx="{{idx}}" bind:tap="switchTab">
     {{itemName}}
   </view>
-</view> -->
+</view>  -->
 
-<scroll-view scroll-y="true" class="container withtab">
-  <view class="content" hidden="{{currentNavtab==0 ? '' : true}}">
+<!-- <scroll-view scroll-y="true" class="container withtab">
+  <view class="content" hidden="{{currentNavtab==0 ? '' : true}}"> -->
     <view bind:tap="{{!optionsState ? 'hideOptions' : 'null'}}">
       <form class="send_red_packet" bindsubmit="formSubmit" report-submit="{{true}}">
         <block>
@@ -70,19 +70,23 @@
 
       </form>
     </view>
-  </view>
+  <!-- </view> -->
 
-  <view class="content" hidden="{{currentNavtab==1 ? '' : true}}">
+  <!-- <view class="content" hidden="{{currentNavtab==1 ? '' : true}}">
     <view bind:tap="{{!optionsState ? 'hideOptions' : 'null'}}">
       <form class="send_red_packet" bindsubmit="formSubmit" report-submit="{{true}}">
         <block>
+
           <view class="section token_wrp">
-            <label class="title" for="token">语音口令</label>
-            <view class="options" bind:tap="showOptions">
-              <image src="../../images/expression.png" mode="aspectFit" class="example"></image>
-            </view>
-            <input name="token" type="text" id="token" value="{{selectedToken}}" maxlength="24" class="input token" placeholder="输入或选择口令" bindinput='tokenInput'/>
+            <label class="title" for="token">设置问题</label>
+            <input name="token" type="text" id="question" value="{{question}}" maxlength="24" class="input token" placeholder="输入你的问题"/>
           </view>
+
+          <view class="section token_wrp">
+            <label class="title" for="token">设置答案</label>
+            <input name="token" type="text" id="answer" value="{{answer}}" maxlength="24" class="input token" placeholder="输入标准答案" bindinput='answerInput'/>
+          </view>
+
           <text class="token_prompt">小伙伴们说对口令就能获得随机打赏</text>
         </block>
 
@@ -106,7 +110,6 @@
         <view class="adver_wrp">
           <button plain="{{true}}" size="mini" bind:tap="uploadPic">{{!!picUrl ? '已上传图片' : '上传宣传图片'}}<text>(选填，尺寸750*190)</text></button>
           <button plain="{{true}}" size="mini" class="delete" hidden="{{!picUrl}}" bind:tap="deletePic">删除</button>
-          <!-- <text class="pic_limit">*建议尺寸750*190</text>  -->
           <input name="link" type="text" id="link" class="input link" placeholder="输入图片链接（选填，仅支持公众号文章链接）" hidden="{{!picUrl}}" />
         </view>
 
@@ -127,7 +130,7 @@
       </form>
     </view>
   </view>
-</scroll-view>
+</scroll-view> -->
 
 <view class="token_options" hidden="{{optionsState}}">
   <view class="title">常用口令</view>

@@ -284,6 +284,9 @@ Page({
   tokenInput: (e) => {
     return e.detail.value.replace(/[^\u4E00-\u9FA5]/g, '')
   },
+  answerInput: (e) => {
+    return e.detail.value.replace(/[^\u4E00-\u9FA5]/g, '')
+  },
 
   selectToken: function(e){
     this.setData({

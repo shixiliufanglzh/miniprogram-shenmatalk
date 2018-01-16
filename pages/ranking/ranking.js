@@ -1,6 +1,7 @@
 // pages/ranking/ranking.js
 
 const app = getApp();
+const getUserInfo = require('../../utils/getUserInfo.js');
 const apiUrl = require('../../utils/constant.js');
 const pageSize = 20;
 
@@ -64,6 +65,8 @@ Page({
     })
 
     let that = this;
+    getUserInfo(app, that, null);
+
     wx.request({
       url: apiUrl.GET_MY_RANKING,
       method: "GET",
