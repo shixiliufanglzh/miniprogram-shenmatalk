@@ -1,0 +1,2 @@
+<!--pages/jianbid/jianbid.wxml-->
+ <web-view src="https://www.jianbid.com">减价拍</web-view>  

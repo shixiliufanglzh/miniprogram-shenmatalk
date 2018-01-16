@@ -67,6 +67,15 @@
   position: relative;
   padding-left: 30rpx;
 }
+.menu button.navigator {
+  border: none;
+  text-align: left;
+  background-color: #fff;
+  padding: 0 0 0 30rpx;
+}
+.menu button.navigator::after {
+  border: none;
+}
 .menu .navigator .tab_icon {
   width: 58rpx;
   height: 58rpx;
@@ -83,6 +92,13 @@
   line-height: 88rpx;
   color: #EC5E3A;
   font-size: 26rpx;
+}
+.menu .navigator .arrow {
+  width: 16rpx;
+  height: 26rpx;
+  position: absolute;
+  right: 30rpx;
+  top: 31rpx;
 }
 
 .code {

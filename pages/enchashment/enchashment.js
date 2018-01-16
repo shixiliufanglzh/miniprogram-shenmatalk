@@ -86,65 +86,88 @@ Page({
     }
   },
 
+  changeAliAccount: function(){
+    let that = this;
+    app.globalData.pointInfo.aliAccount = ''
+    this.setData({
+      pointInfo: app.globalData.pointInfo,
+      curInputAliAcc: ''
+    })
+  },
+
   //提现
   enchashSubmit: function(){
     let that = this;
-    wx.showModal({
-      title: '提示',
-      content: '确认提现 ' + that.data.curInputCash + '元 到账户' + that.data.curInputAliAcc +'吗？',
-      showCancel: true,
-      success: function (res){
-        if (res.confirm) {
-          wx.request({
-            url: apiUrl.DRAW_ALIPAY,
-            method: "POST",
-            header: {
-              'content-type': 'application/x-www-form-urlencoded',
-              'sessionKey': app.globalData.sessionKey
-            },
-            data: {
-              money: that.data.curInputCash
-            },
-            success: function (res) {
-              apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
-              if (res.data.responseCode == 2000) {
-                console.log('提现成功', res);
-                wx.showToast({
-                  title: '提现成功',
-                  icon: 'success',
-                  duration: 1500,
-                  mask: true
-                })
-                wx.request({
-                  url: apiUrl.GET_USER_INFO,
-                  method: "GET",
-                  header: {
-                    'content-type': 'application/x-www-form-urlencoded',
-                    'sessionKey': app.globalData.sessionKey
-                  },
-                  success: function (res) {
-                    apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
-                    if (res.data.responseCode == 2000) {
-                      app.globalData.pointInfo = {
-                        aliAccount: res.data.data.aliAccount,
-                        point: res.data.data.userPoint,
-                        money: res.data.data.userMoney
+    if (that.data.curInputCash > 0 && app.globalData.pointInfo.aliAccount.length > 0){
+      wx.showModal({
+        title: '提示',
+        content: '确认提现 ' + that.data.curInputCash + '元 到账户' + app.globalData.pointInfo.aliAccount +'吗？',
+        showCancel: true,
+        success: function (res){
+          if (res.confirm) {
+            wx.request({
+              url: apiUrl.DRAW_ALIPAY,
+              method: "POST",
+              header: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'sessionKey': app.globalData.sessionKey
+              },
+              data: {
+                money: that.data.curInputCash
+              },
+              success: function (res) {
+                apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                if (res.data.responseCode == 2000) {
+                  console.log('提现成功', res);
+                  wx.showToast({
+                    title: '提现成功',
+                    icon: 'success',
+                    duration: 1500,
+                    mask: true
+                  })
+                  wx.request({
+                    url: apiUrl.GET_USER_INFO,
+                    method: "GET",
+                    header: {
+                      'content-type': 'application/x-www-form-urlencoded',
+                      'sessionKey': app.globalData.sessionKey
+                    },
+                    success: function (res) {
+                      apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                      if (res.data.responseCode == 2000) {
+                        app.globalData.pointInfo = {
+                          aliAccount: res.data.data.aliAccount,
+                          point: res.data.data.userPoint,
+                          money: res.data.data.userMoney
+                        }
+                        that.setData({
+                          pointInfo: app.globalData.pointInfo,
+                        })
                       }
-                      that.setData({
-                        pointInfo: app.globalData.pointInfo,
-                      })
-                    }
 
-                  }
-                })
+                    }
+                  })
+                }
               }
-            }
-          })
-        } else if (res.cancel) {
-          console.log('用户点击取消')
+            })
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
         }
-      }
-    })
+      })
+    } else if (app.globalData.pointInfo.aliAccount.length <= 0){
+      wx.showModal({
+        title: '提示',
+        content: '请先添加提现账号',
+        showCancel: false
+      })
+    }else {
+      wx.showModal({
+        title: '提示',
+        content: '请输入提现金额',
+        showCancel: false
+      })
+    }
     
   },
 
@@ -155,7 +178,7 @@ Page({
   },
   goQA: function () {
     wx.navigateTo({
-      url: '/pages/q&a/q&a'
+      url: '/pages/QA/QA'
     })
   },
 
@@ -210,6 +233,26 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+    return {
+      title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
+      path: '/pages/square/square?shareId=' + app.globalData.pointInfo.id,
+      imageUrl: '../../images/share_cut.jpg',
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: '分享成功',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享失败',
+          image: '../../images/caution.png',
+          duration: 2000
+        })
+      }
+    }
   }
 })

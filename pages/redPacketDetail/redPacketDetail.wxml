@@ -1,14 +1,15 @@
 <!--pages/redPacketDetail/redPacketDetail.wxml-->
 <view class="all" bind:tap="{{pointInstruState ? 'hidePointInstruction' : null}}">
   <view class="header">
-    <image class="avatar" src="{{redPacketDetail.isHide == 1 ? '../../images/avatar_ano.jpg' : redPacketDetail.userPortrait}}" mode="aspectFill"></image>
+    <image class="avatar" src="{{redPacketDetail.isHide == 1 ? '../../images/avatar_ano.jpg' : redPacketDetail.userPortrait}}" 
+    bind:tap="viewAvatar" data-avatar="{{redPacketDetail.isHide == 1 ? '' : redPacketDetail.userPortrait}}" mode="aspectFill"></image>
     <text class="name">{{redPacketDetail.isHide == 1 ? '神秘人' : redPacketDetail.userName}}</text>
     <view class="token_wrp">
       <image class="icon_record" src="../../images/record_white.png" mode="aspectFit"></image>
       <text>{{redPacketDetail.redType != 2 ? redPacketDetail.content : ''}}</text>
     </view>
     <button class="record finish" wx:if="{{redPacketDetail.redStatus == 2}}" type="primary">该红包已失效</button>
-    <button class="record" wx:elif="{{redPacketDetail.leftAmount > 0 && redPacketDetail.winStatus == 2}}" type="primary" bind:touchstart="voiceStartRecord" bind:touchend="voiceEndRecord" bind:touchmove="voiceEndRecord">长按此处说出以上口令领取奖金</button>
+    <button class="record" wx:elif="{{redPacketDetail.leftAmount > 0 && redPacketDetail.winStatus == 2}}" type="primary" bind:touchstart="voiceStartRecord" bind:touchend="voiceEndRecord" bind:touchmove="voiceEndRecordMove">长按此处说出以上口令领取奖金</button>
     <button class="record finish" wx:elif="{{redPacketDetail.leftAmount <= 0}}" type="primary">赏金已经被抢光了</button>
     <button class="record finish" wx:elif="{{redPacketDetail.leftAmount > 0 && redPacketDetail.winStatus == 1}}" type="primary">您已经领过该红包</button>
 
@@ -19,20 +20,25 @@
       <button class="flex-tab flex-item" bind:tap="goToShare"><image src="../../images/inter_share.png" mode="aspectFit"></image>去分享</button>
     </view>
   </view>
+
   <view class="adver_pic" hidden="{{!redPacketDetail.adverPic}}">
-    <image src="{{redPacketDetail.adverPic}}" mode="aspectFill"></image>
+    <navigator wx:if="{{!!redPacketDetail.adverLink}}" url="/pages/webView/webView?link={{redPacketDetail.adverLink}}" open-type="navigate">
+      <image src="{{redPacketDetail.adverPic}}" mode="aspectFill"></image>
+    </navigator>
+    <image wx:else src="{{redPacketDetail.adverPic}}" mode="aspectFill"></image>
   </view>
+
   <view class="process_prompt">
     <text>{{ redPacketDetail.money ? ('共'+redPacketDetail.money+'元，已领取'+(redPacketDetail.amount - redPacketDetail.leftAmount)+'/'+redPacketDetail.amount+'个') : ''}}</text>
     <button class="suggest" plain="{{true}}" size="mini" bind:tap="goSuggest">投诉</button>
   </view>
   <view class="grab_list">
     <view class="grab_item" wx:for="{{grabList}}" wx:key="{{itemName.id}}" wx:for-index="idx" wx:for-item="itemName" data-id="{{itemName.id}}">
-      <image src="{{itemName.userPortrait}}" mode="aspectFill" class="avatar" ></image>
+      <image bind:tap="viewAvatar" data-avatar="{{itemName.userPortrait}}" src="{{itemName.userPortrait}}" mode="aspectFill" class="avatar" ></image>
       <view class="info">
         <view class="gainer">
           <text class="name">{{itemName.userName}}</text>
-          <image src="../../images/{{itemName.userSex == '男' ? 'man' : 'woman'}}.png" mode="aspectFit"></image>
+          <image hidden="{{itemName.userSex != '男' && itemName.userSex != '女'}}" src="../../images/{{itemName.userSex == '男' ? 'man' : 'woman'}}.png" mode="aspectFit"></image>
         </view>
         <view class="player" data-voice-url="{{itemName.voiceUrl}}" data-time="{{itemName.voiceTime}}" data-wx-url="{{itemName.wxFileUrl}}" data-idx="{{idx}}" bind:tap="playVoice">
           <image src="../../images/{{itemName.isPlaying ? 'play_ani.gif' : 'play_static.png'}}" mode="aspectFit" class="play_btn"></image>
@@ -63,8 +69,8 @@
       <p>神马分用于抢广场红包，每抢一次广场红包将消耗1个神马分。</p>
       <text class="title">如何获得神马分？</text>
       <p>分享口令红包或红包广场页面到群聊邀请朋友来玩，每当有一个新用户点进来您可以获得3个神马分。</p>
-      <text class="title">每天神马分奖励</text>
-      <p>活动期间，每日凌晨将为神马分不足10个的用户补满10个神马分，即每人每天最多可获得10个神马分的奖励。</p>
+      <text class="title">神马分奖励方法</text>
+      <p>每发1元广场红包（非推广红包）奖励1个神马分；每日凌晨为神马分不足10个的用户补满10个神马分。</p>
     </view>
     <view class="btn-area" style="bottom:30rpx;">
       <button class="submit" open-type="share">邀请朋友获取神马分</button>

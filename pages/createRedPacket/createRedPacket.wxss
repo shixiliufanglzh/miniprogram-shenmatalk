@@ -66,6 +66,13 @@ form {
   color: #888;
   margin-top: -20rpx;
 }
+.send_red_packet .adver_wrp .link {
+  font-size: 28rpx;
+  background-color: #fff;
+  width: 630rpx;
+  margin-left: 10rpx;
+  padding: 0 20rpx;
+}
 
 .token_prompt {
   display: inline-block;
@@ -83,7 +90,7 @@ form {
 }
 .recommend .item {
   display: inline-block;
-  width: 120rpx;
+  width: 100rpx;
   border: 1px solid #ddd;
   font-size: 26rpx;
   color: #b2b2b2;
@@ -117,7 +124,7 @@ form {
 }
 
 .btn-area {
-  margin-top: 100rpx;
+  margin-top: 50rpx;
   width: 690rpx;
 }
 .btn-area .money_prompt {

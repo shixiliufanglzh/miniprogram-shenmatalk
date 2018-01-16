@@ -56,6 +56,15 @@ Page({
       pointInstruState: false
     })
   },
+
+  viewAvatar: function(e){
+    if (!!e.currentTarget.dataset.avatar){
+      wx.previewImage({
+        current: e.currentTarget.dataset.avatar, // 当前显示图片的http链接
+        urls: [e.currentTarget.dataset.avatar] // 需要预览的图片http链接列表
+      })
+    }
+  },
   
   /**
    * 生命周期函数--监听页面加载
@@ -79,6 +88,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    let that = this;
+    console.log('初始化广场红包数据')
     this.setData({
       pointInfo: app.globalData.pointInfo,
     })
@@ -142,18 +153,25 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function (res) {
-    if (res.from === 'button') {
-      // 来自页面内转发按钮
-      console.log(res.target)
-    }
     return {
-      title: '芝麻传说',
-      path: '/page/user?id=123',
+      title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
+      path: '/pages/square/square?shareId=' + app.globalData.pointInfo.id,
+      imageUrl: '../../images/share_cut.jpg',
       success: function (res) {
         // 转发成功
+        wx.showToast({
+          title: '分享成功',
+          icon: 'success',
+          duration: 2000
+        })
       },
       fail: function (res) {
         // 转发失败
+        wx.showToast({
+          title: '分享失败',
+          image: '../../images/caution.png',
+          duration: 2000
+        })
       }
     }
   },
@@ -173,7 +191,8 @@ Page({
         redStatus: redStatus
       },
       success: function (res) {
-        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+        console.log('获取广场列表',res)
+        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data, that);
         if (res.data.responseCode == 2000) {
           const resData = res.data.data;
           console.log('获取红包第' + pageNum + '页列表', redStatus,resData);

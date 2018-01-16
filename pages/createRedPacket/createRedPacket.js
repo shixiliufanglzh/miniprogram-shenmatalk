@@ -13,11 +13,12 @@ Page({
    * 页面的初始数据
    */
   data: {
+    formId: 0,
     hideCropper: true,
     pointInfo: {},
     optionsState: true,
     tokenArr: [
-      "谢谢老板恩典",
+      "谢谢老板打赏",
       "新婚快乐早生贵子大富大贵",
       "群主你最帅群主你最好群主我们都爱你",
       "祝福发红包的帅哥美女全家安康大吉大利发大财",
@@ -49,19 +50,23 @@ Page({
     recommendMoney: [
       {
         id: 0,
-        value: "1",
-        state: "unselected"
-      }, {
-        id: 1,
         value: "5",
         state: "unselected"
       }, {
-        id: 2,
+        id: 1,
         value: "10",
+        state: "unselected"
+      }, {
+        id: 2,
+        value: "20",
         state: "unselected"
       }, {
         id: 3,
         value: "50",
+        state: "unselected"
+      }, {
+        id: 4,
+        value: "100",
         state: "unselected"
       }
     ],
@@ -176,6 +181,7 @@ Page({
         console.log(`current canvas context:`, ctx)
       })
       .updateCanvas()
+      
   },
   // bindPickerChange: function (e) {
   //   this.setData({
@@ -234,7 +240,27 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+    return {
+      title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
+      path: '/pages/square/square?shareId=' + app.globalData.pointInfo.id,
+      imageUrl: '../../images/share_cut.jpg',
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: '分享成功',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享失败',
+          image: '../../images/caution.png',
+          duration: 2000
+        })
+      }
+    }
   },
 
   limitInput: (e) => {
@@ -283,7 +309,10 @@ Page({
    */
   formSubmit: function (e) {
     let that = this;
-    // console.log('form发生了submit事件，携带数据为：', e.detail.value);
+    console.log('form发生了submit事件：', e.detail.value);
+    this.setData({
+      formId: e.detail.formId
+    })
     const token = e.detail.value.token.replace(/(^\s*)|(\s*$)/g, "");
     let isOpen = 2, isAnonymous = 2, useCash = 2;
     if (e.detail.value.checkbox.indexOf('open') != -1){ isOpen = 1 }
@@ -315,7 +344,7 @@ Page({
         if (e.detail.value.money < 100 || (e.detail.value.money / e.detail.value.count) < 0.1){
           wx.showModal({
             title: '提示',
-            content: '带宣传图片红包总金额不少于100元且人均不少于0.1元',
+            content: '上传宣传图片的推广红包总金额不少于100元且人均不少于0.1元',
             showCancel: false
           })
         }else {
@@ -346,95 +375,105 @@ Page({
         title: '提示',
         content: !!this.data.picUrl ? '添加宣传图片的推广红包需额外加收10%服务费，普通红包不收取服务费' : '确认支付'+ e.detail.value.money+'元',
         success: function (res) {
-          wx.showLoading({
-            title: '支付中...'
-          });
           if (res.confirm) {
-            const submitMsg = {
-              content: token,
-              money: e.detail.value.money,
-              amount: e.detail.value.count,
-              isPublic: isOpen,
-              isHide: isAnonymous,
-              redType: 1,
-              payType: useCash,
-              adverPic: that.data.picUrl
-              // adverLink: ''
-            }
-            console.log('发红包参数', submitMsg);
+            wx.showLoading({
+              title: '支付中...',
+              mask: true
+            });
+            // if (res.confirm) {
+              const submitMsg = {
+                content: token,
+                money: e.detail.value.money,
+                amount: e.detail.value.count,
+                isPublic: isOpen,
+                isHide: isAnonymous,
+                redType: 1,
+                payType: useCash,
+                adverPic: that.data.picUrl,
+                adverLink: that.data.picUrl ? e.detail.value.link : '',
+                prepayId: e.detail.formId
+              }
+              console.log('发红包参数', submitMsg);
 
-            wx.request({
-              url: apiUrl.ADD_TXT_RED,
-              method: "POST",
-              header: {
-                'content-type': 'application/x-www-form-urlencoded', // 默认值
-                'sessionKey': app.globalData.sessionKey
-              },
-              data: submitMsg,
-              success: function (res) {
-                apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
-                if (res.data.responseCode == 2000) {
-                  console.log(res);
-                  const payMsg = res.data.data.payResult;
-                  const payType = res.data.data.payType;
-                  // console.log(payMsg)
-                  app.globalData.pointInfo.money = res.data.data.money;
-                  that.setData({
-                    pointInfo: app.globalData.pointInfo
-                  })
+              wx.request({
+                url: apiUrl.ADD_TXT_RED,
+                method: "POST",
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded', // 默认值
+                  'sessionKey': app.globalData.sessionKey
+                },
+                data: submitMsg,
+                success: function (res) {
                   wx.hideLoading();
-                  if (payType == 1) {
-                    wx.requestPayment({
-                      'timeStamp': payMsg.timeStamp,
-                      'nonceStr': payMsg.nonceStr,
-                      'package': payMsg.package,
-                      'signType': 'MD5',
-                      'paySign': payMsg.paySign,
-                      'success': function (res) {
-                        //微信支付成功
-                        wx.showToast({
-                          title: '支付成功',
-                          icon: 'success',
-                          duration: 1500,
-                          complete: function () {
-                            wx.navigateTo({
-                              url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
-                            })
-                          }
-                        })
-                      },
-                      'fail': function (res) {
-
-                      }
+                  apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                  if (res.data.responseCode == 2000) {
+                    console.log(res);
+                    const payMsg = res.data.data.payResult;
+                    const payType = res.data.data.payType;
+                    // console.log(payMsg)
+                    app.globalData.pointInfo.money = res.data.data.money;
+                    that.setData({
+                      pointInfo: app.globalData.pointInfo
                     })
-                  } else if (payType == 3) {
-                    //余额支付完成
+                    if (payType == 1) {
+                      wx.requestPayment({
+                        'timeStamp': payMsg.timeStamp,
+                        'nonceStr': payMsg.nonceStr,
+                        'package': payMsg.package,
+                        'signType': 'MD5',
+                        'paySign': payMsg.paySign,
+                        'success': function (res) {
+                          //微信支付成功
+                          wx.showToast({
+                            title: '支付成功',
+                            icon: 'success',
+                            duration: 1500,
+                            complete: function () {
+                              wx.navigateTo({
+                                url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
+                              })
+                            }
+                          })
+                        },
+                        'fail': function (res) {
+
+                        }
+                      })
+                    } else if (payType == 3) {
+                      //余额支付完成
+                      wx.showToast({
+                        title: '支付成功',
+                        icon: 'success',
+                        duration: 1500,
+                        complete: function () {
+                          wx.navigateTo({
+                            url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
+                          })
+                        }
+                      })
+                    }
+                  }else {
                     wx.showToast({
-                      title: '支付成功',
-                      icon: 'success',
-                      duration: 1500,
-                      complete: function () {
-                        wx.navigateTo({
-                          url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
-                        })
-                      }
+                      title: '支付失败',
+                      image: '../../images/caution.png',
+                      duration: 2000
                     })
                   }
+                },
+                fail:function(){
+                  wx.hideLoading();
+                  wx.showToast({
+                    title: '支付失败',
+                    image: '../../images/caution.png',
+                    duration: 2000
+                  })
                 }
-              },
-              fail:function(){
-                wx.hideLoading();
-                wx.showToast({
-                  title: '支付失败',
-                  image: '../../images/caution.png',
-                  duration: 2000
-                })
-              }
-            })
-          } else if (res.cancel) {
-            console.log('用户点击取消')
+              })
+            // } else if (res.cancel) {
+            //   console.log('用户点击取消')
+            // }
           }
-        }
+        },
       })
 
       

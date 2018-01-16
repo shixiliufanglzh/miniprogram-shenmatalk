@@ -1,7 +1,8 @@
 const reLogin = require('login.js');
 // const app = getApp();
-const apiAdmin = "http://47.96.186.64/red-api"; //test
+// const apiAdmin = "http://47.96.186.64/red-api"; //test
 // const apiAdmin = "https://www.mypies.cn/red-api"; //prod
+const apiAdmin = "https://red.jianbid.com/red-api"; //prod
 // const apiAdmin = "";  //prod
 
 const apiUrl = {
@@ -29,15 +30,17 @@ const apiUrl = {
 
   GET_WX_CODE: apiAdmin + "/util/getWxjsCode.jhtml",  //获取小程序二维码***
   GET_ADVER: apiAdmin + "/util/getAvder.jhtml",  //获取广告链接
+  GET_FORM_ID: apiAdmin + "/util/getFormId.jhtml",  //获取微信formId
 
-  responseCodeCallback: function (responseCode, responseDesc, data){
+  responseCodeCallback: function (responseCode, responseDesc, data, that){
     // console.log('错误码', responseCode, responseDesc, data)
     switch(responseCode){
       case "2000":
         break;
       case "4000":
         //登录
-        reLogin(null,apiUrl);
+        // if(that)
+        reLogin(null,apiUrl,that);
         break;
       case "4001":
         wx.showModal({
@@ -47,7 +50,7 @@ const apiUrl = {
         })
         break;
       case "4002":
-        register(null, apiUrl)
+        register(null, apiUrl,that)
         // wx.showToast({
         //   title: responseDesc,
         //   icon: 'loading',
@@ -100,7 +103,7 @@ const apiUrl = {
   }
 }
 
-function register(app, apiUrl){
+function register(app, apiUrl, that){
   wx.showLoading({
     title: "登录中..."
   });
@@ -120,6 +123,7 @@ function register(app, apiUrl){
     success: function (userMsg) {
       console.log(userMsg)
       _app.globalData.userInfo = userMsg.userInfo
+      console.log('_app.globalData.shareId', _app.globalData.shareId)
       wx.request({
         url: apiUrl.REGISTER,
         method: "POST",
@@ -130,7 +134,7 @@ function register(app, apiUrl){
         data: {
           encryptedData: userMsg.encryptedData,
           iv: userMsg.iv,
-          shareUserOpenId: _app.globalData.sessionKey
+          shareUserId: _app.globalData.shareId
         },
         success: function (regData) {
           wx.hideLoading();
@@ -147,13 +151,14 @@ function register(app, apiUrl){
               success: function (res) {
                 apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                 if (res.data.responseCode == 2000) {
-                  console.log('pointInfo', res);
-                  app.globalData.pointInfo = {
+                  console.log('constant页面pointInfo', res, 'that', that);
+                  _app.globalData.pointInfo = {
                     aliAccount: res.data.data.aliAccount,
                     point: res.data.data.userPoint,
                     money: res.data.data.userMoney,
                     id: res.data.data.id
                   }
+                  if (that && that.onShow) that.onShow();
                 }
               }
             })

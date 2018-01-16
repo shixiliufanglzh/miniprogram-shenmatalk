@@ -5,14 +5,14 @@
       <text class="title">账户余额</text>
       <text class="left_money">{{pointInfo.money}}</text>
     </view>
-    <text class="prompt">提现到微信零钱，手续费率2%</text>
+    <text class="prompt">提现到支付宝账户，手续费率2%</text>
   </view>
 
   <view class="manipulate">
     <view class="ali_account">
       <text>支付宝账户</text>
-      <input type="text" value="{{pointInfo.aliAccount}}" placeholder="输入支付宝账号" placeholder-style="color:#ddd;font-size:32rpx" bindinput="inputAliAccount" />
-      <button type="primary" wx:if="{{!!pointInfo.aliAccount}}" size="mini" plain="true" bind:tap="addAliAccount">修改</button>
+      <input type="text" value="{{curInputAliAcc}}" placeholder="输入支付宝账号" placeholder-style="color:#ddd;font-size:32rpx" bindinput="inputAliAccount" disabled='{{!!pointInfo.aliAccount}}' />
+      <button type="primary" wx:if="{{!!pointInfo.aliAccount}}" size="mini" plain="true" bind:tap="changeAliAccount">修改</button>
       <button type="primary" wx:else size="mini" plain="true" bind:tap="addAliAccount" >添加</button>
     </view>
     <text class="title">提现金额</text>

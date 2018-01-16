@@ -38,7 +38,7 @@ Page({
       },
       {
         q: "如何获得神马分？",
-        a: "分享口令红包或红包广场页面到群聊邀请朋友来玩，每当有一个新用户点进来您可以获得3个神马分。活动期间，每日凌晨将为神马分不足10个的用户补满10个神马分，即每人每天最多可获得10个神马分的奖励。",
+        a: "分享口令红包或红包广场页面到群聊邀请朋友来玩，每当有一个新用户点进来您可以获得3个神马分；每发1元广场红包（非推广红包）奖励1神马分；每日凌晨将为神马分不足10个的用户补满10个神马分，即每人每天最多可获得10个神马分的奖励。",
         showAnswer: false
       },
       {
@@ -117,6 +117,26 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+    return {
+      title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
+      path: '/pages/square/square?shareId=' + app.globalData.pointInfo.id,
+      imageUrl: '../../images/share_cut.jpg',
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: '分享成功',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享失败',
+          image: '../../images/caution.png',
+          duration: 2000
+        })
+      }
+    }
   }
 })

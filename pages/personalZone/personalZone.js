@@ -8,7 +8,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    adver: apiUrl.GET_ADVER + '?url=http://www.jianbid.com/public/index.html',
+    adver: 'https://www.jianbid.com',
+    // adver: apiUrl.GET_ADVER + '?url=https://www.jianbid.com',
     userInfo: {},
     pointInfo: {},
     hasUserInfo: false,
@@ -67,8 +68,8 @@ Page({
 
   showPic: function () {
     wx.previewImage({
-      current: apiUrl.ADMIN + '/qrbig.jpg', // 当前显示图片的http链接
-      urls: [apiUrl.ADMIN + '/qrbig.jpg', apiUrl.ADMIN + '/qrcode.png'] // 需要预览的图片http链接列表
+      current: apiUrl.ADMIN + '/webr/qrbig.jpg', // 当前显示图片的http链接
+      urls: [apiUrl.ADMIN + '/webr/qrbig.jpg', apiUrl.ADMIN + '/webr/qrcode.png'] // 需要预览的图片http链接列表
     })
   },
 
@@ -128,6 +129,26 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+    return {
+      title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
+      path: '/pages/square/square?shareId=' + app.globalData.pointInfo.id,
+      imageUrl: '../../images/share_cut.jpg',
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: '分享成功',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享失败',
+          image: '../../images/caution.png',
+          duration: 2000
+        })
+      }
+    }
   }
 })

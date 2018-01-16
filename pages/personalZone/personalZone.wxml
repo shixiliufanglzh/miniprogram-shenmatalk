@@ -7,7 +7,7 @@
   </view>
   <view class="menu">
     <view class="navigator" hover-class="none" url="" bind:tap="showPointInstruction">
-      <image mode="aspectFit" class="tab_icon" src="../../images/zone_wallet.png"></image>
+      <image mode="aspectFit" class="tab_icon" src="../../images/zone_virtual.png"></image>
       <text class="title">神马分数</text>
       <text class="prompt">{{pointInfo && pointInfo.point ? pointInfo.point : 0 }}</text>
     </view>
@@ -21,16 +21,21 @@
       <text class="title">红包记录</text>
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
     </navigator>
-    <navigator hover-class="none" url="/pages/q&a/q&a" open-type="navigate">
+    <navigator hover-class="none" url="/pages/jianbid/jianbid" open-type="navigate">
+      <image mode="aspectFit" class="tab_icon" src="../../images/zone_mall.png"></image>
+      <text class="title">减价拍商城</text>
+      <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
+    </navigator>
+    <navigator hover-class="none" url="/pages/QA/QA" open-type="navigate">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_q_a.png"></image>
       <text class="title">新手帮助</text>
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
     </navigator>
-    <navigator hover-class="none" url="/pages/suggestion/suggestion" open-type="navigate">
+    <button  class="navigator" open-type="contact">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_service.png"></image>
       <text class="title">联系客服</text>
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
-    </navigator>
+    </button>
   </view>
   <view class="code">
     <image src="../../images/qr_code.png" mode="aspectFit" bind:tap="showPic"></image>
@@ -46,8 +51,8 @@
       <p>神马分用于抢广场红包，每抢一次广场红包将消耗1个神马分。</p>
       <text class="title">如何获得神马分？</text>
       <p>分享口令红包或红包广场页面到群聊邀请朋友来玩，每当有一个新用户点进来您可以获得3个神马分。</p>
-      <text class="title">每天神马分奖励</text>
-      <p>活动期间，每日凌晨将为神马分不足10个的用户补满10个神马分，即每人每天最多可获得10个神马分的奖励。</p>
+      <text class="title">神马分奖励方法</text>
+      <p>每发1元广场红包（非推广红包）奖励1个神马分；每日凌晨为神马分不足10个的用户补满10个神马分。</p>
     </view>
     <view class="btn-area">
       <button class="submit" open-type="share">邀请朋友获取神马分</button>

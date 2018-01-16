@@ -32,7 +32,7 @@
 </view>    
 
  <view class="picMask" data-pic-url="{{sharePic}}" bind:tap="showPic">
-  <image src="{{sharePic}}" mode="aspectFit"></image>
+  <image src="{{sharePic}}" mode="aspectFill"></image>
 </view>  
 
 <view class="bottom_sug">

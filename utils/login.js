@@ -1,7 +1,7 @@
 // const app = getApp();
 // const apiUrl = require('constant.js');
 
-module.exports = (app,apiUrl) => {
+module.exports = (app, apiUrl, that) => {
   let _app = app;
   if(!app){
     _app = getApp();
@@ -28,7 +28,7 @@ module.exports = (app,apiUrl) => {
           success: function (res) {
             wx.hideLoading();
             console.log('自己后台登录返回数据', res.data.data)
-            apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+            apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data, that);
             if (res.data.responseCode == 2000) {
               console.log('_app.globalData', _app.globalData)
               _app.globalData.sessionKey = res.data.data;
@@ -51,6 +51,7 @@ module.exports = (app,apiUrl) => {
                       success: function (userMsg) {
                         console.log(userMsg)
                         _app.globalData.userInfo = userMsg.userInfo
+                        console.log('_app.globalData.shareId', _app.globalData.shareId)
                         wx.request({
                           url: apiUrl.REGISTER,
                           method: "POST",
@@ -61,11 +62,11 @@ module.exports = (app,apiUrl) => {
                           data: {
                             encryptedData: userMsg.encryptedData,
                             iv: userMsg.iv,
-                            shareUserOpenId: _app.globalData.sessionKey
+                            shareUserId: _app.globalData.shareId
                           },
                           success: function (regData) {
                             console.log(regData, _app.globalData.sessionKey)
-                            apiUrl.responseCodeCallback(regData.data.responseCode, regData.data.responseDesc, regData.data.data);
+                            apiUrl.responseCodeCallback(regData.data.responseCode, regData.data.responseDesc, regData.data.data, that);
                             if (regData.data.responseCode == 2000) {
                               wx.request({
                                 url: apiUrl.GET_USER_INFO,
@@ -75,15 +76,17 @@ module.exports = (app,apiUrl) => {
                                   'sessionKey': _app.globalData.sessionKey
                                 },
                                 success: function (res) {
-                                  apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                                  apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data, that);
                                   if (res.data.responseCode == 2000) {
-                                    console.log('pointInfo', res);
+                                    console.log('login页面pointInfo', res);
                                     _app.globalData.pointInfo = {
                                       aliAccount: res.data.data.aliAccount,
                                       point: res.data.data.userPoint,
                                       money: res.data.data.userMoney,
                                       id: res.data.data.id
                                     }
+                                    console.log('login页面',that);
+                                    if (that && that.onShow) that.onShow();
                                   }
                                 }
                               })
@@ -116,15 +119,17 @@ module.exports = (app,apiUrl) => {
                         'sessionKey': _app.globalData.sessionKey
                       },
                       success: function (res) {
-                        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data, that);
                         if (res.data.responseCode == 2000) {
-                          console.log('pointInfo', res);
+                          console.log('login页面pointInfo', res);
                           _app.globalData.pointInfo = {
                             aliAccount: res.data.data.aliAccount,
                             point: res.data.data.userPoint,
                             money: res.data.data.userMoney,
                             id: res.data.data.id
                           }
+                          console.log('login页面',that);
+                          if (that && that.onShow) that.onShow();
                         }
                       }
                     })
