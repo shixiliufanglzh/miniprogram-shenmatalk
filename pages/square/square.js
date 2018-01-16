@@ -56,6 +56,15 @@ Page({
       pointInstruState: false
     })
   },
+
+  viewAvatar: function(e){
+    if (!!e.currentTarget.dataset.avatar){
+      wx.previewImage({
+        current: e.currentTarget.dataset.avatar, // 当前显示图片的http链接
+        urls: [e.currentTarget.dataset.avatar] // 需要预览的图片http链接列表
+      })
+    }
+  },
   
   /**
    * 生命周期函数--监听页面加载
@@ -146,7 +155,7 @@ Page({
   onShareAppMessage: function (res) {
     return {
       title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
-      path: '/pages/square/square?id=' + app.globalData.pointInfo.id,
+      path: '/pages/square/square?shareId=' + app.globalData.pointInfo.id,
       imageUrl: '../../images/share_cut.jpg',
       success: function (res) {
         // 转发成功
@@ -182,6 +191,7 @@ Page({
         redStatus: redStatus
       },
       success: function (res) {
+        console.log('获取广场列表',res)
         apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data, that);
         if (res.data.responseCode == 2000) {
           const resData = res.data.data;

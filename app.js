@@ -4,17 +4,12 @@ const apiUrl = require('utils/constant.js');
 
 App({
   onLaunch: function (msg) {
-    console.log('页面onLaunch')
-    wx.setEnableDebug({
-      enableDebug: true
-    })
-
     let that = this;
     that.globalData.shareTicket = msg.shareTicket;
-    if (msg.id){
-      that.globalData.shareId = msg.query.id;
+    if (msg.query.shareId){
+      that.globalData.shareId = msg.query.shareId;
     }
-    console.log('分享人ID:', msg.query.id);
+    console.log('分享人ID:', msg.query.shareId);
 
     wx.showShareMenu({
       withShareTicket: true

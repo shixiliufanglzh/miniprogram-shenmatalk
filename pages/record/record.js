@@ -271,7 +271,7 @@ Page({
   onShareAppMessage: function () {
     return {
       title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
-      path: '/pages/square/square?id=' + app.globalData.pointInfo.id,
+      path: '/pages/square/square?shareId=' + app.globalData.pointInfo.id,
       imageUrl: '../../images/share_cut.jpg',
       success: function (res) {
         // 转发成功

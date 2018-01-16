@@ -50,7 +50,7 @@ const apiUrl = {
         })
         break;
       case "4002":
-        register(null, apiUrl)
+        register(null, apiUrl,that)
         // wx.showToast({
         //   title: responseDesc,
         //   icon: 'loading',
@@ -103,7 +103,7 @@ const apiUrl = {
   }
 }
 
-function register(app, apiUrl){
+function register(app, apiUrl, that){
   wx.showLoading({
     title: "登录中..."
   });
@@ -123,6 +123,7 @@ function register(app, apiUrl){
     success: function (userMsg) {
       console.log(userMsg)
       _app.globalData.userInfo = userMsg.userInfo
+      console.log('_app.globalData.shareId', _app.globalData.shareId)
       wx.request({
         url: apiUrl.REGISTER,
         method: "POST",
@@ -133,7 +134,7 @@ function register(app, apiUrl){
         data: {
           encryptedData: userMsg.encryptedData,
           iv: userMsg.iv,
-          shareUserOpenId: _app.globalData.shareId
+          shareUserId: _app.globalData.shareId
         },
         success: function (regData) {
           wx.hideLoading();
@@ -150,13 +151,14 @@ function register(app, apiUrl){
               success: function (res) {
                 apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                 if (res.data.responseCode == 2000) {
-                  console.log('pointInfo', res);
-                  app.globalData.pointInfo = {
+                  console.log('constant页面pointInfo', res, 'that', that);
+                  _app.globalData.pointInfo = {
                     aliAccount: res.data.data.aliAccount,
                     point: res.data.data.userPoint,
                     money: res.data.data.userMoney,
                     id: res.data.data.id
                   }
+                  if (that && that.onShow) that.onShow();
                 }
               }
             })

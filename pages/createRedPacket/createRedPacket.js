@@ -18,7 +18,7 @@ Page({
     pointInfo: {},
     optionsState: true,
     tokenArr: [
-      "谢谢老板恩典",
+      "谢谢老板打赏",
       "新婚快乐早生贵子大富大贵",
       "群主你最帅群主你最好群主我们都爱你",
       "祝福发红包的帅哥美女全家安康大吉大利发大财",
@@ -242,7 +242,7 @@ Page({
   onShareAppMessage: function () {
     return {
       title: '这个语音口令红包太好玩了，说语音口令，领现金红包！',
-      path: '/pages/square/square?id=' + app.globalData.pointInfo.id,
+      path: '/pages/square/square?shareId=' + app.globalData.pointInfo.id,
       imageUrl: '../../images/share_cut.jpg',
       success: function (res) {
         // 转发成功
@@ -309,7 +309,7 @@ Page({
    */
   formSubmit: function (e) {
     let that = this;
-    console.log('form发生了submit事件：', e.detail.formId);
+    console.log('form发生了submit事件：', e.detail.value);
     this.setData({
       formId: e.detail.formId
     })
@@ -390,7 +390,7 @@ Page({
                 redType: 1,
                 payType: useCash,
                 adverPic: that.data.picUrl,
-                // adverLink: ''
+                adverLink: that.data.picUrl ? e.detail.value.link : '',
                 prepayId: e.detail.formId
               }
               console.log('发红包参数', submitMsg);

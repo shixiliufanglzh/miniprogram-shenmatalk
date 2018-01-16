@@ -25,9 +25,9 @@
     </view>
   </view>
   <view class="content_list">
-    <view class="content_item {{itemName.leftAmount <= 0 ? 'disabled' : ''}}" wx:for="{{redPacketsList}}" wx:for-index="idx" wx:for-item="itemName" data-id="{{itemName.id}}" wx:key="{{itemName.id}}" bind:tap="goToDetail" hidden="{{itemName.redStatus == 1 ? false : true}}">
-      <image src="{{itemName.isHide == 2 ? itemName.userPortrait : '../../images/avatar_ano.jpg'}}" mode="aspectFill"></image>
-      <view class="buble">
+    <view class="content_item {{itemName.leftAmount <= 0 ? 'disabled' : ''}}" wx:for="{{redPacketsList}}" wx:for-index="idx" wx:for-item="itemName" wx:key="{{itemName.id}}" hidden="{{itemName.redStatus == 1 ? false : true}}">
+      <image src="{{itemName.isHide == 2 ? itemName.userPortrait : '../../images/avatar_ano.jpg'}}" mode="aspectFill" bind:tap="viewAvatar" data-avatar="{{itemName.isHide == 2 ? itemName.userPortrait : ''}}"></image>
+      <view class="buble" bind:tap="goToDetail" data-id="{{itemName.id}}">
         <span class="angle"></span>
         <view class="content_box">
           <view class="content">
@@ -50,8 +50,8 @@
       <p>神马分用于抢广场红包，每抢一次广场红包将消耗1个神马分。</p>
       <text class="title">如何获得神马分？</text>
       <p>分享口令红包或红包广场页面到群聊邀请朋友来玩，每当有一个新用户点进来您可以获得3个神马分。</p>
-      <text class="title">每天神马分奖励</text>
-      <p>活动期间，每日凌晨将为神马分不足10个的用户补满10个神马分，即每人每天最多可获得10个神马分的奖励。</p>
+      <text class="title">神马分奖励方法</text>
+      <p>每发1元广场红包（非推广红包）奖励1个神马分；每日凌晨为神马分不足10个的用户补满10个神马分。</p>
     </view>
     <view class="btn-area">
       <button class="submit" open-type="share">邀请朋友获取神马分</button>

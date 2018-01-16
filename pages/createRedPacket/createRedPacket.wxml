@@ -17,7 +17,7 @@
         <view class="options" bind:tap="showOptions">
           <image src="../../images/expression.png" mode="aspectFit" class="example"></image>
         </view>
-        <input name="token" type="text" id="token" value="{{selectedToken}}" maxlength="50" class="input token" placeholder="输入或选择口令" bindinput='tokenInput'/>
+        <input name="token" type="text" id="token" value="{{selectedToken}}" maxlength="24" class="input token" placeholder="输入或选择口令" bindinput='tokenInput'/>
       </view>
       <text class="token_prompt">小伙伴们说对口令就能获得随机打赏</text>
     </block>
@@ -43,6 +43,7 @@
       <button plain="{{true}}" size="mini" bind:tap="uploadPic">{{!!picUrl ? '已上传图片' : '上传宣传图片'}}<text>(选填，尺寸750*190)</text></button>
       <button plain="{{true}}" size="mini" class="delete" hidden="{{!picUrl}}" bind:tap="deletePic">删除</button>
        <!-- <text class="pic_limit">*建议尺寸750*190</text>  -->
+       <input name="link" type="text" id="link" class="input link" placeholder="输入图片链接（选填，仅支持公众号文章链接）" hidden="{{!picUrl}}" />
     </view>
 
     <view class="section">

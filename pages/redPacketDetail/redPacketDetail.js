@@ -109,7 +109,7 @@ Page({
       return;
     }else {
       wx.showLoading({
-        title: '语音识别中...',
+        title: '拼命抢红包中...',
         mask: true
       });
       // wx.saveFile({
@@ -236,7 +236,7 @@ Page({
       //真机出现播放不停止的问题，用timeout兼容
       timer = setTimeout(function(){
         innerAudioContext.stop();
-      }, (e.currentTarget.dataset.time*1.1)*1000)
+      }, (e.currentTarget.dataset.time*1.1+1)*1000)
 
       innerAudioContext.onPlay(() => {
         initialPlayState[e.currentTarget.dataset.idx].isPlaying = true;
@@ -356,6 +356,15 @@ Page({
       animationData: animation.export(),
       pointInstruState: false
     })
+  },
+
+  viewAvatar: function (e) {
+    if (!!e.currentTarget.dataset.avatar) {
+      wx.previewImage({
+        current: e.currentTarget.dataset.avatar, // 当前显示图片的http链接
+        urls: [e.currentTarget.dataset.avatar] // 需要预览的图片http链接列表
+      })
+    }
   },
 
   /**
@@ -485,7 +494,7 @@ Page({
   onShareAppMessage: function () {
     return {
       title: this.data.redPacketDetail.userName +'发了一个语音口令红包，赶快去领赏吧！',
-      path: '/pages/redPacketDetail/redPacketDetail?redId='+this.data.redId+'&id=' + app.globalData.pointInfo.id,
+      path: '/pages/redPacketDetail/redPacketDetail?redId=' + this.data.redId +'&shareId=' + app.globalData.pointInfo.id,
       success: function (res) {
         // 转发成功
         wx.showToast({

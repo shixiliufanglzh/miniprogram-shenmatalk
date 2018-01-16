@@ -1,8 +1,7 @@
 {
   "pages": [
-    "pages/square/square",
     "pages/createRedPacket/createRedPacket",
-    
+    "pages/square/square",
     "pages/ranking/ranking",
     "pages/personalZone/personalZone",
     "pages/redPacketDetail/redPacketDetail",
@@ -12,7 +11,8 @@
     "pages/logs/logs",
     "pages/share/share",
     "pages/webView/webView",
-    "pages/suggestion/suggestion"
+    "pages/suggestion/suggestion",
+    "pages/jianbid/jianbid"
   ],
   "window": {
     "backgroundTextStyle": "light",

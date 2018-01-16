@@ -12,7 +12,7 @@ module.exports = (app, that, callBack) => {
     success: function (res) {
       apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
       if (res.data.responseCode == 2000) {
-        console.log('pointInfo', res);
+        console.log('getuserinfo页面pointInfo', res);
         app.globalData.pointInfo = {
           aliAccount: res.data.data.aliAccount,
           point: res.data.data.userPoint,
