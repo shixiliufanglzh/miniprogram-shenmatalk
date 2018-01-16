@@ -61,7 +61,7 @@ Page({
     }else {
       wx.showModal({
         title: '提示',
-        content: '您的神马分不足,点【确定】查看如何获得芝麻分',
+        content: '您的神马分不足,点【确定】查看如何获得神马分',
         success: function (res) {
           if (res.confirm) {
             that.showPointInstruction();
@@ -331,7 +331,7 @@ Page({
     })
   },
 
-  //显示芝麻分说明
+  //显示神马分说明
   showPointInstruction: function () {
     const animation = wx.createAnimation({
       duration: 500,
@@ -344,7 +344,7 @@ Page({
       pointInstruState: true
     })
   },
-  //隐藏芝麻分说明
+  //隐藏神马分说明
   hidePointInstruction: function () {
     const animation = wx.createAnimation({
       duration: 500,

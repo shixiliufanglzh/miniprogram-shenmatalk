@@ -1,5 +1,5 @@
 /* pages/createRedPacket/createRedPacket.wxss */
-.top-tab{
+/* .top-tab{
   width: 750rpx;
   height: 100rpx;
   background: #fff;
@@ -23,13 +23,13 @@
 }
 .container.withtab{
   margin: 101rpx 0 0 0;
-}
+} */
 
 form {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  padding: 0 30rpx 30rpx;
+  padding: 30rpx;
 }
 .send_red_packet .token_wrp {
   width: 662rpx;
