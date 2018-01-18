@@ -21,14 +21,24 @@
     <view scroll-y="true" class="container withtab">
       <view class="content" hidden="{{currentNavtab==0 ? '' : true}}">
         <block>
-          <view class="section token_wrp">
+          <view class="section token_wrp" hidden="{{recordMode}}">
             <label class="title" for="token">语音口令</label>
             <view class="options" bind:tap="showOptions">
               <image src="../../images/expression.png" mode="aspectFit" class="example"></image>
             </view>
             <input name="token" type="text" id="token" value="{{selectedToken}}" maxlength="24" class="input token" placeholder="输入或选择口令" bindinput='tokenInput' />
           </view>
-          <text class="token_prompt">小伙伴们说对口令就能获得随机打赏</text>
+
+          <view class="section token_wrp" hidden="{{!recordMode}}">
+            <label class="title" for="token">语音口令</label>
+            <button class="record_btn" bind:touchstart="voiceStartRecordCRP" bind:touchend="voiceEndRecordCRP" bind:touchmove="voiceEndRecordMoveCRP">{{!!recordFileMsg ? '重新录制' : '按住说话'}}</button>
+          </view>
+
+          <view class="prompt_wrp">
+            <text class="token_prompt">小伙伴们说对口令就能获得随机打赏</text>
+             <button class="mode" plain="{{true}}" size="mini" bind:tap="changeMode">改为{{!recordMode ? '录音模式' : '文字模式'}}
+            </button> 
+          </view>
         </block>
       </view>
 
@@ -36,13 +46,15 @@
         <block>
           <view class="section token_wrp">
             <label class="title" for="token">设置问题</label>
-            <input name="token" type="text" id="question" value="{{question}}" maxlength="24" class="input token" placeholder="输入你的问题" />
+            <input name="question" type="text" id="question" value="{{question}}" maxlength="24" class="input token" placeholder="输入你的问题" />
           </view>
           <view class="section token_wrp">
             <label class="title" for="token">设置答案</label>
-            <input name="token" type="text" id="answer" value="{{answer}}" maxlength="24" class="input token" placeholder="输入你的答案" bindinput='answerInput' />
+            <input name="answer" type="text" id="answer" value="{{answer}}" maxlength="24" class="input token" placeholder="输入你的答案" bindinput='answerInput' />
           </view>
-          <text class="token_prompt">小伙伴们说对口令就能获得随机打赏</text>
+          <view class="prompt_wrp">
+            <text class="token_prompt">小伙伴们说对口令就能获得随机打赏</text>
+          </view>
         </block>
       </view>
 
@@ -95,9 +107,15 @@
   </form>
 </view>
 
-  <view class="token_options" hidden="{{optionsState}}">
-    <view class="title">常用口令</view>
-    <view class="list">
-      <view class="item" wx:for="{{tokenArr}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-content="{{item}}" bind:tap="selectToken">{{item}}</view>
-    </view>
+<view class="token_options" hidden="{{optionsState}}">
+  <view class="title">常用口令</view>
+  <view class="list">
+    <view class="item" wx:for="{{tokenArr}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-content="{{item}}" bind:tap="selectToken">{{item}}</view>
   </view>
+</view>
+
+<view class="toast_wrp" hidden="{{hideRecordToast}}">
+  <view class="toast">
+    <image src="../../images/record.gif" mode="aspectFit"></image>
+  </view>
+</view>

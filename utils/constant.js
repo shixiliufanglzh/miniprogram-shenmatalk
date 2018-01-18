@@ -2,7 +2,8 @@ const reLogin = require('login.js');
 // const app = getApp();
 // const apiAdmin = "http://47.96.186.64/red-api"; //test
 // const apiAdmin = "https://www.mypies.cn/red-api"; //prod
-const apiAdmin = "https://red.jianbid.com/red-api"; //prod
+// const apiAdmin = "https://red.jianbid.com/red-api"; //prod
+const apiAdmin = "https://sm.jianbid.com/red-api"; //prod
 // const apiAdmin = "";  //prod
 
 const apiUrl = {
@@ -13,6 +14,8 @@ const apiUrl = {
   REGISTER: apiAdmin + "/user/wxRegister.jhtml",  //微信注册***
   ADD_ALIPAY: apiAdmin + "/user/addAlipay.jhtml",  //绑定支付宝***
   DRAW_ALIPAY: apiAdmin + "/user/drawAlipay.jhtml",  //提现到支付宝***
+  DRAW_WECHAT: apiAdmin + "/user/drawWx.jhtml",  //提现到微信***
+
   ADD_TXT_RED: apiAdmin + "/red/addRed.jhtml",  //添加红包
   GET_SELF_VOICE_RED: apiAdmin + "/red/getSelfRed.jhtml",  //获取自己发出的语音红包***
   GET_SELF_SEND_TOTAL: apiAdmin + "/user/getUserSendRedTotal.jhtml",  //获取用户发送红包数据统计***

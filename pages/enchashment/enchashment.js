@@ -98,15 +98,92 @@ Page({
   //提现
   enchashSubmit: function(){
     let that = this;
-    if (that.data.curInputCash > 0 && app.globalData.pointInfo.aliAccount.length > 0){
+    //提现到支付宝
+    // if (that.data.curInputCash > 0 && app.globalData.pointInfo.aliAccount.length > 0){
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '确认提现 ' + that.data.curInputCash + '元 到账户' + app.globalData.pointInfo.aliAccount +'吗？',
+    //     showCancel: true,
+    //     success: function (res){
+    //       if (res.confirm) {
+    //         wx.request({
+    //           url: apiUrl.DRAW_ALIPAY,
+    //           method: "POST",
+    //           header: {
+    //             'content-type': 'application/x-www-form-urlencoded',
+    //             'sessionKey': app.globalData.sessionKey
+    //           },
+    //           data: {
+    //             money: that.data.curInputCash
+    //           },
+    //           success: function (res) {
+    //             apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+    //             if (res.data.responseCode == 2000) {
+    //               console.log('提现成功', res);
+    //               wx.showToast({
+    //                 title: '提现成功',
+    //                 icon: 'success',
+    //                 duration: 1500,
+    //                 mask: true
+    //               })
+    //               wx.request({
+    //                 url: apiUrl.GET_USER_INFO,
+    //                 method: "GET",
+    //                 header: {
+    //                   'content-type': 'application/x-www-form-urlencoded',
+    //                   'sessionKey': app.globalData.sessionKey
+    //                 },
+    //                 success: function (res) {
+    //                   apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+    //                   if (res.data.responseCode == 2000) {
+    //                     app.globalData.pointInfo = {
+    //                       aliAccount: res.data.data.aliAccount,
+    //                       point: res.data.data.userPoint,
+    //                       money: res.data.data.userMoney
+    //                     }
+    //                     that.setData({
+    //                       pointInfo: app.globalData.pointInfo,
+    //                     })
+    //                   }
+
+    //                 }
+    //               })
+    //             }
+    //           }
+    //         })
+    //       } else if (res.cancel) {
+    //         console.log('用户点击取消')
+    //       }
+    //     }
+    //   })
+    // } else if (app.globalData.pointInfo.aliAccount.length <= 0){
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '请先添加提现账号',
+    //     showCancel: false
+    //   })
+    // }else {
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '请输入提现金额',
+    //     showCancel: false
+    //   })
+    // }
+
+    //提现到微信
+    if (that.data.curInputCash && that.data.curInputCash >= 2 ){
       wx.showModal({
         title: '提示',
-        content: '确认提现 ' + that.data.curInputCash + '元 到账户' + app.globalData.pointInfo.aliAccount +'吗？',
+        content: '确认提现 ' + that.data.curInputCash + '元 到微信零钱吗？',
         showCancel: true,
         success: function (res){
           if (res.confirm) {
+            wx.showLoading({
+              title: '提现中...',
+              mask: true
+            });
             wx.request({
-              url: apiUrl.DRAW_ALIPAY,
+              url: apiUrl.DRAW_WECHAT,
               method: "POST",
               header: {
                 'content-type': 'application/x-www-form-urlencoded',
@@ -116,6 +193,7 @@ Page({
                 money: that.data.curInputCash
               },
               success: function (res) {
+                wx.hideLoading();
                 apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                 if (res.data.responseCode == 2000) {
                   console.log('提现成功', res);
@@ -148,6 +226,10 @@ Page({
                     }
                   })
                 }
+              },
+              fail: function(err){
+                wx.hideLoading();
+                console.log(err)
               }
             })
           } else if (res.cancel) {
@@ -155,13 +237,13 @@ Page({
           }
         }
       })
-    } else if (app.globalData.pointInfo.aliAccount.length <= 0){
+    } else if (that.data.curInputCash && that.data.curInputCash < 2){
       wx.showModal({
         title: '提示',
-        content: '请先添加提现账号',
+        content: '提现金额至少2元',
         showCancel: false
       })
-    }else {
+    } else {
       wx.showModal({
         title: '提示',
         content: '请输入提现金额',

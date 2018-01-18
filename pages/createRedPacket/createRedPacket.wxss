@@ -44,6 +44,26 @@ form {
   line-height: 88rpx;
   vertical-align: middle;
 }
+.send_red_packet .token_wrp .record_btn {
+  float: right;
+  width: 440rpx;
+  height: 60rpx;
+  background-color: #f8f8f8;
+  border-radius: 6rpx;
+  border: 1px solid #dfdfdf;
+  color: #888;
+  font-size: 34rpx;
+  line-height: 58rpx;
+  outline: none;
+  margin: 14rpx 0;
+}
+.send_red_packet .token_wrp .record_btn:active {
+  background-color: #f0f0f0;
+  color: #bfbfbf;
+}
+.send_red_packet .token_wrp .record_btn::after {
+  border: none;
+}
 .send_red_packet .token_wrp .input {
   width: 400rpx;
   line-height: 88rpx;
@@ -99,13 +119,26 @@ form {
   margin-left: 10rpx;
   padding: 0 20rpx;
 }
-
-.token_prompt {
-  display: inline-block;
-  font-size: 28rpx;
-  color: #b2b2b2;
+.prompt_wrp {
+  font-size: 0;
   margin-top: 16rpx;
 }
+.prompt_wrp .token_prompt {
+  display: inline-block;
+  font-size: 28rpx;
+  line-height: 40rpx;
+  color: #b2b2b2;
+}
+.prompt_wrp .mode {
+  display: inline-block;
+  font-size: 28rpx;
+  line-height: 40rpx;
+  border: none;
+  color: #576b95;
+  padding: 0 10rpx;
+  overflow: visible;
+}
+
 .recommend {
   width: 690rpx;
   display: flex;

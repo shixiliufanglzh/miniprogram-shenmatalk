@@ -42,17 +42,34 @@ Page({
     this.setData({
       redId: options.redId
     })
-    recorderManager.onStop(this.onVoiceStop);
     // recorderManager.onFrameRecorded(res => {
     //     const { frameBuffer, isLastFrame } = res
         // const jsonString = JSON.stringify(res);
     //     console.log('frameBuffer.byteLength', frameBuffer.byteLength)
     // });
   },
-
+  
   voiceStartRecord(e) {   
     let that = this;
 
+    //若正在播放录音，则先关闭
+    if (!!timer) {
+      clearTimeout(timer);
+    }
+    if (!!innerAudioContext) {
+      innerAudioContext.stop();
+      const initialPlayState = that.data.grabList.map(item => {
+        return {
+          ...item,
+          isPlaying: false
+        }
+      });
+      that.setData({
+        grabList: initialPlayState
+      })
+    }
+
+    //判断是否有录音权限
     if(this.data.recordAuth){
       this.setData({
         pageY: e.changedTouches[0].pageY
@@ -252,7 +269,11 @@ Page({
         }
       });
       that.setData({
-        grabList: initialPlayState
+        grabList: initialPlayState,
+        redPacketDetail: {
+          ...that.data.redPacketDetail,
+          isPlaying: false
+        }
       })
     }else {
       const initialPlayState = that.data.grabList.map((item,index) => {
@@ -262,7 +283,11 @@ Page({
         }
       });
       that.setData({
-        grabList: initialPlayState
+        grabList: initialPlayState,
+        redPacketDetail: {
+          ...that.data.redPacketDetail,
+          isPlaying: false
+        }
       })
 
       innerAudioContext = null;
@@ -305,9 +330,103 @@ Page({
             }
           })
         })
+        if (!!timer) {
+          clearTimeout(timer);
+        }
       })
     }
     
+  },
+
+  playVoiceToken: function(e){
+    let that = this;
+
+    if (!!timer) {
+      clearTimeout(timer);
+    }
+    if (!!innerAudioContext) {
+      innerAudioContext.stop();
+    }
+    
+    if (that.data.redPacketDetail.isPlaying) {
+      that.setData({
+        redPacketDetail: {
+          ...that.data.redPacketDetail,
+          isPlaying: false
+        }
+      })
+    } else {
+      const initialPlayState = that.data.grabList.map((item, index) => {
+        return {
+          ...item,
+          isPlaying: false
+        }
+      });
+      that.setData({
+        grabList: initialPlayState,
+        redPacketDetail: {
+          ...that.data.redPacketDetail,
+          isPlaying: false
+        }
+      })
+
+      innerAudioContext = null;
+      innerAudioContext = wx.createInnerAudioContext();
+      innerAudioContext.src = e.currentTarget.dataset.voiceUrl;
+      innerAudioContext.play();
+
+      //真机出现播放不停止的问题，用timeout兼容
+      timer = setTimeout(function () {
+        innerAudioContext.stop();
+      }, (e.currentTarget.dataset.time * 1.2 + 1) * 1000)
+
+      innerAudioContext.onPlay(() => {
+        that.setData({
+          redPacketDetail: {
+            ...that.data.redPacketDetail,
+            isPlaying: true
+          }
+        })
+        console.log('播放')
+      })
+
+      console.log('播放口令', that.data.redPacketDetail.isPlaying)
+
+      innerAudioContext.onStop(() => {
+        console.log('停止');
+        that.setData({
+          grabList: that.data.grabList.map(item => {
+            return {
+              ...item,
+              isPlaying: false
+            }
+          }),
+          redPacketDetail: {
+            ...that.data.redPacketDetail,
+            isPlaying: false
+          }
+        })
+      })
+
+      innerAudioContext.onEnded(() => {
+        console.log('自然停止');
+        that.setData({
+          grabList: that.data.grabList.map(item => {
+            return {
+              ...item,
+              isPlaying: false
+            }
+          }),
+          redPacketDetail: {
+            ...that.data.redPacketDetail,
+            isPlaying: false
+          }
+        })
+        if (!!timer) {
+          clearTimeout(timer);
+        }
+      })
+    }
   },
 
   //获取领取人列表
@@ -434,13 +553,19 @@ Page({
           const resData = res.data.data;
           console.log(res);
           that.setData({
-            redPacketDetail: resData
+            redPacketDetail: {
+              ...resData,
+              isPlaying: false,
+              // voiceTime: Math.round(resData.voiceTime / 1000)
+              voiceTime: 5
+            }
           })
         }
       }
     })
 
     this.getGrabList(pageSize, this.data.pageNum)
+    recorderManager.onStop(this.onVoiceStop);
   },
 
   /**

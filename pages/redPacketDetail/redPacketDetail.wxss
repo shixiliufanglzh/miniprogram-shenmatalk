@@ -30,6 +30,15 @@
   font-size: 48rpx;
   color: #fff;
 }
+.header .voice_token {
+  text-align: center;
+  margin-top: 26rpx;
+  margin-bottom: -26rpx;
+}
+.header .voice_token image {
+  width: 102rpx;
+  height: 105rpx;
+}
 .header .record {
   margin: 50rpx auto 20rpx;
   border-radius: 50rpx;
@@ -155,20 +164,12 @@
   color: #aaa;
 }
 
-.toast_wrp {
-  width: 200rpx;
-  height: 200rpx;
-  background-color: rgba(0,0,0,0.5);
-  border-radius: 10rpx;
-  position: fixed;
-  top: 20rpx;
-  left: 50%;
-  margin-left: -100rpx;
-}
-.toast_wrp .toast image {
-  width: 120rpx;
-  height: 120rpx;
-  margin: 40rpx;
+.qa_prompt {
+  text-align: center;
+  font-size: 28rpx;
+  color: #888;
+  line-height: 100rpx;
+  border: 1px dashed #ddd;
 }
 
 

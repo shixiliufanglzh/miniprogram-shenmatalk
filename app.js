@@ -189,8 +189,8 @@ App({
           }
         })
       },
-      fail: function () {
-        console.log('checkSession失败fail');        
+      fail: function (err) {
+        console.log('checkSession失败fail',err);        
         //登录态过期，调用登录接口
         reLogin(that, apiUrl);
         

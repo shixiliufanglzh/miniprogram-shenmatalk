@@ -19,12 +19,12 @@
       <view class="detail_list" wx:for="{{sendRecord}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-red-id="{{item.id}}" bind:tap="goToDetail">
         <view class="detail_item">
           <view class="left">
-            <text class="token">{{item.token}}</text>
+            <text class="token">{{item.redType == 2 ? '【语音口令】' : item.token}}</text>
             <text class="time">{{item.time}}</text>
           </view>
           <view class="right">
             <text class="money">{{item.money}}元</text>
-            <text class="count">{{item.leftCount}}/{{item.totalCount}}</text>
+            <text class="count">{{item.totalCount - item.leftCount}}/{{item.totalCount}}</text>
           </view>
         </view>
       </view>

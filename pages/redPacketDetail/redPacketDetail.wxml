@@ -4,10 +4,17 @@
     <image class="avatar" src="{{redPacketDetail.isHide == 1 ? '../../images/avatar_ano.jpg' : redPacketDetail.userPortrait}}" 
     bind:tap="viewAvatar" data-avatar="{{redPacketDetail.isHide == 1 ? '' : redPacketDetail.userPortrait}}" mode="aspectFill"></image>
     <text class="name">{{redPacketDetail.isHide == 1 ? '神秘人' : redPacketDetail.userName}}</text>
-    <view class="token_wrp">
-      <image class="icon_record" src="../../images/record_white.png" mode="aspectFit"></image>
+
+    <view class="token_wrp" hidden="{{redPacketDetail.redType == 2}}">
+      <image class="icon_record" src="../../images/{{redPacketDetail.redType == 3 ? 'answer_question.png' :'record_white.png'}}" mode="aspectFit"></image>
       <text>{{redPacketDetail.redType != 2 ? redPacketDetail.content : ''}}</text>
     </view>
+
+    <view class="voice_token" hidden="{{redPacketDetail.redType != 2}}">
+      <image src="../../images/on_play.gif" mode="aspectFit" data-voice-url="{{redPacketDetail.content}}" data-time="{{redPacketDetail.voiceTime}}" hidden="{{!redPacketDetail.isPlaying}}" bind:tap="playVoiceToken"></image>
+      <image src="../../images/pre_play.gif" mode="aspectFit" data-voice-url="{{redPacketDetail.content}}" data-time="{{redPacketDetail.voiceTime}}" hidden="{{redPacketDetail.isPlaying}}" bind:tap="playVoiceToken"></image>
+    </view>
+
     <button class="record finish" wx:if="{{redPacketDetail.redStatus == 2}}" type="primary">该红包已失效</button>
     <button class="record" wx:elif="{{redPacketDetail.leftAmount > 0 && redPacketDetail.winStatus == 2}}" type="primary" bind:touchstart="voiceStartRecord" bind:touchend="voiceEndRecord" bind:touchmove="voiceEndRecordMove">长按此处说出{{redPacketDetail.redType == 3 ? '问题答案' :'以上口令'}}领取奖金</button>
     <button class="record finish" wx:elif="{{redPacketDetail.leftAmount <= 0}}" type="primary">赏金已经被抢光了</button>
@@ -32,7 +39,7 @@
     <text>{{ redPacketDetail.money ? ('共'+redPacketDetail.money+'元，已领取'+(redPacketDetail.amount - redPacketDetail.leftAmount)+'/'+redPacketDetail.amount+'个') : ''}}</text>
     <button class="suggest" plain="{{true}}" size="mini" bind:tap="goSuggest">投诉</button>
   </view>
-  <view class="grab_list">
+  <view class="grab_list" hidden="{{redPacketDetail.redType == 3 && redPacketDetail.leftAmount > 0 && redPacketDetail.winStatus == 2 && redPacketDetail.redStatus == 1 }}">
     <view class="grab_item" wx:for="{{grabList}}" wx:key="{{itemName.id}}" wx:for-index="idx" wx:for-item="itemName" data-id="{{itemName.id}}">
       <image bind:tap="viewAvatar" data-avatar="{{itemName.userPortrait}}" src="{{itemName.userPortrait}}" mode="aspectFill" class="avatar" ></image>
       <view class="info">
@@ -48,6 +55,9 @@
         <text class="time">{{itemName.createDate}}</text>
       </view>
     </view>
+  </view>
+  <view class="qa_prompt" hidden="{{redPacketDetail.redType != 3 || redPacketDetail.leftAmount <= 0 || redPacketDetail.winStatus != 2 || redPacketDetail.redStatus != 1 }}">
+    <text>问答红包领取成功或结束前隐藏领取记录</text>
   </view>
 </view>
 
