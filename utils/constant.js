@@ -2,7 +2,8 @@ const reLogin = require('login.js');
 // const app = getApp();
 // const apiAdmin = "http://47.96.186.64/red-api"; //test
 // const apiAdmin = "https://www.mypies.cn/red-api"; //prod
-const apiAdmin = "https://red.jianbid.com/red-api"; //prod
+// const apiAdmin = "https://red.jianbid.com/red-api"; //prod
+const apiAdmin = "https://sm.jianbid.com/red-api"; //prod
 // const apiAdmin = "";  //prod
 
 const apiUrl = {
@@ -13,6 +14,8 @@ const apiUrl = {
   REGISTER: apiAdmin + "/user/wxRegister.jhtml",  //微信注册***
   ADD_ALIPAY: apiAdmin + "/user/addAlipay.jhtml",  //绑定支付宝***
   DRAW_ALIPAY: apiAdmin + "/user/drawAlipay.jhtml",  //提现到支付宝***
+  DRAW_WECHAT: apiAdmin + "/user/drawWx.jhtml",  //提现到微信***
+
   ADD_TXT_RED: apiAdmin + "/red/addRed.jhtml",  //添加红包
   GET_SELF_VOICE_RED: apiAdmin + "/red/getSelfRed.jhtml",  //获取自己发出的语音红包***
   GET_SELF_SEND_TOTAL: apiAdmin + "/user/getUserSendRedTotal.jhtml",  //获取用户发送红包数据统计***
@@ -114,77 +117,177 @@ function register(app, apiUrl, that){
   }
 
   console.log('准备注册');
-
-  wx.getUserInfo({
-    data: {
-      lang: 'zh_CN',
-      withCredentials: true
-    },
-    success: function (userMsg) {
-      console.log(userMsg)
-      _app.globalData.userInfo = userMsg.userInfo
-      console.log('_app.globalData.shareId', _app.globalData.shareId)
-      wx.request({
-        url: apiUrl.REGISTER,
-        method: "POST",
-        header: {
-          'content-type': 'application/x-www-form-urlencoded', // 默认值
-          'sessionKey': _app.globalData.sessionKey
-        },
-        data: {
-          encryptedData: userMsg.encryptedData,
-          iv: userMsg.iv,
-          shareUserId: _app.globalData.shareId
-        },
-        success: function (regData) {
-          wx.hideLoading();
-          console.log(regData, _app.globalData.sessionKey)
-          apiUrl.responseCodeCallback(regData.data.responseCode, regData.data.responseDesc, regData.data.data);
-          if (regData.data.responseCode == 2000) {
+  // wx.getSetting({
+  //   success: res => {
+  //     if (!res.authSetting['scope.userInfo']) {
+  //       wx.showModal({
+  //         title: '提示',
+  //         content: '小程序需要获取用户信息权限才能正常使用',
+  //         showCancel: false,
+  //         success: function (res) {
+  //           if (res.confirm) {
+  //             wx.openSetting({
+  //               success: function (data) {
+  //                 if (data) {
+  //                   if (data.authSetting["scope.userInfo"] == true) {
+  //                     wx.getUserInfo({
+  //                       data: { lang: 'zh_CN' },
+  //                       success: res => {
+  //                         console.log('微信后台拉取用户信息', res)
+  //                         that.globalData.userInfo = res.userInfo
+  //                       }
+  //                     })
+  //                     wx.request({
+  //                       url: apiUrl.GET_USER_INFO,
+  //                       method: "GET",
+  //                       header: {
+  //                         'content-type': 'application/x-www-form-urlencoded',
+  //                         'sessionKey': that.globalData.sessionKey
+  //                       },
+  //                       success: function (res) {
+  //                         apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+  //                         if (res.data.responseCode == 2000) {
+  //                           console.log('自己后台拉取用户信息pointInfo', res);
+  //                           that.globalData.pointInfo = {
+  //                             aliAccount: res.data.data.aliAccount,
+  //                             point: res.data.data.userPoint,
+  //                             money: res.data.data.userMoney,
+  //                             id: res.data.data.id
+  //                           }
+  //                         }
+  //                       }
+  //                     })
+  //                   }
+  //                 }
+  //               },
+  //               fail: function () {
+  //                 console.info("设置失败返回数据");
+  //               }
+  //             });
+  //           }
+  //         }
+  //       })
+  //     }else {
+        wx.getUserInfo({
+          data: {
+            lang: 'zh_CN',
+            withCredentials: true
+          },
+          success: function (userMsg) {
+            _app.globalData.userInfo = userMsg.userInfo
             wx.request({
-              url: apiUrl.GET_USER_INFO,
-              method: "GET",
+              url: apiUrl.REGISTER,
+              method: "POST",
               header: {
-                'content-type': 'application/x-www-form-urlencoded',
+                'content-type': 'application/x-www-form-urlencoded', // 默认值
                 'sessionKey': _app.globalData.sessionKey
               },
+              data: {
+                encryptedData: userMsg.encryptedData,
+                iv: userMsg.iv,
+                shareUserId: _app.globalData.shareId
+              },
+              success: function (regData) {
+                wx.hideLoading();
+                console.log(regData, _app.globalData.sessionKey)
+                apiUrl.responseCodeCallback(regData.data.responseCode, regData.data.responseDesc, regData.data.data);
+                if (regData.data.responseCode == 2000) {
+                  wx.request({
+                    url: apiUrl.GET_USER_INFO,
+                    method: "GET",
+                    header: {
+                      'content-type': 'application/x-www-form-urlencoded',
+                      'sessionKey': _app.globalData.sessionKey
+                    },
+                    success: function (res) {
+                      apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                      if (res.data.responseCode == 2000) {
+                        console.log('constant页面pointInfo', res, 'that', that);
+                        _app.globalData.pointInfo = {
+                          aliAccount: res.data.data.aliAccount,
+                          point: res.data.data.userPoint,
+                          money: res.data.data.userMoney,
+                          id: res.data.data.id
+                        }
+                        if (that && that.onShow) that.onShow();
+                      }
+                    }
+                  })
+                }
+              },
+              fail: function (err) {
+                wx.hideLoading();
+                wx.showToast({
+                  title: '登录失败',
+                  duration: 1500,
+                  image: '../images/caution.png'
+                })
+                console.log('apiUrl.REGISTER fail ', err);
+              }
+            })
+          },
+          fail: function (err) {
+            wx.hideLoading();
+            console.log('getuserinfo错误信息', err);
+            wx.showModal({
+              title: '提示',
+              content: '小程序需要获取用户信息权限才能正常使用',
+              showCancel: false,
               success: function (res) {
-                apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
-                if (res.data.responseCode == 2000) {
-                  console.log('constant页面pointInfo', res, 'that', that);
-                  _app.globalData.pointInfo = {
-                    aliAccount: res.data.data.aliAccount,
-                    point: res.data.data.userPoint,
-                    money: res.data.data.userMoney,
-                    id: res.data.data.id
-                  }
-                  if (that && that.onShow) that.onShow();
+                if (res.confirm) {
+                  wx.openSetting({
+                    success: function (data) {
+                      if (data) {
+                        if (data.authSetting["scope.userInfo"] == true) {
+                          wx.getUserInfo({
+                            data: { lang: 'zh_CN' },
+                            success: res => {
+                              console.log('微信后台拉取用户信息', res)
+                              that.globalData.userInfo = res.userInfo
+                            }
+                          })
+                          wx.request({
+                            url: apiUrl.GET_USER_INFO,
+                            method: "GET",
+                            header: {
+                              'content-type': 'application/x-www-form-urlencoded',
+                              'sessionKey': that.globalData.sessionKey
+                            },
+                            success: function (res) {
+                              apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                              if (res.data.responseCode == 2000) {
+                                console.log('自己后台拉取用户信息pointInfo', res);
+                                that.globalData.pointInfo = {
+                                  aliAccount: res.data.data.aliAccount,
+                                  point: res.data.data.userPoint,
+                                  money: res.data.data.userMoney,
+                                  id: res.data.data.id
+                                }
+                              }
+                            }
+                          })
+                        }
+                      }
+                    },
+                    fail: function () {
+                      console.info("设置失败返回数据");
+                    }
+                  });
                 }
               }
             })
+
+            // wx.showToast({
+            //   title: '登录失败',
+            //   duration: 1500,
+            //   image: '../images/caution.png'
+            // })
+            // console.log(err)
           }
-        },
-        fail: function(err){
-          wx.hideLoading();
-          wx.showToast({
-            title: '登录失败',
-            duration: 1500,
-            image: '../images/caution.png'
-          })
-          console.log('apiUrl.REGISTER fail ',err);
-        }
-      })
-    },
-    fail: function (err) {
-      wx.hideLoading();
-      wx.showToast({
-        title: '登录失败',
-        duration: 1500,
-        image: '../images/caution.png'
-      })
-      console.log(err)
-    }
-  })
+        })
+  //     }
+  //   }
+  // })
 }
 
 module.exports = apiUrl;

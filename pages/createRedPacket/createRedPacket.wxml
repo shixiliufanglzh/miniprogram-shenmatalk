@@ -1,26 +1,65 @@
 <!--pages/createRedPacket/createRedPacket.wxml-->
-<import src="../assets/we-cropper/we-cropper.wxml"/>
+<import src="../assets/we-cropper/we-cropper.wxml" />
 
 <view class="cropper-wrapper" hidden="{{hideCropper}}">
-    <template is="we-cropper" data="{{...cropperOpt}}"/>
-    <view class="cropper-buttons">
-         <view class="upload" bindtap="cancelSelected">取消</view> 
-        <view class="getCropperImage" bindtap="getCropperImage">上传</view>
-    </view>
+  <template is="we-cropper" data="{{...cropperOpt}}" />
+  <view class="cropper-buttons">
+    <view class="upload" bindtap="cancelSelected">取消</view>
+    <view class="getCropperImage" bindtap="getCropperImage">上传</view>
+  </view>
+</view>
+
+<view class="top-tab flex-wrp flex-tab" bind:tap="{{!optionsState ? 'hideOptions' : 'null'}}">
+  <view class="toptab flex-item {{currentNavtab==idx ? 'active' : ''}}" wx:key="{{idx}}" wx:for="{{navTab}}" wx:for-index="idx" wx:for-item="itemName" data-idx="{{idx}}" bind:tap="switchTab">
+    {{itemName}}
+  </view>
 </view>
 
 <view bind:tap="{{!optionsState ? 'hideOptions' : 'null'}}">
   <form class="send_red_packet" bindsubmit="formSubmit" report-submit="{{true}}">
-    <block>
-      <view class="section token_wrp">
-        <label class="title" for="token">语音口令</label>
-        <view class="options" bind:tap="showOptions">
-          <image src="../../images/expression.png" mode="aspectFit" class="example"></image>
-        </view>
-        <input name="token" type="text" id="token" value="{{selectedToken}}" maxlength="24" class="input token" placeholder="输入或选择口令" bindinput='tokenInput'/>
+
+    <view scroll-y="true" class="container withtab">
+      <view class="content" hidden="{{currentNavtab==0 ? '' : true}}">
+        <block>
+          <view class="section token_wrp" hidden="{{recordMode}}">
+            <label class="title" for="token">语音口令</label>
+            <view class="options" bind:tap="showOptions">
+              <image src="../../images/expression.png" mode="aspectFit" class="example"></image>
+            </view>
+            <input name="token" type="text" id="token" value="{{selectedToken}}" maxlength="24" class="input token" placeholder="输入或选择口令" bindinput='tokenInput' />
+          </view>
+
+          <view class="section token_wrp" hidden="{{!recordMode}}">
+            <label class="title" for="token">语音口令</label>
+            <button class="record_btn" bind:touchstart="voiceStartRecordCRP" bind:touchend="voiceEndRecordCRP" bind:touchmove="voiceEndRecordMoveCRP">{{!!recordFileMsg ? '重新录制' : '按住说话'}}</button>
+          </view>
+
+          <view class="prompt_wrp">
+            <text class="token_prompt">小伙伴们说对口令就能获得随机打赏</text>
+             <button class="mode" plain="{{true}}" size="mini" bind:tap="changeMode">改为{{!recordMode ? '录音模式' : '文字模式'}}
+            </button> 
+          </view>
+        </block>
       </view>
-      <text class="token_prompt">小伙伴们说对口令就能获得随机打赏</text>
-    </block>
+
+      <view class="content" hidden="{{currentNavtab==1 ? '' : true}}">
+        <block>
+          <view class="section token_wrp">
+            <label class="title" for="token">设置问题</label>
+            <input name="question" type="text" id="question" value="{{question}}" maxlength="24" class="input token" placeholder="输入你的问题" />
+          </view>
+          <view class="section token_wrp">
+            <label class="title" for="token">设置答案</label>
+            <input name="answer" type="text" id="answer" value="{{answer}}" maxlength="24" class="input token" placeholder="输入你的答案" bindinput='answerInput' />
+          </view>
+          <view class="prompt_wrp">
+            <text class="token_prompt">小伙伴们说对口令就能获得随机打赏</text>
+          </view>
+        </block>
+      </view>
+
+    </view>
+
 
     <block>
       <view class="section token_wrp">
@@ -34,28 +73,33 @@
     </block>
 
     <view class="section token_wrp">
-      <label class="title" for="count">总数量</label>
+      <label class="title" for="count">红包总量</label>
       <span class="unit">个</span>
       <input name="count" type="number" id="count" class="input count" placeholder="请输入数量" />
     </view>
 
     <view class="adver_wrp">
-      <button plain="{{true}}" size="mini" bind:tap="uploadPic">{{!!picUrl ? '已上传图片' : '上传宣传图片'}}<text>(选填，尺寸750*190)</text></button>
+      <button plain="{{true}}" size="mini" bind:tap="uploadPic">{{!!picUrl ? '已上传图片' : '上传宣传图片'}}
+        <text>(选填，尺寸750*190)</text>
+      </button>
       <button plain="{{true}}" size="mini" class="delete" hidden="{{!picUrl}}" bind:tap="deletePic">删除</button>
-       <!-- <text class="pic_limit">*建议尺寸750*190</text>  -->
-       <input name="link" type="text" id="link" class="input link" placeholder="输入图片链接（选填，仅支持公众号文章链接）" hidden="{{!picUrl}}" />
+      <!-- <text class="pic_limit">*建议尺寸750*190</text>  -->
+      <input name="link" type="text" id="link" class="input link" placeholder="输入图片链接（选填，仅支持公众号文章链接）" hidden="{{!picUrl}}" />
     </view>
 
     <view class="section">
       <checkbox-group name="checkbox" class="checkbox_wrp" bindchange="checkboxChange">
-        <label class="open"><checkbox value="open"/>公开投放到红包广场</label>
-        <label class="anonymous"><checkbox value="anonymous"/>匿名发布</label>
+        <label class="open">
+          <checkbox value="open" />公开投放到红包广场</label>
+        <label class="anonymous">
+          <checkbox value="anonymous" />匿名发布</label>
       </checkbox-group>
     </view>
 
     <view class="btn-area">
       <checkbox-group name="cashCheck">
-        <label class="money_prompt"><checkbox value="cash"/>优先使用余额</label>
+        <label class="money_prompt">
+          <checkbox value="cash" />优先使用余额</label>
       </checkbox-group>
       <button class="submit" formType="submit">生成语音口令</button>
     </view>
@@ -67,5 +111,11 @@
   <view class="title">常用口令</view>
   <view class="list">
     <view class="item" wx:for="{{tokenArr}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-content="{{item}}" bind:tap="selectToken">{{item}}</view>
+  </view>
+</view>
+
+<view class="toast_wrp" hidden="{{hideRecordToast}}">
+  <view class="toast">
+    <image src="../../images/record.gif" mode="aspectFit"></image>
   </view>
 </view>

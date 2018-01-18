@@ -1,6 +1,7 @@
 // pages/record/record.js
 
 const app = getApp();
+const getUserInfo = require('../../utils/getUserInfo.js');
 const apiUrl = require('../../utils/constant.js');
 const pageSize = 20;
 
@@ -80,7 +81,8 @@ Page({
               money: item.money,
               time: item.createDate,
               totalCount: item.amount,
-              leftCount: item.leftAmount
+              leftCount: item.leftAmount,
+              redType: item.redType
             }
           })
           if (that.data.sendPageNum == 1){
@@ -156,12 +158,13 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    let that = this;
+    getUserInfo(app, that, null);
     this.setData({
       sendPageNum: 1,
       receivePageNum: 1
     })
     
-    let that = this;
     wx.request({
       url: apiUrl.GET_SELF_SEND_TOTAL,
       method: "GET",

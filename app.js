@@ -4,6 +4,10 @@ const apiUrl = require('utils/constant.js');
 
 App({
   onLaunch: function (msg) {
+    wx.setEnableDebug({
+      enableDebug: true
+    })
+
     let that = this;
     that.globalData.shareTicket = msg.shareTicket;
     if (msg.query.shareId){
@@ -31,49 +35,149 @@ App({
 
         wx.login({
           success: function (loginData) {
-            wx.hideLoading();
-            wx.getSetting({
-              success: res => {
-                if (res.authSetting['scope.userInfo']) {
+            // wx.getSetting({
+            //   success: res => {
+            //     if (res.authSetting['scope.userInfo']) {
                   // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
                   wx.getUserInfo({
                     data: { lang: 'zh_CN'},
                     success: res => {
+                      wx.hideLoading();
                       console.log('微信后台拉取用户信息',res)
                       // 可以将 res 发送给后台解码出 unionId
                       that.globalData.userInfo = res.userInfo
 
+                      wx.request({
+                        url: apiUrl.GET_USER_INFO,
+                        method: "GET",
+                        header: {
+                          'content-type': 'application/x-www-form-urlencoded',
+                          'sessionKey': that.globalData.sessionKey
+                        },
+                        success: function (res) {
+                          apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                          if (res.data.responseCode == 2000) {
+                            console.log('自己后台拉取用户信息pointInfo', res);
+                            that.globalData.pointInfo = {
+                              aliAccount: res.data.data.aliAccount,
+                              point: res.data.data.userPoint,
+                              money: res.data.data.userMoney,
+                              id: res.data.data.id
+                            }
+                          }
+                        }
+                      })
                       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
                       // 所以此处加入 callback 以防止这种情况
                       // if (that.userInfoReadyCallback) {
                       //   that.userInfoReadyCallback(res)
                       // }
+                    },
+                    fail: function(err){
+                      wx.hideLoading();
+                      console.log('getuserinfo错误信息',err);
+                      wx.showModal({
+                        title: '提示',
+                        content: '小程序需要获取用户信息权限才能正常使用',
+                        showCancel: false,
+                        success: function (res) {
+                          if (res.confirm) {
+                            wx.openSetting({
+                              success: function (data) {
+                                if (data) {
+                                  if (data.authSetting["scope.userInfo"] == true) {
+                                    wx.getUserInfo({
+                                      data: { lang: 'zh_CN' },
+                                      success: res => {
+                                        console.log('微信后台拉取用户信息', res)
+                                        that.globalData.userInfo = res.userInfo
+                                      }
+                                    })
+                                    wx.request({
+                                      url: apiUrl.GET_USER_INFO,
+                                      method: "GET",
+                                      header: {
+                                        'content-type': 'application/x-www-form-urlencoded',
+                                        'sessionKey': that.globalData.sessionKey
+                                      },
+                                      success: function (res) {
+                                        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+                                        if (res.data.responseCode == 2000) {
+                                          console.log('自己后台拉取用户信息pointInfo', res);
+                                          that.globalData.pointInfo = {
+                                            aliAccount: res.data.data.aliAccount,
+                                            point: res.data.data.userPoint,
+                                            money: res.data.data.userMoney,
+                                            id: res.data.data.id
+                                          }
+                                        }
+                                      }
+                                    })
+                                  }
+                                }
+                              },
+                              fail: function () {
+                                console.info("设置失败返回数据");
+                              }
+                            });
+                          }
+                        }
+                      })
                     }
                   })
 
-                  wx.request({
-                    url: apiUrl.GET_USER_INFO,
-                    method: "GET",
-                    header: {
-                      'content-type': 'application/x-www-form-urlencoded',
-                      'sessionKey': that.globalData.sessionKey
-                    },
-                    success: function (res) {
-                      apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
-                      if (res.data.responseCode == 2000) {
-                        console.log('自己后台拉取用户信息pointInfo', res);
-                        that.globalData.pointInfo = {
-                          aliAccount: res.data.data.aliAccount,
-                          point: res.data.data.userPoint,
-                          money: res.data.data.userMoney,
-                          id: res.data.data.id
-                        }
-                      }
-                    }
-                  })
-                } 
-              }
-            })
+                  
+            //     } else {
+            //       wx.showModal({
+            //         title: '提示',
+            //         content: '小程序需要获取用户信息权限才能正常使用',
+            //         showCancel: false,
+            //         success: function (res) {
+            //           if (res.confirm) {
+            //             wx.openSetting({
+            //               success: function (data) {
+            //                 if (data) {
+            //                   if (data.authSetting["scope.userInfo"] == true) {
+            //                     wx.getUserInfo({
+            //                       data: { lang: 'zh_CN' },
+            //                       success: res => {
+            //                         console.log('微信后台拉取用户信息', res)
+            //                         that.globalData.userInfo = res.userInfo
+            //                       }
+            //                     })
+            //                     wx.request({
+            //                       url: apiUrl.GET_USER_INFO,
+            //                       method: "GET",
+            //                       header: {
+            //                         'content-type': 'application/x-www-form-urlencoded',
+            //                         'sessionKey': that.globalData.sessionKey
+            //                       },
+            //                       success: function (res) {
+            //                         apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+            //                         if (res.data.responseCode == 2000) {
+            //                           console.log('自己后台拉取用户信息pointInfo', res);
+            //                           that.globalData.pointInfo = {
+            //                             aliAccount: res.data.data.aliAccount,
+            //                             point: res.data.data.userPoint,
+            //                             money: res.data.data.userMoney,
+            //                             id: res.data.data.id
+            //                           }
+            //                         }
+            //                       }
+            //                     })
+            //                   }
+            //                 }
+            //               },
+            //               fail: function() {
+            //                 console.info("设置失败返回数据");
+            //               }
+            //             });
+            //           }
+            //         }
+            //       })
+            //     }
+            //   }
+            // })
           },
           fail: function(){
             wx.hideLoading();
@@ -85,8 +189,8 @@ App({
           }
         })
       },
-      fail: function () {
-        console.log('checkSession失败fail');        
+      fail: function (err) {
+        console.log('checkSession失败fail',err);        
         //登录态过期，调用登录接口
         reLogin(that, apiUrl);
         

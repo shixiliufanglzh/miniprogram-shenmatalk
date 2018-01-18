@@ -31,8 +31,8 @@
         <span class="angle"></span>
         <view class="content_box">
           <view class="content">
-            <image mode="aspectFit" src="../../images/{{itemName.redType == 1 ? 'record_white.png' : 'answer_question.png' }}"></image>
-            <p class="msg">{{itemName.content}}</p>
+            <image mode="aspectFit" src="../../images/{{itemName.redType != 3 ? 'record_white.png' : 'answer_question.png' }}"></image>
+            <p class="msg">{{itemName.redType == 2 ? '【语音口令】' : itemName.content}}</p>
             <p class="count">{{itemName.money}}元{{itemName.amount}}份，剩余{{itemName.leftAmount}}份</p>
           </view>
           <view class="from">来自 {{itemName.isHide == 2 ? itemName.userName : '神秘人'}}</view>

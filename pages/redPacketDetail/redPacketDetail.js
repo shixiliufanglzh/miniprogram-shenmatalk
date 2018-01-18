@@ -14,6 +14,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    recordAuth: false,
     pageNum: 1,
     redId: 0,
     redPacketDetail: {},
@@ -29,44 +30,97 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    let that = this;
+    wx.getSetting({
+      success(res) {
+        if (res.authSetting['scope.record']) {
+          that.setData({ recordAuth: true })
+        }
+      }
+    })
+
     this.setData({
       redId: options.redId
     })
-    recorderManager.onStop(this.onVoiceStop);
     // recorderManager.onFrameRecorded(res => {
     //     const { frameBuffer, isLastFrame } = res
         // const jsonString = JSON.stringify(res);
     //     console.log('frameBuffer.byteLength', frameBuffer.byteLength)
     // });
   },
-
-  voiceStartRecord(e) {                
+  
+  voiceStartRecord(e) {   
     let that = this;
-    this.setData({
-      pageY: e.changedTouches[0].pageY
-    })
-    if (this.data.pointInfo.point > 0){
-      this.setData({
-        hideRecordToast: false
-      })
-      console.log('start record');
-      recorderManager.start({
-        duration: 30000,
-        format: 'mp3',
-        sampleRate: 16000,
-        encodeBitRate: 25600,  //75000
-        // frameSize: 2048,s
-        numberOfChannels: 1
+
+    //若正在播放录音，则先关闭
+    if (!!timer) {
+      clearTimeout(timer);
+    }
+    if (!!innerAudioContext) {
+      innerAudioContext.stop();
+      const initialPlayState = that.data.grabList.map(item => {
+        return {
+          ...item,
+          isPlaying: false
+        }
       });
+      that.setData({
+        grabList: initialPlayState
+      })
+    }
+
+    //判断是否有录音权限
+    if(this.data.recordAuth){
+      this.setData({
+        pageY: e.changedTouches[0].pageY
+      })
+      if (this.data.pointInfo.point > 0) {
+        this.setData({
+          hideRecordToast: false
+        })
+        console.log('start record');
+        recorderManager.start({
+          duration: 30000,
+          format: 'mp3',
+          sampleRate: 16000,
+          encodeBitRate: 25600,  //75000
+          numberOfChannels: 1
+        });
+      } else {
+        wx.showModal({
+          title: '提示',
+          content: '您的神马分不足,点【确定】查看如何获得神马分',
+          success: function (res) {
+            if (res.confirm) {
+              that.showPointInstruction();
+            } else if (res.cancel) {
+
+            }
+          }
+        })
+      }
     }else {
       wx.showModal({
         title: '提示',
-        content: '您的芝麻分不足,点【确定】查看如何获得芝麻分',
+        content: '小程序录音功能需要获取录音权限',
+        showCancel: false,
         success: function (res) {
           if (res.confirm) {
-            that.showPointInstruction();
-          } else if (res.cancel) {
-            
+            wx.openSetting({
+              success: function (data) {
+                if (data) {
+                  if (data.authSetting["scope.record"] == true) {
+                    that.setData({
+                      recordAuth: true
+                    })
+                  }else {
+                    that.setData({
+                      recordAuth: false
+                    })
+                  }
+                }
+              }
+            })
           }
         }
       })
@@ -135,7 +189,7 @@ Page({
               wx.hideLoading();
               apiUrl.responseCodeCallback(parsrData.responseCode, parsrData.responseDesc, parsrData.data);
               if (parsrData.responseCode == 2000) {
-                getUserInfo(app, that, null);
+                // getUserInfo(app, that, null);
                 wx.request({
                   url: apiUrl.WIN_RED_PACKET,
                   method: "POST",
@@ -152,7 +206,7 @@ Page({
                   },
                   success: function (res) {
                     console.log('抢红包返回数据' + JSON.stringify(res))
-                    
+                    getUserInfo(app, that, null);
                     apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                     if (res.data.responseCode == 2000) {
                       // console.log(res);
@@ -215,7 +269,11 @@ Page({
         }
       });
       that.setData({
-        grabList: initialPlayState
+        grabList: initialPlayState,
+        redPacketDetail: {
+          ...that.data.redPacketDetail,
+          isPlaying: false
+        }
       })
     }else {
       const initialPlayState = that.data.grabList.map((item,index) => {
@@ -225,7 +283,11 @@ Page({
         }
       });
       that.setData({
-        grabList: initialPlayState
+        grabList: initialPlayState,
+        redPacketDetail: {
+          ...that.data.redPacketDetail,
+          isPlaying: false
+        }
       })
 
       innerAudioContext = null;
@@ -268,9 +330,103 @@ Page({
             }
           })
         })
+        if (!!timer) {
+          clearTimeout(timer);
+        }
       })
     }
     
+  },
+
+  playVoiceToken: function(e){
+    let that = this;
+
+    if (!!timer) {
+      clearTimeout(timer);
+    }
+    if (!!innerAudioContext) {
+      innerAudioContext.stop();
+    }
+    
+    if (that.data.redPacketDetail.isPlaying) {
+      that.setData({
+        redPacketDetail: {
+          ...that.data.redPacketDetail,
+          isPlaying: false
+        }
+      })
+    } else {
+      const initialPlayState = that.data.grabList.map((item, index) => {
+        return {
+          ...item,
+          isPlaying: false
+        }
+      });
+      that.setData({
+        grabList: initialPlayState,
+        redPacketDetail: {
+          ...that.data.redPacketDetail,
+          isPlaying: false
+        }
+      })
+
+      innerAudioContext = null;
+      innerAudioContext = wx.createInnerAudioContext();
+      innerAudioContext.src = e.currentTarget.dataset.voiceUrl;
+      innerAudioContext.play();
+
+      //真机出现播放不停止的问题，用timeout兼容
+      timer = setTimeout(function () {
+        innerAudioContext.stop();
+      }, (e.currentTarget.dataset.time * 1.2 + 1) * 1000)
+
+      innerAudioContext.onPlay(() => {
+        that.setData({
+          redPacketDetail: {
+            ...that.data.redPacketDetail,
+            isPlaying: true
+          }
+        })
+        console.log('播放')
+      })
+
+      console.log('播放口令', that.data.redPacketDetail.isPlaying)
+
+      innerAudioContext.onStop(() => {
+        console.log('停止');
+        that.setData({
+          grabList: that.data.grabList.map(item => {
+            return {
+              ...item,
+              isPlaying: false
+            }
+          }),
+          redPacketDetail: {
+            ...that.data.redPacketDetail,
+            isPlaying: false
+          }
+        })
+      })
+
+      innerAudioContext.onEnded(() => {
+        console.log('自然停止');
+        that.setData({
+          grabList: that.data.grabList.map(item => {
+            return {
+              ...item,
+              isPlaying: false
+            }
+          }),
+          redPacketDetail: {
+            ...that.data.redPacketDetail,
+            isPlaying: false
+          }
+        })
+        if (!!timer) {
+          clearTimeout(timer);
+        }
+      })
+    }
   },
 
   //获取领取人列表
@@ -331,7 +487,7 @@ Page({
     })
   },
 
-  //显示芝麻分说明
+  //显示神马分说明
   showPointInstruction: function () {
     const animation = wx.createAnimation({
       duration: 500,
@@ -344,7 +500,7 @@ Page({
       pointInstruState: true
     })
   },
-  //隐藏芝麻分说明
+  //隐藏神马分说明
   hidePointInstruction: function () {
     const animation = wx.createAnimation({
       duration: 500,
@@ -397,13 +553,19 @@ Page({
           const resData = res.data.data;
           console.log(res);
           that.setData({
-            redPacketDetail: resData
+            redPacketDetail: {
+              ...resData,
+              isPlaying: false,
+              // voiceTime: Math.round(resData.voiceTime / 1000)
+              voiceTime: 5
+            }
           })
         }
       }
     })
 
     this.getGrabList(pageSize, this.data.pageNum)
+    recorderManager.onStop(this.onVoiceStop);
   },
 
   /**

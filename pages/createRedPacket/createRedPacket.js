@@ -4,6 +4,8 @@ const apiUrl = require('../../utils/constant.js');
 const getUserInfo = require('../../utils/getUserInfo.js');
 const WeCropper = require('../assets/we-cropper/we-cropper.js');
 
+let recorderManagerCreate = wx.getRecorderManager();
+
 const device = wx.getSystemInfoSync()
 const width = device.windowWidth
 const height = device.windowHeight - 100
@@ -13,6 +15,14 @@ Page({
    * 页面的初始数据
    */
   data: {
+    recordAuth: false,
+    hideRecordToast: true,
+    pageY: 0,
+    recordFileMsg: null,
+    recordMode: false,
+
+    navTab: ["口令红包", "问答红包"],
+    currentNavtab: "0",
     formId: 0,
     hideCropper: true,
     pointInfo: {},
@@ -87,6 +97,21 @@ Page({
     }
   },
 
+  switchTab: function (e) {
+    wx.pageScrollTo({
+      scrollTop: 0
+    })
+    const curIndex = e.currentTarget.dataset.idx;
+    this.setData({
+      currentNavtab: curIndex
+    });
+  },
+  changeMode: function(){
+    this.setData({
+      recordMode: !this.data.recordMode
+    });
+  },
+  
   touchStart(e) {
     this.wecropper.touchStart(e)
   },
@@ -156,6 +181,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let that = this;
+    wx.getSetting({
+      success(res) {
+        if (res.authSetting['scope.record']) {
+          that.setData({ recordAuth: true })
+        }
+      }
+    })
+
     const { cropperOpt } = this.data
 
     new WeCropper(cropperOpt)
@@ -183,12 +217,144 @@ Page({
       .updateCanvas()
       
   },
-  // bindPickerChange: function (e) {
-  //   this.setData({
-  //     selectedToken: this.data.tokenArr[e.detail.value]
-  //   })
-  // },
 
+  voiceStartRecordCRP(e) {
+    let that = this;
+
+    if (this.data.recordAuth) {
+      this.setData({
+        pageY: e.changedTouches[0].pageY
+      })
+      this.setData({
+        hideRecordToast: false
+      })
+      console.log('start record');
+      recorderManagerCreate.start({
+        duration: 30000,
+        format: 'mp3',
+        sampleRate: 16000,
+        encodeBitRate: 25600,  //75000
+        numberOfChannels: 1
+      });
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '小程序录音功能需要获取录音权限',
+        showCancel: false,
+        success: function (res) {
+          if (res.confirm) {
+            wx.openSetting({
+              success: function (data) {
+                if (data) {
+                  if (data.authSetting["scope.record"] == true) {
+                    that.setData({
+                      recordAuth: true
+                    })
+                  } else {
+                    that.setData({
+                      recordAuth: false
+                    })
+                  }
+                }
+              }
+            })
+          }
+        }
+      })
+    }
+  },
+
+  voiceEndRecordCRP(e) {
+    // console.log(e)
+    console.log('stop record');
+    this.setData({
+      hideRecordToast: true
+    })
+    recorderManagerCreate.stop();
+  },
+
+  voiceEndRecordMoveCRP(e) {
+    if (e.changedTouches[0].pageY > this.data.pageY + 7) {
+      // console.log(e)
+      console.log('stop record');
+      this.setData({
+        hideRecordToast: true
+      })
+      recorderManagerCreate.stop();
+    }
+  },
+  
+  onVoiceStopCRP(voiceInfo) {
+    let that = this;
+    const { duration, tempFilePath } = voiceInfo;
+
+    console.log(voiceInfo);
+    // 不允许小于 1 秒
+    if (duration < 1000) {
+      wx.showToast({
+        title: '录制时间太短',
+        duration: 1500,
+        mask: true,
+        image: '../../images/caution.png'
+      })
+      return;
+    } else {
+      wx.showLoading({
+        title: '录音上传中...',
+        mask: true
+      });
+
+      wx.uploadFile({
+        url: apiUrl.UPLOAD_FILE,
+        filePath: tempFilePath,
+        header: {
+          'content-type': 'multipart/form-data',
+          'sessionKey': app.globalData.sessionKey
+        },
+        name: 'file',
+        formData: {
+          'fileType': 2
+        },
+        success: function (uploadData) {
+          const parsrData = JSON.parse(uploadData.data);
+          console.log('录音上传成功', JSON.parse(uploadData.data));
+          wx.hideLoading();
+          apiUrl.responseCodeCallback(parsrData.responseCode, parsrData.responseDesc, parsrData.data);
+          if (parsrData.responseCode == 2000) {
+            // getUserInfo(app, that, null);
+            that.setData({
+              recordFileMsg : {
+                voice: parsrData.data.fileName,
+                voiceTxt: parsrData.data.videoTxt,
+                voiceTime: Math.ceil(duration),
+                sign: parsrData.data.sign,
+              }
+            })
+            console.log({
+              voice: parsrData.data.fileName,
+              voiceTxt: parsrData.data.videoTxt,
+              voiceTime: Math.ceil(duration),
+              sign: parsrData.data.sign,
+            })
+            
+          }
+        },
+        fail: function (err) {
+          wx.hideLoading();
+          wx.showModal({
+            title: 'wx.saveFile提示',
+            content: err,
+            showCancel: false,
+            success: function (res) {
+              if (res.confirm) {
+                that.onPullDownRefresh()
+              }
+            }
+          })
+        }
+      })
+    }
+  },
 
   selectMoney: function(e){
     const selectedMoney = this.data.recommendMoney[e.target.dataset.id].value;
@@ -227,6 +393,7 @@ Page({
   onShow: function () {
     let that = this;
     getUserInfo(app, that, null);
+    recorderManagerCreate.onStop(this.onVoiceStopCRP);
   },
 
   /**
@@ -272,6 +439,9 @@ Page({
   tokenInput: (e) => {
     return e.detail.value.replace(/[^\u4E00-\u9FA5]/g, '')
   },
+  answerInput: (e) => {
+    return e.detail.value.replace(/[^\u4E00-\u9FA5]/g, '')
+  },
 
   selectToken: function(e){
     this.setData({
@@ -314,6 +484,8 @@ Page({
       formId: e.detail.formId
     })
     const token = e.detail.value.token.replace(/(^\s*)|(\s*$)/g, "");
+    const question = e.detail.value.question.replace(/(^\s*)|(\s*$)/g, "");
+    const answer = e.detail.value.answer.replace(/(^\s*)|(\s*$)/g, "");
     let isOpen = 2, isAnonymous = 2, useCash = 2;
     if (e.detail.value.checkbox.indexOf('open') != -1){ isOpen = 1 }
     if (e.detail.value.checkbox.indexOf('anonymous') != -1) { isAnonymous = 1 }
@@ -321,10 +493,28 @@ Page({
     
     let isRight = false;
 
-    if (!token || token === 0) {
+    if (!token && this.data.currentNavtab == 0 && !that.data.recordMode) {
       wx.showModal({
         title: '提示',
         content: '请输入语音口令',
+        showCancel: false
+      })
+    } else if (!that.data.recordFileMsg && this.data.currentNavtab == 0 && that.data.recordMode) {
+      wx.showModal({
+        title: '提示',
+        content: '请录制语音口令',
+        showCancel: false
+      })
+    } else if (!question && this.data.currentNavtab == 1) {
+      wx.showModal({
+        title: '提示',
+        content: '请输入你的问题',
+        showCancel: false
+      })
+    } else if (!answer && this.data.currentNavtab == 1) {
+      wx.showModal({
+        title: '提示',
+        content: '请输入你的答案',
         showCancel: false
       })
     } else if (!e.detail.value.money) {
@@ -381,7 +571,9 @@ Page({
               mask: true
             });
             // if (res.confirm) {
-              const submitMsg = {
+            let submitMsg = {};
+            if (that.data.currentNavtab == 0 && !that.data.recordMode){
+              submitMsg = {
                 content: token,
                 money: e.detail.value.money,
                 amount: e.detail.value.count,
@@ -393,6 +585,37 @@ Page({
                 adverLink: that.data.picUrl ? e.detail.value.link : '',
                 prepayId: e.detail.formId
               }
+            } else if (that.data.currentNavtab == 0 && that.data.recordMode) {
+              submitMsg = {
+                content: that.data.recordFileMsg.voice,
+                convertContent: that.data.recordFileMsg.voiceTxt,
+                sign: that.data.recordFileMsg.sign,
+                voiceTime: that.data.recordFileMsg.voiceTime,
+                money: e.detail.value.money,
+                amount: e.detail.value.count,
+                isPublic: isOpen,
+                isHide: isAnonymous,
+                redType: 2,
+                payType: useCash,
+                adverPic: that.data.picUrl,
+                adverLink: that.data.picUrl ? e.detail.value.link : '',
+                prepayId: e.detail.formId
+              }
+            }else {
+              submitMsg = {
+                content: question,
+                questionResult: answer,
+                money: e.detail.value.money,
+                amount: e.detail.value.count,
+                isPublic: isOpen,
+                isHide: isAnonymous,
+                redType: 3,
+                payType: useCash,
+                adverPic: that.data.picUrl,
+                adverLink: that.data.picUrl ? e.detail.value.link : '',
+                prepayId: e.detail.formId
+              }
+            }
               console.log('发红包参数', submitMsg);
 
               wx.request({
@@ -429,6 +652,7 @@ Page({
                             icon: 'success',
                             duration: 1500,
                             complete: function () {
+                              that.init(e);
                               wx.navigateTo({
                                 url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
                               })
@@ -446,6 +670,7 @@ Page({
                         icon: 'success',
                         duration: 1500,
                         complete: function () {
+                          that.init(e);
                           wx.navigateTo({
                             url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
                           })
@@ -478,6 +703,39 @@ Page({
 
       
     }
+  },
+
+  init: function(e){
+    console.log(e.detail.value)
+    e.detail.value = {
+      answer: "",
+      cashCheck:[],
+      checkbox: [],
+      count: "",
+      link:"",
+      money: "",
+      question: "",
+      token: ""
+    }
+    
+    this.setData({
+      hideRecordToast: true,
+      recordFileMsg: null,
+      recordMode: false,
+      currentNavtab: "0",
+      hideCropper: true,
+      pointInfo: {},
+      optionsState: true,
+      selectedToken: "",
+      recommendMoney: this.data.recommendMoney.map(item => {
+        return {
+          ...item,
+          state: "unselected"
+        }
+      }),
+      selectedMoney: "",
+      picUrl: '',
+    })
   },
 
   checkboxChange: function (e) {

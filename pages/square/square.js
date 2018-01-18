@@ -30,7 +30,7 @@ Page({
     
   },
 
-  //显示芝麻分说明
+  //显示神马分说明
   showPointInstruction: function(){
     const animation = wx.createAnimation({
       duration: 500,
@@ -43,7 +43,7 @@ Page({
       pointInstruState: true
     })
   },
-  //隐藏芝麻分说明
+  //隐藏神马分说明
   hidePointInstruction: function () {
     const animation = wx.createAnimation({
       duration: 500,
