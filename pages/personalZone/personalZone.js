@@ -69,7 +69,7 @@ Page({
   showPic: function () {
     wx.previewImage({
       current: apiUrl.ADMIN + '/webr/qrbig.jpg', // 当前显示图片的http链接
-      urls: [apiUrl.ADMIN + '/webr/qrbig.jpg', apiUrl.ADMIN + '/webr/qrcode.png'] // 需要预览的图片http链接列表
+      urls: [apiUrl.ADMIN + '/webr/qrbig.jpg'] // 需要预览的图片http链接列表
     })
   },
 

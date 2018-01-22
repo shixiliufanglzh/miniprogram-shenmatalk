@@ -162,6 +162,9 @@ Page({
       })
       return;
     }else {
+      that.setData({
+        hideRecordToast: true
+      })
       wx.showLoading({
         title: '拼命抢红包中...',
         mask: true

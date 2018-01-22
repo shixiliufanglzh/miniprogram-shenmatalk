@@ -39,7 +39,7 @@
   </view>
   <view class="code">
     <image src="../../images/qr_code.png" mode="aspectFit" bind:tap="showPic"></image>
-    <text>更多精彩请关注减价公众号</text>
+    <text>更多精彩请关注官方公众号</text>
   </view>
 </view>
 

@@ -102,6 +102,7 @@
           <checkbox value="cash" />优先使用余额</label>
       </checkbox-group>
       <button class="submit" formType="submit">生成语音口令</button>
+      <text class="warning">严禁发布不良信息，一经发现，永久封号</text>
     </view>
 
   </form>
@@ -116,6 +117,7 @@
 
 <view class="toast_wrp" hidden="{{hideRecordToast}}">
   <view class="toast">
-    <image src="../../images/record.gif" mode="aspectFit"></image>
+    <image src="../../images/record.gif" mode="aspectFit" style="margin: 20rpx 40rpx 0rpx;"></image>
+    <text>{{recordTime}}</text>
   </view>
 </view>

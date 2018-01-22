@@ -90,3 +90,9 @@ page{
   height: 120rpx;
   margin: 40rpx;
 }
+.toast_wrp .toast text {
+  display: block;
+  text-align: center;
+  font-size: 28rpx;
+  color: #fff;
+}

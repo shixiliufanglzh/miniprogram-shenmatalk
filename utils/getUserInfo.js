@@ -52,6 +52,12 @@ module.exports = (app, that, callBack) => {
               success: function (data) {
                 if (data) {
                   if (data.authSetting["scope.userInfo"] == true) {
+                    // wx.showModal({
+                    //   title: '友情提示',
+                    //   showCancel: false,
+                    //   confirmText: '知道了',
+                    //   content: '神马口令仅用于娱乐休闲使用，严禁发布包含污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽删除不良信息。'
+                    // })
                     wx.getUserInfo({
                       data: { lang: 'zh_CN' },
                       success: res => {

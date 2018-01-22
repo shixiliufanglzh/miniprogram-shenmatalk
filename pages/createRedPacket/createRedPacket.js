@@ -3,9 +3,10 @@ const app = getApp();
 const apiUrl = require('../../utils/constant.js');
 const getUserInfo = require('../../utils/getUserInfo.js');
 const WeCropper = require('../assets/we-cropper/we-cropper.js');
+const f_words = require('../../utils/forbid.js');
 
 let recorderManagerCreate = wx.getRecorderManager();
-
+let recordTimer = null;
 const device = wx.getSystemInfoSync()
 const width = device.windowWidth
 const height = device.windowHeight - 100
@@ -15,6 +16,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    recordTime: 10,
     recordAuth: false,
     hideRecordToast: true,
     pageY: 0,
@@ -53,8 +55,7 @@ Page({
       "别着喇叭的哑巴不愿拿喇叭换提着獭犸的喇嘛的獭犸",
       "七巷漆匠用了西巷锡匠的锡西巷锡匠拿了七巷漆匠的漆",
       "门上吊刀刀倒吊着门上吊刀刀倒吊着门上吊刀刀倒吊着",
-      "我是单身狗抢我红包的美女快来私信我",
-      "上上下下的享受好爽啊啊啊啊啊啊啊啊啊啊啊啊啊"
+      "我是单身狗抢我红包的美女快来私信我"
     ],
     selectedToken: "",
     recommendMoney: [
@@ -220,7 +221,6 @@ Page({
 
   voiceStartRecordCRP(e) {
     let that = this;
-
     if (this.data.recordAuth) {
       this.setData({
         pageY: e.changedTouches[0].pageY
@@ -228,9 +228,16 @@ Page({
       this.setData({
         hideRecordToast: false
       })
+      recordTimer = setInterval(function () {
+        if (that.data.recordTime > 0){
+          that.setData({
+            recordTime: that.data.recordTime - 1
+          })
+        }
+      },1000)
       console.log('start record');
       recorderManagerCreate.start({
-        duration: 30000,
+        duration: 10000,
         format: 'mp3',
         sampleRate: 16000,
         encodeBitRate: 25600,  //75000
@@ -270,6 +277,8 @@ Page({
     this.setData({
       hideRecordToast: true
     })
+    clearInterval(recordTimer);
+    this.setData({ recordTime: 10 })
     recorderManagerCreate.stop();
   },
 
@@ -280,6 +289,8 @@ Page({
       this.setData({
         hideRecordToast: true
       })
+      clearInterval(recordTimer);
+      this.setData({ recordTime: 10 })
       recorderManagerCreate.stop();
     }
   },
@@ -299,6 +310,10 @@ Page({
       })
       return;
     } else {
+      that.setData({
+        hideRecordToast: true
+      })
+
       wx.showLoading({
         title: '录音上传中...',
         mask: true
@@ -491,6 +506,19 @@ Page({
     if (e.detail.value.checkbox.indexOf('anonymous') != -1) { isAnonymous = 1 }
     if (e.detail.value.cashCheck.indexOf('cash') != -1) { useCash = 1 }
     
+    for (let i = 0; i < f_words.length; i++) {
+      if ((!that.data.recordMode && this.data.currentNavtab == 0 && token.indexOf(f_words[i]) != -1 )
+        || (this.data.currentNavtab == 1 && (question.indexOf(f_words[i]) != -1 || answer.indexOf(f_words[i]) != -1) )){
+        wx.showModal({
+          title: '提示',
+          content: '内容中疑似包含污秽、色情、违禁、谣言等不良信息，请修改后再发布。',
+          showCancel: false
+        })
+
+        return;
+      }
+    }
+
     let isRight = false;
 
     if (!token && this.data.currentNavtab == 0 && !that.data.recordMode) {
@@ -669,6 +697,7 @@ Page({
                         title: '支付成功',
                         icon: 'success',
                         duration: 1500,
+                        mask: true,
                         complete: function () {
                           that.init(e);
                           wx.navigateTo({

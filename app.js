@@ -19,6 +19,20 @@ App({
       withShareTicket: true
     })
 
+    // wx.getSetting({
+    //   success: res => {
+    //     if (!res.authSetting['scope.userInfo']) {
+    //       // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+    //       wx.showModal({
+    //         title: '友情提示',
+    //         showCancel: false,
+    //         confirmText: '知道了',
+    //         content: '神马口令仅用于娱乐休闲使用，严禁发布包含污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽删除不良信息。'
+    //       })
+    //     }
+    //   }
+    // })
+
     wx.checkSession({
       success: function () {
         wx.getStorage({
@@ -86,33 +100,12 @@ App({
                               success: function (data) {
                                 if (data) {
                                   if (data.authSetting["scope.userInfo"] == true) {
-                                    wx.getUserInfo({
-                                      data: { lang: 'zh_CN' },
-                                      success: res => {
-                                        console.log('微信后台拉取用户信息', res)
-                                        that.globalData.userInfo = res.userInfo
-                                      }
-                                    })
-                                    wx.request({
-                                      url: apiUrl.GET_USER_INFO,
-                                      method: "GET",
-                                      header: {
-                                        'content-type': 'application/x-www-form-urlencoded',
-                                        'sessionKey': that.globalData.sessionKey
-                                      },
-                                      success: function (res) {
-                                        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
-                                        if (res.data.responseCode == 2000) {
-                                          console.log('自己后台拉取用户信息pointInfo', res);
-                                          that.globalData.pointInfo = {
-                                            aliAccount: res.data.data.aliAccount,
-                                            point: res.data.data.userPoint,
-                                            money: res.data.data.userMoney,
-                                            id: res.data.data.id
-                                          }
-                                        }
-                                      }
-                                    })
+                                    // wx.showModal({
+                                    //   title: '友情提示',
+                                    //   showCancel: false,
+                                    //   confirmText: '知道了',
+                                    //   content: '神马口令仅用于娱乐休闲使用，严禁发布包含污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽删除不良信息。'
+                                    // })
                                   }
                                 }
                               },
@@ -190,9 +183,17 @@ App({
         })
       },
       fail: function (err) {
-        console.log('checkSession失败fail',err);        
-        //登录态过期，调用登录接口
-        reLogin(that, apiUrl);
+        console.log('checkSession失败fail',err); 
+        wx.showModal({
+          title: '友情提示',
+          showCancel: false,
+          confirmText: '知道了',
+          content: '神马口令仅用于休闲娱乐，严禁发布污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽不良信息',
+          success: function(){
+            //登录态过期，调用登录接口
+            reLogin(that, apiUrl);
+          }
+        })    
         
       }
     })

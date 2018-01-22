@@ -185,6 +185,7 @@ form {
 .btn-area {
   margin-top: 50rpx;
   width: 690rpx;
+  text-align: center;
 }
 .btn-area .money_prompt {
   display: block;
@@ -202,6 +203,11 @@ form {
   width: 100%;
   background-color: #ec5e3a;
   color: #fff;
+}
+.btn-area .warning {
+  font-size: 26rpx;
+  line-height: 40rpx;
+  color: #888;
 }
 
 .token_options {
