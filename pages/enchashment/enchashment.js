@@ -24,8 +24,8 @@ Page({
 
   drawAll: function(){
     this.setData({
-      enchashCount: app.globalData.pointInfo.money,
-      curInputCash: app.globalData.pointInfo.money
+      enchashCount: app.globalData.pointInfo.userMoney,
+      curInputCash: app.globalData.pointInfo.userMoney
     })
     
   },
@@ -136,11 +136,7 @@ Page({
                     success: function (res) {
                       apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                       if (res.data.responseCode == 2000) {
-                        app.globalData.pointInfo = {
-                          aliAccount: res.data.data.aliAccount,
-                          point: res.data.data.userPoint,
-                          money: res.data.data.userMoney
-                        }
+                        app.globalData.pointInfo = res.data.data;
                         that.setData({
                           pointInfo: app.globalData.pointInfo,
                         })

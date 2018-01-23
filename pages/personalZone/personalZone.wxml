@@ -1,40 +1,47 @@
 <!--pages/personalZone/personalZone.wxml-->
 <view class="personal" bind:tap="{{pointInstruState ? 'hidePointInstruction' : null}}">
-  <view class="header">
-    <!-- <image src="{{userInfo.avatarUrl}}" class="bg_wall" mode="aspectFill"></image>  -->
-    <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
-    <text class="user_name">{{userInfo.nickName}}</text>
-  </view>
-  <view class="menu">
-    <view class="navigator" hover-class="none" url="" bind:tap="showPointInstruction">
-      <image mode="aspectFit" class="tab_icon" src="../../images/zone_virtual.png"></image>
-      <text class="title">神马分数</text>
-      <text class="prompt">{{pointInfo && pointInfo.point ? pointInfo.point : 0 }}</text>
+  <view class="summary">
+    <navigator class="user_info" hover-class="none" url="/pages/personalInfo/personalInfo" open-type="navigate">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      <view class="info">
+        <view class="name">{{userInfo.nickName}}</view>
+        <!-- <view class="phone">13637115342</view> -->
+      </view>
+      <image class="more" mode="aspectFit" src="../../images/arrow.png"></image>
+    </navigator>
+    <view class="account_info">
+      <view class="flex_item point" bind:tap="showPointInstruction">
+        <view class="num">{{pointInfo && pointInfo.userPoint ? pointInfo.userPoint : 0 }}</view>
+        <view class="title">神马积分</view>
+      </view>
+      <navigator hover-class="none" url="/pages/enchashment/enchashment" open-type="navigate" class="flex_item money">
+        <view class="num">￥{{pointInfo && pointInfo.userMoney ? pointInfo.userMoney : 0 }}</view>
+        <view class="title">余额提现</view>
+      </navigator>
+      <span class="devide"></span>
     </view>
-    <navigator hover-class="none" url="/pages/enchashment/enchashment" open-type="navigate">
-      <image mode="aspectFit" class="tab_icon" src="../../images/zone_wallet.png"></image>
-      <text class="title">余额提现</text>
-      <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
-    </navigator>
-    <navigator hover-class="none" url="/pages/record/record" open-type="navigate">
+  </view>
+
+  <view class="nav clearfix">
+    <navigator class="navigator" hover-class="none" url="/pages/record/record" open-type="navigate">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_record.png"></image>
-      <text class="title">红包记录</text>
-      <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
+      <view class="title">红包记录</view>
     </navigator>
-    <navigator hover-class="none" url="/pages/jianbid/jianbid" open-type="navigate">
+    <navigator class="navigator" hover-class="none" url="/pages/jianbid/jianbid" open-type="navigate">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_mall.png"></image>
-      <text class="title">减价拍商城</text>
-      <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
+      <view class="title">减价拍商城</view>
     </navigator>
-    <navigator hover-class="none" url="/pages/QA/QA" open-type="navigate">
+    <navigator class="navigator" hover-class="none" url="/pages/personalCard/personalCard?userId=3&redId=6" open-type="navigate">
+      <image mode="aspectFit" class="tab_icon" src="../../images/zone_promotion.png"></image>
+      <view class="title">推广计划</view>
+    </navigator>
+    <navigator class="navigator" hover-class="none" url="/pages/QA/QA" open-type="navigate">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_q_a.png"></image>
-      <text class="title">新手帮助</text>
-      <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
+      <view class="title">新手帮助</view>
     </navigator>
-    <button  class="navigator" open-type="contact">
+    <button class="navigator" open-type="contact" style="border-bottom:none">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_service.png"></image>
-      <text class="title">联系客服</text>
-      <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
+      <view class="title">联系客服</view>
     </button>
   </view>
   <view class="code">

@@ -18,7 +18,7 @@
   </view> -->
   <view class="header_simple">
     <view class="left">
-      <span bind:tap="showPointInstruction">我的神马分 {{pointInfo.point}} <image src="../../images/q_point.png" mode="aspectFit"></image></span>
+      <span bind:tap="showPointInstruction">我的神马分 {{pointInfo.userPoint}} <image src="../../images/q_point.png" mode="aspectFit"></image></span>
     </view>
     <view class="right">
       <label bind:tap="toggleCheck" ><checkbox value="anonymous" checked="{{showPart}}" />仅显示未领红包</label>
@@ -26,7 +26,7 @@
   </view>
   <view class="content_list">
     <view class="content_item {{itemName.leftAmount <= 0 ? 'disabled' : ''}}" wx:for="{{redPacketsList}}" wx:for-index="idx" wx:for-item="itemName" wx:key="{{itemName.id}}" hidden="{{itemName.redStatus == 1 ? false : true}}">
-      <image src="{{itemName.isHide == 2 ? itemName.userPortrait : '../../images/avatar_ano.jpg'}}" mode="aspectFill" bind:tap="viewAvatar" data-avatar="{{itemName.isHide == 2 ? itemName.userPortrait : ''}}"></image>
+      <image src="{{itemName.isHide == 2 ? itemName.userPortrait : '../../images/avatar_ano.jpg'}}" mode="aspectFill" bind:tap="viewAvatar" data-card-state="{{itemName.showStatus}}" data-red-id="{{itemName.id}}" data-user-id="{{itemName.userId}}" data-avatar="{{itemName.isHide == 2 ? itemName.userPortrait : ''}}"></image>
       <view class="buble" bind:tap="goToDetail" data-id="{{itemName.id}}">
         <span class="angle"></span>
         <view class="content_box">

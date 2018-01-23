@@ -1,0 +1,26 @@
+<!--pages/personalCard/personalCard.wxml-->
+<view class="all">
+  <view class="card">
+    <view class="card_title">个人名片</view>
+    <view class="message">
+      <image data-avatar="{{cardInfo.userPortrait}}" bind:tap="viewAvatar" src='{{cardInfo.userPortrait}}' mode="aspectFill"></image>
+      <view class='name'>{{cardInfo.nikeName}}</view>
+      <view class='phone'>{{!!cardInfo.contact ? cardInfo.contact : ''}}</view>
+    </view>
+  </view>
+
+  <view class="info">
+    <view class="column">
+      <text class="title">公司</text>
+      <text class="content">{{!!cardInfo.companyName ? cardInfo.companyName : '未填写'}}</text>
+    </view>
+    <view class="column">
+      <text class="title">微信号</text>
+      <text class="content">{{!!cardInfo.wxAccount ? cardInfo.wxAccount : '未填写'}}</text>
+    </view>
+    <view class="column">
+      <text class="title">个人简介</text>
+      <view class="instru">{{!!cardInfo.introduce ? cardInfo.introduce : ''}}</view>
+    </view>
+  </view>
+</view>

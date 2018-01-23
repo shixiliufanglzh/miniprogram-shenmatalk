@@ -74,7 +74,7 @@ Page({
       this.setData({
         pageY: e.changedTouches[0].pageY
       })
-      if (this.data.pointInfo.point > 0) {
+      if (this.data.pointInfo.userPoint > 0) {
         this.setData({
           hideRecordToast: false
         })
@@ -518,11 +518,19 @@ Page({
   },
 
   viewAvatar: function (e) {
-    if (!!e.currentTarget.dataset.avatar) {
-      wx.previewImage({
-        current: e.currentTarget.dataset.avatar, // 当前显示图片的http链接
-        urls: [e.currentTarget.dataset.avatar] // 需要预览的图片http链接列表
+    const redId = this.data.redId;
+    console.log(e.currentTarget.dataset,redId)
+    if (!!e.currentTarget.dataset.cardState == 1) {
+      wx.navigateTo({
+        url: '/pages/personalCard/personalCard?userId=' + e.currentTarget.dataset.userId + '&redId=' + redId
       })
+    } else {
+      if (!!e.currentTarget.dataset.avatar) {
+        wx.previewImage({
+          current: e.currentTarget.dataset.avatar, // 当前显示图片的http链接
+          urls: [e.currentTarget.dataset.avatar] // 需要预览的图片http链接列表
+        })
+      }
     }
   },
 

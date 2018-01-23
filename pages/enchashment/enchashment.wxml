@@ -3,7 +3,7 @@
   <view class="info">
     <view>
       <text class="title">账户余额</text>
-      <text class="left_money">{{pointInfo.money}}</text>
+      <text class="left_money">{{pointInfo.userMoney}}</text>
     </view>
     <text class="prompt">提现到支付宝账户，手续费率2%</text>
   </view>

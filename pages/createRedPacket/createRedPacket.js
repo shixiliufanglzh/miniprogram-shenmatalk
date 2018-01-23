@@ -82,6 +82,7 @@ Page({
       }
     ],
     selectedMoney: "",
+    cardSwitch: true,
     picUrl: '',
     cropperOpt: {
       id: 'cropper',

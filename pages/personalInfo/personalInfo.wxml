@@ -1,0 +1,112 @@
+<!--pages/personalInfo/personalInfo.wxml-->
+<import src="../assets/we-cropper/we-cropper.wxml" />
+
+<view class="cropper-wrapper" hidden="{{hideCropper}}">
+  <template is="we-cropper" data="{{...cropperOpt}}" />
+  <view class="cropper-buttons">
+    <view class="upload" bindtap="cancelSelected">取消</view>
+    <view class="getCropperImage" bindtap="getCropperImage">上传</view>
+  </view>
+</view>
+
+<view class="all">
+  <form bindsubmit="formSubmit" report-submit="{{true}}">
+    <view class="card">
+      <view class="card_title">个人名片</view>
+      <view class="message">
+
+        <view class="section avatar" bind:tap="uploadPic">
+          <text class="title">头像</text>
+          <image src="{{localPicPath}}" mode="aspectFill"></image>
+        </view>
+
+        <view class="section nickname">
+          <label class="title">昵称</label>
+          <input name="nickname" type="text" value="{{!!pointInfo.nikeName ? pointInfo.nikeName : ''}}" placeholder="昵称" />
+        </view>
+
+        <view class="section company">
+          <label class="title">公司名称</label>
+          <input name="company" type="text" value="{{!!pointInfo.companyName ? pointInfo.companyName : ''}}" placeholder="输入公司名称" maxlength='20' />
+        </view>
+
+        <view class="section phone">
+          <label class="title">联系电话</label>
+          <input name="phone" type="number" value="{{!!pointInfo.contact ? pointInfo.contact : ''}}" placeholder="输入联系电话" maxlength='11' />
+        </view>
+
+        <view class="section wechat">
+          <label class="title">微信号</label>
+          <input name="wechat" type="text" value="{{!!pointInfo.wxAccount ? pointInfo.wxAccount : ''}}" placeholder="输入微信号" bindinput='inputAccount' />
+        </view>
+
+        <view class="section present">
+          <label class="title">个人简介</label>
+          <textarea name="present" value="{{!!pointInfo.introduce ? pointInfo.introduce : ''}}" placeholder="输入简介" maxlength='100'></textarea>
+        </view>
+
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card_title">完善信息</view>
+      <view class="message">
+
+        <view class="section age">
+          <label class="title">年龄</label>
+          <picker bindchange="bindAgeChange" value="{{age ? (age-1) : 23}}" range="{{agePickArr}}">
+            <input name="age" type="text" value="{{age}}" placeholder="请选择您的年龄" disabled="{{true}}" />
+          </picker>
+        </view>
+
+        <view class="section gender">
+          <label class="title">性别</label>
+          <picker bindchange="bindGenderChange" value="{{gender ? gender : ''}}" range="{{genderPickArr}}">
+            <input name="gender" type="text" value="{{gender}}" placeholder="请选择您的性别" disabled="{{true}}" />
+          </picker>
+        </view>
+
+        <view class="section career">
+          <label class="title">职业</label>
+          <picker bindchange="bindCareerChange" value="{{career ? career : ''}}" range="{{careerPickArr}}">
+            <input name="career" type="text" value="{{career}}" placeholder="请选择您的职业" disabled="{{true}}" />
+          </picker>
+        </view>
+
+        <view class="section marry">
+          <label class="title">婚姻</label>
+          <picker bindchange="bindMarryChange" value="{{marry ? marry : ''}}" range="{{marryPickArr}}">
+            <input name="marry" type="text" value="{{marry}}" placeholder="请选择婚姻状态" disabled="{{true}}" />
+          </picker>
+        </view>
+
+        <view class="section edu">
+          <label class="title">学历</label>
+          <picker bindchange="bindEduChange" value="{{edu ? edu : ''}}" range="{{eduPickArr}}">
+            <input name="edu" type="text" value="{{edu}}" placeholder="请选择您的学历" disabled="{{true}}" />
+          </picker>
+        </view>
+
+        <view class="section region">
+          <label class="title">地区</label>
+          <picker mode="region" bindchange="bindRegionChange" value="{{region}}">
+            <input class="picker" name="region" type="text" value="{{region[0] ? (region[0]+','+region[1]+','+region[2]) : '' }}" placeholder="请选择省市信息" disabled="{{true}}" />
+          </picker>
+        </view>
+
+        <view class="section interest">
+          <label class="title">兴趣</label>
+          <input type="text" placeholder="请选择您的兴趣(最多5项)" disabled="{{true}}"/>
+          <view class="interests_list clearfix">
+            <text wx:for="{{interestsList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectInterest">{{item.value}}</text>
+          </view>
+        </view>
+
+      </view>
+    </view>
+
+    <view class="btn-area">
+      <button class="submit" formType="submit">保存</button>
+    </view>
+  </form>
+</view>

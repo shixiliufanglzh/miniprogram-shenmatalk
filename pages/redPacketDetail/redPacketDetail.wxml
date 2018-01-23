@@ -2,7 +2,7 @@
 <view class="all" bind:tap="{{pointInstruState ? 'hidePointInstruction' : null}}">
   <view class="header">
     <image class="avatar" src="{{redPacketDetail.isHide == 1 ? '../../images/avatar_ano.jpg' : redPacketDetail.userPortrait}}" 
-    bind:tap="viewAvatar" data-avatar="{{redPacketDetail.isHide == 1 ? '' : redPacketDetail.userPortrait}}" mode="aspectFill"></image>
+    data-card-state="{{redPacketDetail.showStatus}}" data-user-id="{{redPacketDetail.userId}}" bind:tap="viewAvatar" data-avatar="{{redPacketDetail.isHide == 1 ? '' : redPacketDetail.userPortrait}}" mode="aspectFill"></image>
     <text class="name">{{redPacketDetail.isHide == 1 ? '神秘人' : redPacketDetail.userName}}</text>
 
     <view class="token_wrp" hidden="{{redPacketDetail.redType == 2}}">
@@ -20,7 +20,7 @@
     <button class="record finish" wx:elif="{{redPacketDetail.leftAmount <= 0}}" type="primary">赏金已经被抢光了</button>
     <button class="record finish" wx:elif="{{redPacketDetail.leftAmount > 0 && redPacketDetail.winStatus == 1}}" type="primary">您已经领过该红包</button>
 
-    <text class="prompt">抢广场红包每次消耗1神马分，神马分余额：{{pointInfo.point}}</text>
+    <text class="prompt">抢广场红包每次消耗1神马分，神马分余额：{{pointInfo.userPoint}}</text>
     <view class="interaction flex-wrp">
       <button class="flex-tab flex-item" bind:tap="goToEnchash"><image src="../../images/inter_cash.png" mode="aspectFit"></image>去提现</button>
       <button class="flex-tab flex-item" bind:tap="goToCreate"><image src="../../images/inter_record.png" mode="aspectFit"></image>我也玩</button>

@@ -1,0 +1,65 @@
+/* pages/personalCard/personalCard.wxss */
+.all {
+  
+}
+.all .card {
+  background-color: #fff;
+  margin-bottom: 16rpx;
+  padding-top: 20rpx;
+}
+.all .card .card_title {
+  font-size: 26rpx;
+  color: #a9a9a9;
+  line-height: 60rpx;
+  padding-left: 30rpx;
+  border-bottom: 1px solid #eee;
+}
+.all .card .message {
+  padding: 30rpx 30rpx 30rpx 170rpx;
+  position: relative;
+  height: 120rpx;
+}
+.all .card .message image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 10rpx;
+  position: absolute;
+  left: 30rpx;
+  top: 30rpx;
+}
+.all .card .message .name {
+  font-size: 34rpx;
+  margin-top: 16rpx;
+  color: #000;
+}
+.all .card .message .phone {
+  font-size: 26rpx;
+  line-height: 48rpx;
+  color: #a9a9a9;
+}
+
+.all .info {
+  padding-left: 30rpx;
+  background-color: #fff;
+}
+.all .info .column {
+  padding-right: 30rpx;
+  line-height: 88rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+.all .info .column .title {
+  font-size: 34rpx;
+  color: #000;
+}
+.all .info .column .content {
+  font-size: 32rpx;
+  color: #bfbfbf;
+  float: right;
+}
+.all .info .column .instru {
+  font-size: 28rpx;
+  color: #888;
+  line-height: 1.2em;
+  text-indent: 2em;
+  margin-bottom: 30rpx;
+}

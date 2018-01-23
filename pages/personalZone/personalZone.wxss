@@ -1,105 +1,109 @@
 /* pages/personalZone/personalZone.wxss */
-.header {
-  height: 200rpx;
-  position: relative;
-  padding-left: 210rpx;
-  background-color: #fff; 
-  margin-bottom: 10rpx;
-  overflow: hidden;
-}
-.header .bg_wall {
-  width: 110%;
-  height: 110%;
-  position: absolute;
-  top: -5%;
-  left: -5%;
-  z-index: -1;
-  -webkit-filter: blur(10px); /* Chrome, Opera */
-  -moz-filter: blur(10px);
-  -ms-filter: blur(10px);    
-  filter: blur(10px);
-  opacity: 0.5;
-}
-.header .avatar {
-  position: absolute;
-  width: 140rpx;
-  height: 140rpx;
-  border-radius: 50%;
-  left: 40rpx;
-  top: 30rpx;
-}
-.header .user_name {
-  font-size: 30rpx;
-  line-height: 200rpx;
-}
-
-.menu {
+.summary {
+  padding: 0 30rpx;
   background-color: #fff;
-  margin-bottom: 10rpx;
+  margin-bottom: 16rpx;
 }
-.menu navigator {
-  height: 88rpx;
-  border-bottom: 1px solid #f0f0f0;
+.summary .user_info {
+  height: 176rpx;
+  padding-left: 160rpx;
   position: relative;
-  padding-left: 30rpx;
+  border-bottom: 1px #e5e5e5 solid;
 }
-.menu navigator .tab_icon {
-  width: 58rpx;
-  height: 58rpx;
-  vertical-align: middle;
-}
-.menu navigator .title {
-  line-height: 88rpx;
-  font-size: 34rpx;
-  margin-left: 20rpx;
-}
-.menu navigator .arrow {
-  width: 16rpx;
-  height: 26rpx;
+.summary .user_info .avatar {
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 10rpx;
   position: absolute;
-  right: 30rpx;
-  top: 31rpx;
+  top: 22rpx;
+  left: 0;
 }
-
-.menu .navigator {
-  height: 88rpx;
-  border-bottom: 1px solid #f0f0f0;
-  position: relative;
-  padding-left: 30rpx;
+.summary .user_info .info {
+  padding-top: 60rpx; 
 }
-.menu button.navigator {
-  border: none;
-  text-align: left;
-  background-color: #fff;
-  padding: 0 0 0 30rpx;
+.summary .user_info .info .name {
+  font-size: 36rpx;
+  color: #000;
 }
-.menu button.navigator::after {
-  border: none;
-}
-.menu .navigator .tab_icon {
-  width: 58rpx;
-  height: 58rpx;
-  vertical-align: middle;
-}
-.menu .navigator .title {
-  line-height: 88rpx;
-  font-size: 34rpx;
-  margin-left: 20rpx;
-}
-.menu .navigator .prompt {
-  position: absolute;
-  right: 30rpx;
-  line-height: 88rpx;
-  color: #EC5E3A;
+.summary .user_info .info .phone {
   font-size: 26rpx;
+  color: #aaa;
+  margin-top: 14rpx;
 }
-.menu .navigator .arrow {
+.summary .user_info .more {
   width: 16rpx;
   height: 26rpx;
   position: absolute;
-  right: 30rpx;
-  top: 31rpx;
+  right: 0rpx;
+  top: 75rpx;
 }
+.summary .account_info {
+  height: 110rpx;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding-top: 32rpx;
+  position: relative;
+}
+.summary .account_info .flex_item {
+  flex-grow: 1;
+  text-align: center;
+}
+.summary .account_info .devide {
+  position: absolute;
+  width: 2rpx;
+  height: 60rpx;
+  background-color: #e5e5e5;
+  left: 50%;
+  margin-left: 1px;
+  top: 45rpx;
+}
+.summary .account_info .num {
+  font-size: 34rpx;
+  color: #000;
+}
+.summary .account_info .title {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+
+.nav {
+  background-color: #fff;
+  /* min-height: 416rpx; */
+}
+.nav .navigator {
+  background-color: #fff;
+  width: 188rpx;
+  height: 160rpx;
+  padding: 10rpx 0;
+  float: left;
+  text-align: center;
+  font-size: 0;
+  border-right: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  box-sizing: border-box;
+  border-radius: 0;
+  /* margin: -1px; */
+}
+.nav .navigator:nth-child(4n) {
+  margin-right: -2px;
+}
+.nav button.navigator::after {
+  border: none;
+}
+.nav navigator image,
+.nav .navigator image {
+  width: 84rpx;
+  height: 84rpx;
+}
+.nav navigator .title,
+.nav .navigator .title {
+  font-size: 26rpx;
+  color: #000;
+  line-height: 60rpx;
+}
+
 
 .code {
   /* background-color: #fff; */

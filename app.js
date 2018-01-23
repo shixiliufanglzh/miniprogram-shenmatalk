@@ -72,12 +72,7 @@ App({
                           apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                           if (res.data.responseCode == 2000) {
                             console.log('自己后台拉取用户信息pointInfo', res);
-                            that.globalData.pointInfo = {
-                              aliAccount: res.data.data.aliAccount,
-                              point: res.data.data.userPoint,
-                              money: res.data.data.userMoney,
-                              id: res.data.data.id
-                            }
+                            that.globalData.pointInfo = res.data.data
                           }
                         }
                       })

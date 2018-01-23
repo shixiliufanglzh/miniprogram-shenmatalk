@@ -35,6 +35,14 @@ const apiUrl = {
   GET_ADVER: apiAdmin + "/util/getAvder.jhtml",  //获取广告链接
   GET_FORM_ID: apiAdmin + "/util/getFormId.jhtml",  //获取微信formId
 
+  EDIT_USER_INFO: apiAdmin + "/user/editUserInfo.jhtml",  //编辑用户信息
+  ADD_PLAN: apiAdmin + "/adverPlan/addPlan.jhtml",  //添加推广计划
+  DEL_PLAN: apiAdmin + "/adverPlan/delPlan.jhtml",  //删除推广计划
+  EDIT_PLAN: apiAdmin + "/adverPlan/editPlan.jhtml",  //修改推广计划
+  GET_PLAN_LIST: apiAdmin + "/adverPlan/getPlanList.jhtml",  //获取用户推广计划列表
+  GET_PLAN_DETAIL: apiAdmin + "/adverPlan/getPlanDetail.jhtml",  //获取用户推广计划详情
+  GET_USER_CARD: apiAdmin + "/red/getRedUserCard.jhtml",  //获取红包用户名片
+
   responseCodeCallback: function (responseCode, responseDesc, data, that){
     // console.log('错误码', responseCode, responseDesc, data)
     switch(responseCode){
@@ -203,12 +211,7 @@ function register(app, apiUrl, that){
                       apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                       if (res.data.responseCode == 2000) {
                         console.log('constant页面pointInfo', res, 'that', that);
-                        _app.globalData.pointInfo = {
-                          aliAccount: res.data.data.aliAccount,
-                          point: res.data.data.userPoint,
-                          money: res.data.data.userMoney,
-                          id: res.data.data.id
-                        }
+                        _app.globalData.pointInfo = res.data.data
                         if (that && that.onShow) that.onShow();
                       }
                     }
@@ -263,12 +266,7 @@ function register(app, apiUrl, that){
                               apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
                               if (res.data.responseCode == 2000) {
                                 console.log('自己后台拉取用户信息pointInfo', res);
-                                that.globalData.pointInfo = {
-                                  aliAccount: res.data.data.aliAccount,
-                                  point: res.data.data.userPoint,
-                                  money: res.data.data.userMoney,
-                                  id: res.data.data.id
-                                }
+                                that.globalData.pointInfo = res.data.data
                               }
                             }
                           })

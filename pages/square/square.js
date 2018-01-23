@@ -58,11 +58,17 @@ Page({
   },
 
   viewAvatar: function(e){
-    if (!!e.currentTarget.dataset.avatar){
-      wx.previewImage({
-        current: e.currentTarget.dataset.avatar, // 当前显示图片的http链接
-        urls: [e.currentTarget.dataset.avatar] // 需要预览的图片http链接列表
+    if (!!e.currentTarget.dataset.cardState == 1){
+      wx.navigateTo({
+        url: '/pages/personalCard/personalCard?userId=' + e.currentTarget.dataset.userId + '&redId=' + e.currentTarget.dataset.redId
       })
+    }else {
+      if (!!e.currentTarget.dataset.avatar){
+        wx.previewImage({
+          current: e.currentTarget.dataset.avatar, // 当前显示图片的http链接
+          urls: [e.currentTarget.dataset.avatar] // 需要预览的图片http链接列表
+        })
+      }
     }
   },
   

@@ -1,0 +1,86 @@
+/* pages/personalInfo/personalInfo.wxss */
+.all {
+  
+}
+.all .card {
+  background-color: #fff;
+  margin-bottom: 16rpx;
+  padding-top: 20rpx;
+}
+.all .card .card_title {
+  font-size: 26rpx;
+  color: #a9a9a9;
+  line-height: 60rpx;
+  padding-left: 30rpx;
+  border-bottom: 1px solid #eee;
+}
+.all .card .message {
+  padding: 0 30rpx;
+}
+.all .card .message .section {
+  border-bottom: 1px solid #eee;
+}
+.all .card .message .title {
+  font-size: 36rpx;
+  line-height: 88rpx;
+  color: #000;
+}
+.all .card .message input {
+  width: 500rpx;
+  line-height: 88rpx;
+  height: 88rpx;
+  vertical-align: middle;
+  text-align: right;
+  float: right; 
+  font-size: 32rpx;  
+}
+.all .card .message textarea {
+  border: 1px solid #f0f0f0;
+  border-radius: 10rpx;
+  width: 690rpx;
+  height: 200rpx;
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
+  padding: 20rpx;
+  font-size: 32rpx;
+}
+.all .card .message picker {
+  width: 500rpx;
+  line-height: 88rpx;
+  height: 88rpx;
+  vertical-align: middle;
+  text-align: right;
+  float: right; 
+  font-size: 32rpx;  
+}
+.all .card .message .avatar image {
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 10rpx;
+  float: right;
+  margin-top: 24rpx;
+}
+.all .card .message .avatar .title {
+  line-height: 178rpx;
+}
+.all .card .message .interest .interests_list {
+  padding-bottom: 20rpx;
+}
+.all .card .message .interest .interests_list text {
+  background-color: #f0f0f0;
+  padding: 0 10rpx;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  color: #888;
+  float: left;
+  margin: 10rpx 16rpx;
+  border: 1px solid #f0f0f0;
+}
+.all .card .message .interest .interests_list text.selected {
+  border: 1px solid #EC5E3A;
+  color: #EC5E3A;
+}
+.btn-area {
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}

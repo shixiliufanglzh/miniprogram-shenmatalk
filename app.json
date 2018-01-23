@@ -12,7 +12,9 @@
     "pages/share/share",
     "pages/webView/webView",
     "pages/suggestion/suggestion",
-    "pages/jianbid/jianbid"
+    "pages/jianbid/jianbid",
+    "pages/personalInfo/personalInfo",
+    "pages/personalCard/personalCard"
   ],
   "window": {
     "backgroundTextStyle": "light",
