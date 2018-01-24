@@ -363,13 +363,13 @@ Page({
         content: '同一个省份下的城市只能全选或者选择任意5项',
         showCancel: false
       })
-    } else if (!citySelArr[e.currentTarget.dataset.ci] && cityCount <= 0 
-      && !this.data.provinceData[e.currentTarget.dataset.pi].selectAll ) {
-      wx.showModal({
-        title: '提示',
-        content: '同一个省份下的城市只能全选或者选择任意5项',
-        showCancel: false
-      })
+    // } else if (!citySelArr[e.currentTarget.dataset.ci] && cityCount <= 0 
+    //   && !this.data.provinceData[e.currentTarget.dataset.pi].selectAll ) {
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '同一个省份下的城市只能全选或者选择任意5项',
+    //     showCancel: false
+    //   })git
     }else {
       citySelArr[e.currentTarget.dataset.ci] = !citySelArr[e.currentTarget.dataset.ci];
       const provinceData = this.data.provinceData.map((item,idx) => {
