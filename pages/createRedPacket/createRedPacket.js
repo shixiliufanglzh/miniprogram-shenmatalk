@@ -182,6 +182,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if(app.globalData.pointInfo.showStatus == 1){
+      wx.showModal({
+        title: '友情提示',
+        showCancel: false,
+        confirmText: '知道了',
+        content: '神马口令仅用于娱乐休闲使用，严禁发布包含污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽删除不良信息。'
+      })
+    }
+
     let that = this;
     wx.getSetting({
       success(res) {
@@ -588,7 +597,6 @@ Page({
     }
     
     if(isRight) {
-
       wx.showModal({
         title: '提示',
         content: !!this.data.picUrl ? '添加宣传图片的推广红包需额外加收10%服务费，普通红包不收取服务费' : '确认支付'+ e.detail.value.money+'元',

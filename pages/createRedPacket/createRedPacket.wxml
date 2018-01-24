@@ -36,8 +36,7 @@
 
           <view class="prompt_wrp">
             <text class="token_prompt">小伙伴们说对口令就能获得随机打赏</text>
-             <button class="mode" plain="{{true}}" size="mini" bind:tap="changeMode">改为{{!recordMode ? '录音模式' : '文字模式'}}
-            </button> 
+            <button wx:if="{{ pointInfo.showStatus == 2 }}" class="mode" plain="{{true}}" size="mini" bind:tap="changeMode">改为{{!recordMode ? '录音模式' : '文字模式'}}</button>  
           </view>
         </block>
       </view>
@@ -91,8 +90,7 @@
       <checkbox-group name="checkbox" class="checkbox_wrp" bindchange="checkboxChange">
         <label class="open">
           <checkbox value="open" />公开投放到红包广场</label>
-        <label class="anonymous">
-          <checkbox value="anonymous" />匿名发布</label>
+         <!-- <label class="anonymous"><checkbox value="anonymous" />匿名发布</label>  -->
       </checkbox-group>
     </view>
 

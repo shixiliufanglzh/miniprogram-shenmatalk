@@ -21,7 +21,7 @@
       <text class="title">红包记录</text>
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
     </navigator>
-    <navigator hover-class="none" url="/pages/jianbid/jianbid" open-type="navigate">
+    <navigator hover-class="none" url="/pages/jianbid/jianbid" open-type="navigate" wx:if="{{ pointInfo.showStatus == 2 }}">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_mall.png"></image>
       <text class="title">减价拍商城</text>
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
@@ -37,7 +37,7 @@
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
     </button>
   </view>
-  <view class="code">
+  <view class="code" wx:if="{{ pointInfo.showStatus == 2 }}">
     <image src="../../images/qr_code.png" mode="aspectFit" bind:tap="showPic"></image>
     <text>更多精彩请关注官方公众号</text>
   </view>

@@ -60,7 +60,8 @@ module.exports = (app, apiUrl, that) => {
                           aliAccount: res.data.data.aliAccount,
                           point: res.data.data.userPoint,
                           money: res.data.data.userMoney,
-                          id: res.data.data.id
+                          id: res.data.data.id,
+                          showStatus: res.data.data.showStatus
                         }
                       }
                     }
@@ -107,7 +108,8 @@ module.exports = (app, apiUrl, that) => {
                                         aliAccount: res.data.data.aliAccount,
                                         point: res.data.data.userPoint,
                                         money: res.data.data.userMoney,
-                                        id: res.data.data.id
+                                        id: res.data.data.id,
+                                        showStatus: res.data.data.showStatus
                                       }
                                     }
                                   }
