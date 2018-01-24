@@ -77,7 +77,7 @@
       <input name="count" type="number" id="count" class="input count" placeholder="请输入数量" />
     </view>
 
-    <view class="adver_wrp">
+    <view class="adver_wrp" wx:if="{{ pointInfo.showStatus == 2 }}">
       <button plain="{{true}}" size="mini" bind:tap="uploadPic">{{!!picUrl ? '已上传图片' : '上传宣传图片'}}
         <text>(选填，尺寸750*190)</text>
       </button>
