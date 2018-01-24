@@ -123,9 +123,9 @@
         <view class="province_wrap" wx:for="{{provinceData}}" wx:key="{{p.pk}}" wx:for-item="p" wx:for-index="pi">
           <view class="province">
             <text class="name">{{p.name}}</text>
-            <label class="check">
+            <label class="check" data-pi="{{pi}}" bind:tap="selectProvince">
               <!-- <checkbox value="{{p.name}}" checked="{{true}}" readonly="readonly" data-pi="{{pi}}" bind:tap="selectProvince" />全选 -->
-              <image class="check_pic" src="../../images/{{p.selectAll ? 'man.png' : 'woman.png'}}" mode='aspectfit' data-pi="{{pi}}" bind:tap="selectProvince" />全选
+              <image class="check_pic" src="../../images/{{p.selectAll ? 'selected.png' : 'unselected.png'}}" mode='aspectfit'  />全选
             </label>
           </view>
           <view class="city_list">

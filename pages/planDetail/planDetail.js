@@ -347,12 +347,24 @@ Page({
     // console.log(e);
     let citySelArr = [...this.data.provinceData[e.currentTarget.dataset.pi].selected];
     //检查同一个省份下已有几个城市选中
-    let selCount = 0;
+    let cityCount = 0;
     for (let i = 0; i < citySelArr.length; i++ ){
-      if (citySelArr[i]){ selCount ++ }
+      if (citySelArr[i]){ cityCount ++ }
     }
 
-    if (!citySelArr[e.currentTarget.dataset.ci] && selCount >=5){
+    let proCount = 0;
+    for (let i = 0; i < provinces.length; i++) {
+      if (provinces[i].selectAll || provinces[i].selected.indexOf(true) != -1) proCount++
+    }
+
+    if (!citySelArr[e.currentTarget.dataset.ci] && cityCount >=5){
+      wx.showModal({
+        title: '提示',
+        content: '同一个省份下的城市只能全选或者选择任意5项',
+        showCancel: false
+      })
+    } else if (!citySelArr[e.currentTarget.dataset.ci] && cityCount <= 0 
+      && !this.data.provinceData[e.currentTarget.dataset.pi].selectAll ) {
       wx.showModal({
         title: '提示',
         content: '同一个省份下的城市只能全选或者选择任意5项',

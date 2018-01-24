@@ -132,8 +132,11 @@
   margin-top: -6rpx;
 } */
 .region_sel .region_list .province_wrap .province .check_pic {
-  width: 36rpx;
-  height: 36rpx;
+  width: 30rpx;
+  height: 30rpx;
+  vertical-align: middle;
+  margin-top: -6rpx;
+  margin-right: 10rpx;
 }
 .region_sel .region_list .province_wrap .city_list {
   padding: 20rpx;
