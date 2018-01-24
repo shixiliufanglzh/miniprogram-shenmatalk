@@ -318,6 +318,11 @@ Page({
     if (e.detail.value.edu) {
       sendPara.education = e.detail.value.edu;
     }
+    if (this.data.region) {
+      sendPara.province = this.data.region[0];
+      sendPara.city = this.data.region[1];
+      sendPara.district = this.data.region[2];
+    }
     if (this.data.interestsList.length > 0) {
       let addInterests = [];
       for (let i = 0; i < this.data.interestsList.length; i++){
@@ -376,7 +381,7 @@ Page({
       ageArr.push(i);
     }
     const pointInfo = app.globalData.pointInfo;
-    const interets = !!pointInfo.interest ? pointInfo.interest.split(',') : ''
+    const interets = !!pointInfo.interest ? pointInfo.interest.split(',') : '';
     this.setData({
       agePickArr: ageArr,
       pointInfo: pointInfo,

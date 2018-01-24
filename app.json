@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/planDetail/planDetail",
     "pages/createRedPacket/createRedPacket",
     "pages/square/square",
     "pages/ranking/ranking",
@@ -14,7 +15,8 @@
     "pages/suggestion/suggestion",
     "pages/jianbid/jianbid",
     "pages/personalInfo/personalInfo",
-    "pages/personalCard/personalCard"
+    "pages/personalCard/personalCard",
+    "pages/plan/plan"
   ],
   "window": {
     "backgroundTextStyle": "light",

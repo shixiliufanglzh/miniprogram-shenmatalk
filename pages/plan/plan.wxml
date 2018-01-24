@@ -1,0 +1,22 @@
+<!--pages/plan/plan.wxml-->
+<view class="all">
+  <view class="plan_list" hidden="{{!planList}}">
+    <navigator class="plan clearfix" hover-class="none" url="/pages/planDetail/planDetail?planId={{item.id}}" open-type="navigate"  wx:for="{{planList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{item.id}}">
+      <view class="name">{{item.planName}}</view>
+      <button plain="{{true}}" size="mini" data-plan-id="{{item.id}}" catchtap="deletePlan">删除</button>
+    </navigator>
+    <!-- <navigator class="plan clearfix">
+      <view class="name">推广计划名称</view>
+      <button plain="{{true}}" size="mini">删除</button>
+    </navigator>
+    <navigator class="plan clearfix">
+      <view class="name">推广计划名称</view>
+      <button plain="{{true}}" size="mini">删除</button>
+    </navigator>  -->
+  </view>
+  <navigator hover-class="none" url="/pages/planDetail/planDetail" open-type="navigate" class="add">
+    <!-- <image></image> -->
+    <span>+</span>
+    <text>新增推广计划</text>
+  </navigator>
+</view>

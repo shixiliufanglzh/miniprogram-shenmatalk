@@ -31,7 +31,7 @@
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_mall.png"></image>
       <view class="title">减价拍商城</view>
     </navigator>
-    <navigator class="navigator" hover-class="none" url="/pages/personalCard/personalCard?userId=3&redId=6" open-type="navigate">
+    <navigator class="navigator" hover-class="none" url="/pages/plan/plan" open-type="navigate">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_promotion.png"></image>
       <view class="title">推广计划</view>
     </navigator>

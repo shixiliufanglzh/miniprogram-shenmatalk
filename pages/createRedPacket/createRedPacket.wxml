@@ -78,10 +78,10 @@
       <input name="count" type="number" id="count" class="input count" placeholder="请输入数量" />
     </view>
 
-    <view class="section token_wrp">
+    <!-- <view class="section token_wrp">
       <label class="title" for="card">是否公开个人名片</label>
       <switch name="card" class="card_switch" checked="{{cardSwitch}}"/>
-    </view>
+    </view> -->
 
     <view class="adver_wrp">
       <button plain="{{true}}" size="mini" bind:tap="uploadPic">{{!!picUrl ? '已上传图片' : '上传宣传图片'}}
@@ -97,7 +97,7 @@
         <label class="open">
           <checkbox value="open" />公开投放到红包广场</label>
         <label class="anonymous">
-          <checkbox value="anonymous" />匿名发布</label>
+          <checkbox value="anonymous" />公开个人名片</label>
       </checkbox-group>
     </view>
 

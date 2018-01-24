@@ -11,7 +11,7 @@
       <view wx:if="{{sendRank.length <= 0}}" class="no_rank">暂无排名</view>
       <view class="item my_position" wx:else>
         <span class="order"></span>
-        <image mode="aspectFill" src="{{userSend.avatar}}"></image>
+        <image mode="aspectFill" data-avatar="{{userSend.avatar}}" bind:tap="viewAvatar" src="{{userSend.avatar}}"></image>
         <view class="info">
           <text class="name">{{userSend.name}}</text>
           <text class="desc {{Number(userSend.rank)>3 ? '' : 'active'}}">{{userSend.rank ? '第'+userSend.rank+'名' : '未上榜'}}</text>
@@ -22,7 +22,7 @@
       <view class="total_list" wx:if="{{sendRank}}" wx:for="{{sendRank}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}">
         <view class="item {{idx>2 ? '' : 'top'}}">
           <span class="order">{{idx + 1}}</span>
-          <image mode="aspectFill" src="{{item.avatar}}"></image>
+          <image mode="aspectFill" data-avatar="{{item.avatar}}" bind:tap="viewAvatar" src="{{item.avatar}}"></image>
           <view class="info">
             <text class="name">{{item.name}}</text>
           </view>
@@ -35,7 +35,7 @@
       <view wx:if="{{receiveRank.length <= 0}}" class="no_rank">暂无排名</view>
       <view class="item my_position" wx:else>
         <span class="order"></span>
-        <image mode="aspectFill" src="{{userReceive.avatar}}"></image>
+        <image mode="aspectFill" data-avatar="{{userReceive.avatar}}" bind:tap="viewAvatar" src="{{userReceive.avatar}}"></image>
         <view class="info">
           <text class="name">{{userReceive.name}}</text>
           <text class="desc {{Number(userReceive.rank)>3 ? '' : 'active'}}">{{userReceive.rank ? '第'+userReceive.rank+'名' : '未上榜'}}</text>
@@ -46,7 +46,7 @@
       <view class="total_list" wx:if="{{receiveRank}}" wx:for="{{receiveRank}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}">
         <view class="item {{idx>2 ? '' : 'top'}}">
           <span class="order">{{idx + 1}}</span>
-          <image mode="aspectFill" src="{{item.avatar}}"></image>
+          <image mode="aspectFill" data-avatar="{{item.avatar}}" bind:tap="viewAvatar" src="{{item.avatar}}"></image>
           <view class="info">
             <text class="name">{{item.name}}</text>
           </view>

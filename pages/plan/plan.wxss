@@ -1,0 +1,38 @@
+/* pages/plan/plan.wxss */
+.all {
+  background-color: #fff;
+  padding: 0 30rpx;
+}
+.plan_list .plan {
+  border-bottom: 1px solid #e5e5e5;
+}
+.plan_list .plan .name {
+  font-size: 34rpx;
+  line-height: 120rpx;
+  float: left;
+}
+.plan_list .plan button {
+  float: right;
+  margin-top: 30rpx;
+  color: #999;
+  border-color: #999;
+}
+
+.add {
+  text-align: center;
+  font-size: 0;
+}
+.add span {
+  display: inline-block;
+  color: #ccc;
+  font-size: 80rpx;
+  line-height: 80rpx;
+  vertical-align: middle;
+  margin-top: -42rpx;
+  font-weight: 300;
+}
+.add text {
+  display: inline-block;
+  line-height: 120rpx;
+  font-size: 34rpx;
+}

@@ -82,7 +82,7 @@ Page({
       }
     ],
     selectedMoney: "",
-    cardSwitch: true,
+    // cardSwitch: true,
     picUrl: '',
     cropperOpt: {
       id: 'cropper',
@@ -607,7 +607,7 @@ Page({
                 money: e.detail.value.money,
                 amount: e.detail.value.count,
                 isPublic: isOpen,
-                isHide: isAnonymous,
+                showStatus: isAnonymous,
                 redType: 1,
                 payType: useCash,
                 adverPic: that.data.picUrl,
@@ -623,7 +623,7 @@ Page({
                 money: e.detail.value.money,
                 amount: e.detail.value.count,
                 isPublic: isOpen,
-                isHide: isAnonymous,
+                showStatus: isAnonymous,
                 redType: 2,
                 payType: useCash,
                 adverPic: that.data.picUrl,
@@ -637,11 +637,13 @@ Page({
                 money: e.detail.value.money,
                 amount: e.detail.value.count,
                 isPublic: isOpen,
-                isHide: isAnonymous,
+                showStatus: isAnonymous,
+                // isHide: isAnonymous,
                 redType: 3,
                 payType: useCash,
                 adverPic: that.data.picUrl,
                 adverLink: that.data.picUrl ? e.detail.value.link : '',
+                // showStatus: e.detail.value.card ? 1 : 2,
                 prepayId: e.detail.formId
               }
             }

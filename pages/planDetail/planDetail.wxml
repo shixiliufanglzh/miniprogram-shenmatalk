@@ -1,0 +1,138 @@
+<!--pages/planDetail/planDetail.wxml-->
+<import src="../assets/we-cropper/we-cropper.wxml" />
+
+<view class="cropper-wrapper" hidden="{{hideCropper}}">
+  <template is="we-cropper" data="{{...cropperOpt}}" />
+  <view class="cropper-buttons">
+    <view class="upload" bindtap="cancelSelected">取消</view>
+    <view class="getCropperImage" bindtap="getCropperImage">上传</view>
+  </view>
+</view>
+<view class="static">
+  <view class="all">
+    <form bindsubmit="formSubmit" report-submit="{{true}}">
+      <view class="card">
+        <view class="message">
+          
+          <view class="section planName">
+            <label class="title">计划名称</label>
+            <input name="planName" type="text" value="{{}}" placeholder="输入计划名称" maxlength='20' />
+          </view>
+
+          <view class="section picture">
+            <label class="title" bind:tap="uploadPic" hidden='{{localPicPath}}'>上传图片</label>
+            <label class="title has_pic" bind:tap="deletePic" hidden='{{!localPicPath}}'>删除图片</label>
+            <input type="text" placeholder="选填，建议尺寸750*190" disabled='{{true}}'/>
+          </view>
+
+        </view>
+        <view hidden="{{!localPicPath}}">
+          <image src="{{localPicPath}}" class='plan_pic' mode="aspectFill"></image>
+        </view>
+        <view class="message" hidden="{{!localPicPath}}">
+          <view class="section link">
+            <label class="title">图片链接</label>
+            <input name="link" type="text" value="{{}}" placeholder="输入公众号文章链接" />
+          </view>
+        </view>
+
+      </view>
+
+      <view class="card">
+        <view class="card_title">限制投放范围(不选则默认选择全部)</view>
+        <view class="message">
+
+          <view class="section age">
+            <label class="title">年龄范围</label>
+            <picker mode="multiSelector" bindchange="bindAgeChange" value="{{[(ageRange[0] ? ageRange[0] : 20),(ageRange[1] ? ageRange[1] : 30)]}}" range="{{[agePickArr,agePickArr]}}">
+              <input name="age" type="text" value="{{ageRange[1] ? (ageRange[0]+'-'+ageRange[1]) : ''}}" placeholder="请选择您的年龄" disabled="{{true}}" />
+            </picker>
+          </view>
+
+          <view class="section gender">
+            <label class="title">选择性别</label>
+            <picker bindchange="bindGenderChange" value="{{gender ? gender : ''}}" range="{{genderPickArr}}">
+              <input name="gender" type="text" value="{{gender}}" placeholder="请选择您的性别" disabled="{{true}}" />
+            </picker>
+          </view>
+
+          <view class="section career">
+            <label class="title">选择职业</label>
+            <!-- <picker bindchange="bindCareerChange" value="{{career ? career : ''}}" range="{{careerPickArr}}"> -->
+              <!-- <input name="career" type="text" disabled="{{true}}" /> -->
+            <!-- </picker> -->
+            <view class="options_list clearfix">
+              <text wx:for="{{jobList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectJob">{{item.value}}</text>
+            </view>
+          </view>
+
+          <view class="section marry">
+            <label class="title">婚姻状态</label>
+            <!-- <picker bindchange="bindMarryChange" value="{{marry ? marry : ''}}" range="{{marryPickArr}}"> -->
+              <!-- <input name="marry" type="text" disabled="{{true}}" /> -->
+            <!-- </picker> -->
+            <view class="options_list clearfix">
+              <text wx:for="{{marryList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectMarry">{{item.value}}</text>
+            </view>
+          </view>
+
+          <view class="section edu">
+            <label class="title">选择学历</label>
+            <!-- <picker bindchange="bindEduChange" value="{{edu ? edu : ''}}" range="{{eduPickArr}}">
+              <input name="edu" type="text" value="{{edu}}" placeholder="请选择您的学历" disabled="{{true}}" />
+            </picker> -->
+            <view class="options_list clearfix">
+              <text wx:for="{{eduList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectEdu">{{item.value}}</text>
+            </view>
+          </view>
+
+          <view class="section system">
+            <label class="title">手机系统</label>
+            <picker bindchange="bindSystemChange" value="{{system ? system : ''}}" range="{{systemPickArr}}">
+              <input name="system" type="text" value="{{system}}" placeholder="请选择手机系统" disabled="{{true}}" />
+            </picker>
+          </view>
+
+          <view class="section region">
+            <label class="title">地区</label>
+            <input class="picker" name="region" type="text" value="" placeholder="请选择省市信息" disabled="{{true}}" />
+          </view>
+
+          <view class="section interest">
+            <label class="title">兴趣</label>
+            <input type="text" placeholder="请选择您的兴趣(最多5项)" disabled="{{true}}"/>
+            <view class="options_list clearfix">
+              <text wx:for="{{interestsList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectInterest">{{item.value}}</text>
+            </view>
+          </view>
+
+        </view>
+      </view>
+
+      <view class="btn-area">
+        <button class="submit" formType="submit">保存</button>
+      </view>
+    </form>
+  </view>
+</view>
+
+<view class="cover">
+  <view class="region_sel">
+    <view class="region_list">
+      <!-- <checkbox-group bindchange="checkboxChange"> -->
+        <view class="province_wrap" wx:for="{{provinceData}}" wx:key="{{p.pk}}" wx:for-item="p" wx:for-index="pi">
+          <view class="province">
+            <text class="name">{{p.name}}</text>
+            <label class="check">
+              <!-- <checkbox value="{{p.name}}" checked="{{true}}" readonly="readonly" data-pi="{{pi}}" bind:tap="selectProvince" />全选 -->
+              <image class="check_pic" src="../../images/{{p.selectAll ? 'man.png' : 'woman.png'}}" mode='aspectfit' data-pi="{{pi}}" bind:tap="selectProvince" />全选
+            </label>
+          </view>
+          <view class="city_list">
+            <text class="city {{p.selected[ci] ? 'selected' : ''}}" wx:for="{{p.cities}}" wx:key="{{ci}}" data-city="{{c}}" data-pi="{{pi}}" data-ci="{{ci}}" wx:for-item="c" wx:for-index="ci" bind:tap="selectCity">{{c}}</text>
+          </view>
+        </view>
+      <!-- </checkbox-group> -->
+    </view>
+  </view>
+</view>

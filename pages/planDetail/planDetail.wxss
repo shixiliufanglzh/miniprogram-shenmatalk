@@ -1,0 +1,154 @@
+/* pages/planDetail/planDetail.wxss */
+.static {
+  height: 100%;
+  overflow: hidden;
+}
+.all .card {
+  background-color: #fff;
+  margin-bottom: 16rpx;
+  padding-top: 20rpx;
+}
+.all .card .card_title {
+  font-size: 26rpx;
+  color: #a9a9a9;
+  line-height: 60rpx;
+  padding-left: 30rpx;
+  border-bottom: 1px solid #eee;
+}
+.all .card .message {
+  padding: 0 30rpx;
+}
+.all .card .message .section {
+  border-bottom: 1px solid #eee;
+}
+.all .card .message .title {
+  font-size: 36rpx;
+  line-height: 88rpx;
+  color: #000;
+}
+.all .card .message input {
+  width: 500rpx;
+  line-height: 88rpx;
+  height: 88rpx;
+  vertical-align: middle;
+  text-align: right;
+  float: right; 
+  font-size: 32rpx;  
+}
+.all .card .message textarea {
+  border: 1px solid #f0f0f0;
+  border-radius: 10rpx;
+  width: 690rpx;
+  height: 200rpx;
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
+  padding: 20rpx;
+  font-size: 32rpx;
+}
+.all .card .message picker {
+  width: 500rpx;
+  line-height: 88rpx;
+  height: 88rpx;
+  vertical-align: middle;
+  text-align: right;
+  float: right; 
+  font-size: 32rpx;  
+}
+.all .card image.plan_pic {
+  height: 190rpx;
+  width: 750rpx;
+  display: block;
+}
+.all .card .message .picture .title {
+  color: #2b83bb;
+}
+.all .card .message .picture .title.has_pic {
+  color: #e72b2c;
+}
+.options_list {
+  padding-bottom: 20rpx;
+}
+.options_list text {
+  background-color: #f0f0f0;
+  padding: 0 10rpx;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  color: #888;
+  float: left;
+  margin: 10rpx 16rpx;
+  border: 1px solid #f0f0f0;
+}
+.options_list text.selected {
+  border: 1px solid #EC5E3A;
+  color: #EC5E3A;
+}
+.btn-area {
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}
+
+.cover {
+  position: fixed;
+  background-color: rgba(0,0,0,0.8);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+.region_sel {
+  background-color: #fff;
+  position: absolute;
+  width: 640rpx;
+  height: 800rpx;
+  top: 200rpx;
+  left: 50%;
+  margin-left: -320rpx;
+  border-radius: 10rpx;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  border: 30rpx solid #fff;
+  font-size: 34rpx;
+}
+
+.region_sel .region_list .province_wrap {
+  margin-bottom: 10rpx;
+}
+.region_sel .region_list .province_wrap .province {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 6rpx 10rpx;
+}
+.region_sel .region_list .province_wrap .province .name {
+  
+}
+.region_sel .region_list .province_wrap .province label {
+  float: right;
+  font-size: 30rpx;
+  color: #2b2b2b;
+}
+/* .region_sel .region_list .province_wrap .province checkbox {
+  zoom: 72%;
+  vertical-align: middle;
+  margin-top: -6rpx;
+} */
+.region_sel .region_list .province_wrap .province .check_pic {
+  width: 36rpx;
+  height: 36rpx;
+}
+.region_sel .region_list .province_wrap .city_list {
+  padding: 20rpx;
+}
+.region_sel .region_list .province_wrap .city_list .city {
+  display: inline-block;
+  font-size: 28rpx;
+  color: #666;
+  padding: 2rpx 12rpx;
+  background-color: #f0f0f0;
+  border-radius: 10rpx;
+  margin: 10rpx;
+  border: 1px solid #f0f0f0;
+}
+.region_sel .region_list .province_wrap .city_list .city.selected {
+  border: 1px solid #e72b2c;
+  color: #e72b2c;
+}

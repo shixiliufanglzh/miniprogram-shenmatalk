@@ -41,6 +41,15 @@ Page({
     });
   },
 
+  viewAvatar: function (e) {
+    if (!!e.currentTarget.dataset.avatar) {
+      wx.previewImage({
+        current: e.currentTarget.dataset.avatar, // 当前显示图片的http链接
+        urls: [e.currentTarget.dataset.avatar] // 需要预览的图片http链接列表
+      })
+    }
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
