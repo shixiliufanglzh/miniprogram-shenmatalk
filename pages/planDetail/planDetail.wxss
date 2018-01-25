@@ -69,7 +69,7 @@
   padding-bottom: 20rpx;
 }
 .options_list text {
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
   padding: 0 10rpx;
   border-radius: 10rpx;
   font-size: 28rpx;
@@ -109,6 +109,7 @@
   box-sizing: border-box;
   border: 30rpx solid #fff;
   font-size: 34rpx;
+  z-index: 1000;
 }
 
 .region_sel .region_list .province_wrap {
@@ -117,9 +118,6 @@
 .region_sel .region_list .province_wrap .province {
   border-bottom: 1px solid #f0f0f0;
   padding: 6rpx 10rpx;
-}
-.region_sel .region_list .province_wrap .province .name {
-  
 }
 .region_sel .region_list .province_wrap .province label {
   float: right;

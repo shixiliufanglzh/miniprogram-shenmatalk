@@ -18,11 +18,14 @@ Page({
     planId: 0,
     planDetail: {},
     provinceData: regionData.proData,
+    isCityOptionsHide: true,
 
     ageRange: [],
     gender: '',
     system: '',
-    // selectedPro: [],
+    selProArr: [],
+    selCityArr: [],
+    showSelRegStr: '',
 
     agePickArr: [],
     genderPickArr: ['不限','男', '女'],
@@ -208,24 +211,6 @@ Page({
       system: this.data.systemPickArr[e.detail.value]
     })
   },
-  // selectJob: function (e) {
-  //   const newArr = this.data.jobList.map((item, idx) => {
-  //     if (idx == e.target.dataset.idx){
-  //       return {
-  //         ...item,
-  //         selected: !item.selected
-  //       }
-  //     } else {
-  //       return {
-  //         ...item
-  //       }
-  //     }
-  //   });
-  //   this.setData({
-  //     jobList: newArr
-  //   })
-  // },
-
   selectJob: function (e) {
     let selectedCount = 0;
     const jobList = this.data.jobList;
@@ -235,10 +220,10 @@ Page({
     const newArr = jobList.map((item, idx) => {
       if (idx == e.target.dataset.idx && !item.selected) {
         selectedCount++;
-        if (selectedCount > 3) {
+        if (selectedCount > 5) {
           wx.showModal({
             title: '提示',
-            content: '职业最多选3项',
+            content: '职业最多选5项',
             showCancel: false
           })
           return {
@@ -301,7 +286,6 @@ Page({
       eduList: newArr
     })
   },
-
   selectInterest: function (e) {
     let selectedCount = 0;
     const interestsList = this.data.interestsList;
@@ -352,6 +336,7 @@ Page({
       if (citySelArr[i]){ cityCount ++ }
     }
 
+    let provinces = this.data.provinceData;
     let proCount = 0;
     for (let i = 0; i < provinces.length; i++) {
       if (provinces[i].selectAll || provinces[i].selected.indexOf(true) != -1) proCount++
@@ -363,20 +348,21 @@ Page({
         content: '同一个省份下的城市只能全选或者选择任意5项',
         showCancel: false
       })
-    // } else if (!citySelArr[e.currentTarget.dataset.ci] && cityCount <= 0 
-    //   && !this.data.provinceData[e.currentTarget.dataset.pi].selectAll ) {
-    //   wx.showModal({
-    //     title: '提示',
-    //     content: '同一个省份下的城市只能全选或者选择任意5项',
-    //     showCancel: false
-    //   })git
+    } else if (!citySelArr[e.currentTarget.dataset.ci] && cityCount <= 0 
+      && !this.data.provinceData[e.currentTarget.dataset.pi].selectAll && proCount >= 5 ) {
+      wx.showModal({
+        title: '提示',
+        content: '最多只能选择5个省份或直辖市的相关地区',
+        showCancel: false
+      })
     }else {
       citySelArr[e.currentTarget.dataset.ci] = !citySelArr[e.currentTarget.dataset.ci];
       const provinceData = this.data.provinceData.map((item,idx) => {
         if (idx == e.currentTarget.dataset.pi){
           return {
             ...item,
-            selected: citySelArr
+            selected: citySelArr,
+            selectAll: false
           }
         }else {
           return {
@@ -421,12 +407,81 @@ Page({
       })
     }
   },
-  // checkboxChange: function(e){
-  //   console.log('checkbox发生change事件，携带value值为：', e)
-    // this.setData({
-    //   selectedPro: e.detail.value
-    // })
-  // },
+
+  showCityOptions: function(){
+    this.setData({
+      isCityOptionsHide: false
+    })
+  },
+  hideCityOptions: function(){
+    let proArr = [], cityArr = [];
+    for (let i = 0; i < this.data.provinceData.length; i++) {
+      const proItem = this.data.provinceData[i];
+      if (proItem.selectAll || proItem.selected.indexOf(true) != -1){
+        proArr.push(proItem.name);
+        for (let j = 0; j < proItem.cities.length; j++) {
+          if (proItem.selected[j]) {
+            cityArr.push(proItem.cities[j])
+          }
+        }
+      }
+    };
+
+    this.setData({
+      selProArr: proArr,
+      selCityArr: cityArr,
+      showSelRegStr: proArr.length > 3 ? proArr[0] + ',' + proArr[1] + ',' + proArr[2] + '...' : proArr.join(','),
+      isCityOptionsHide: true
+    })
+  },
+
+  formSubmit: function (e) {
+    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    let userJobArr = [];
+    for(let i=0; i<this.data.jobList.length; i++){
+      if (this.data.jobList[i].selected) userJobArr.push(this.data.jobList[i].value)
+    }
+    //userJob: userJobArr.join(','),
+
+    let userMarriageArr = [];
+    for (let i=0; i<this.data.marryList.length; i++) {
+      if (this.data.marryList[i].selected) userMarriageArr.push(this.data.marryList[i].value)
+    }
+    //userMarriage: userMarriageArr.join(','),
+
+    let userEducationArr = [];
+    for (let i=0; i<this.data.eduList.length; i++) {
+      if (this.data.eduList[i].selected) userEducationArr.push(this.data.eduList[i].value)
+    }
+    //userEducation: userEducationArr.join(','),
+
+    let userInterestArr = [];
+    for (let i=0; i<this.data.interestsList.length; i++) {
+      if (this.data.interestsList[i].selected) userInterestArr.push(this.data.interestsList[i].value)
+    }
+    //userInterest: userInterestArr.join(','),
+
+    let that = this;
+    const submitData = {
+      planName:e.detail.value.planName,
+      adverPic:this.data.picUrl,
+      adverLink:e.detail.value.link,
+      userSex:this.data.gender,
+      userMinAge:this.data.ageRange[0],
+      userMaxAge:this.data.ageRange[1],
+      userPhoneSys:this.data.system,
+      userJob: userJobArr.join(','),
+      userMarriage: userMarriageArr.join(','),
+      userEducation: userEducationArr.join(','),
+      userInterest: userInterestArr.join(','),
+      userProvince: that.data.selProArr.join(','),
+      userCity: that.data.selCityArr.join(',')
+    }
+    console.log(submitData);
+
+  },
+  
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -452,12 +507,6 @@ Page({
       agePickArr: ageArr,
       provinceData: cities
     })
-
-    // wx.getSystemInfo({
-    //   success: function (res) {
-    //     console.log('平台',res.platform)
-    //   }
-    // })
 
     console.log('options',options);
     let that = this;
@@ -499,11 +548,102 @@ Page({
           apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
           if (res.data.responseCode == 2000) {
             console.log('计划详情', res)
+            //初始化工作
+            const jobSelected = res.data.data.userJob.split(',');
+            const jobList = that.data.jobList.map(item => {
+              if (jobSelected.indexOf(item.value) != -1) {
+                return {
+                  ...item,
+                  selected: true
+                }
+              } else {
+                return item
+              }
+            })
+            //初始化婚姻状态
+            const marSelected = res.data.data.userMarriage.split(',');
+            const marryList = that.data.marryList.map(item => {
+              if (marSelected.indexOf(item.value) != -1) {
+                return {
+                  ...item,
+                  selected: true
+                }
+              } else {
+                return item
+              }
+            })
+            //初始化学历
+            const eduSelected = res.data.data.userEducation.split(',');
+            const eduList = that.data.eduList.map(item => {
+              if (eduSelected.indexOf(item.value) != -1) {
+                return {
+                  ...item,
+                  selected: true
+                }
+              } else {
+                return item
+              }
+            })
+            //初始化兴趣
+            const inteSelected = res.data.data.userInterest.split(',');
+            const interestsList = that.data.interestsList.map(item => {
+              if (inteSelected.indexOf(item.value) != -1) {
+                return {
+                  ...item,
+                  selected: true
+                }
+              } else {
+                return item
+              }
+            })
+
+            //初始化地区
+            const proSelected = res.data.data.userProvince.split(',');
+            const citySelected = res.data.data.userCity.split(',');
+            let provinceData = that.data.provinceData.map(item => {
+              if (proSelected.indexOf(item.name) != -1){
+                return {
+                  ...item,
+                  selectAll: true
+                }
+              }else {
+                return item
+              }
+            })
+
+            provinceData = provinceData.map(item => {
+              let selList = [...item.selected];
+              for (let i = 0; i < selList.length; i++){
+                if (citySelected.indexOf(item.cities[i]) != -1){
+                  selList[i] = true
+                }
+              }
+              return {
+                ...item,
+                selected: selList,
+                selectAll: selList.indexOf(true) != -1 ? false : item.selectAll
+              }
+            })
+
+
+            const picStrSplit = res.data.data.adverPic.split('/');
             that.setData({
               planDetail: res.data.data,
               localPicPath: res.data.data.adverPic,
-              ageRange: [res.data.data.userMinAge, res.data.data.userMaxAge]
+              picUrl: picStrSplit[picStrSplit.length-1],
+              ageRange: [res.data.data.userMinAge, res.data.data.userMaxAge],
+              system: res.data.data.userPhoneSys,
+              gender: res.data.data.userSex,
+              jobList,
+              marryList,
+              eduList,
+              interestsList,
+              provinceData
             })
+            // that.data.eduList
+            // that.data.interestsList
+            // that.data.provinceData
+            
           }
         },
         fail: function (err) {

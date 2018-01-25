@@ -2,7 +2,8 @@ const reLogin = require('login.js');
 // const app = getApp();
 // const apiAdmin = "http://47.96.186.64/red-api"; //test
 // const apiAdmin = "https://www.mypies.cn/red-api"; //prod
-const apiAdmin = "https://red.jianbid.com/red-api"; //prod
+// const apiAdmin = "https://red.jianbid.com/red-api"; //prod
+const apiAdmin = "https://www.jianbid.com/red-api"; //prod
 // const apiAdmin = "https://sm.jianbid.com/red-api"; //prod
 // const apiAdmin = "";  //prod
 

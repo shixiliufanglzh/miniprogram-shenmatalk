@@ -8,7 +8,7 @@
     <view class="getCropperImage" bindtap="getCropperImage">上传</view>
   </view>
 </view>
-<view class="static">
+<view class="{{isCityOptionsHide ? '' : 'static'}}">
   <view class="all">
     <form bindsubmit="formSubmit" report-submit="{{true}}">
       <view class="card">
@@ -16,7 +16,7 @@
           
           <view class="section planName">
             <label class="title">计划名称</label>
-            <input name="planName" type="text" value="{{}}" placeholder="输入计划名称" maxlength='20' />
+            <input name="planName" type="text" value="{{planDetail.planName}}" placeholder="输入计划名称" maxlength='20' />
           </view>
 
           <view class="section picture">
@@ -32,14 +32,14 @@
         <view class="message" hidden="{{!localPicPath}}">
           <view class="section link">
             <label class="title">图片链接</label>
-            <input name="link" type="text" value="{{}}" placeholder="输入公众号文章链接" />
+            <input name="link" type="text" value="{{planDetail.adverLink}}" placeholder="输入公众号文章链接" />
           </view>
         </view>
 
       </view>
 
       <view class="card">
-        <view class="card_title">限制投放范围(不选则默认选择全部)</view>
+        <view class="card_title">限制目标人群(不选则默认选择全部)</view>
         <view class="message">
 
           <view class="section age">
@@ -58,9 +58,7 @@
 
           <view class="section career">
             <label class="title">选择职业</label>
-            <!-- <picker bindchange="bindCareerChange" value="{{career ? career : ''}}" range="{{careerPickArr}}"> -->
-              <!-- <input name="career" type="text" disabled="{{true}}" /> -->
-            <!-- </picker> -->
+            <input type="text" placeholder="请选择目标职业(最多5项)" disabled="{{true}}"/>
             <view class="options_list clearfix">
               <text wx:for="{{jobList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectJob">{{item.value}}</text>
             </view>
@@ -68,9 +66,6 @@
 
           <view class="section marry">
             <label class="title">婚姻状态</label>
-            <!-- <picker bindchange="bindMarryChange" value="{{marry ? marry : ''}}" range="{{marryPickArr}}"> -->
-              <!-- <input name="marry" type="text" disabled="{{true}}" /> -->
-            <!-- </picker> -->
             <view class="options_list clearfix">
               <text wx:for="{{marryList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectMarry">{{item.value}}</text>
             </view>
@@ -78,9 +73,6 @@
 
           <view class="section edu">
             <label class="title">选择学历</label>
-            <!-- <picker bindchange="bindEduChange" value="{{edu ? edu : ''}}" range="{{eduPickArr}}">
-              <input name="edu" type="text" value="{{edu}}" placeholder="请选择您的学历" disabled="{{true}}" />
-            </picker> -->
             <view class="options_list clearfix">
               <text wx:for="{{eduList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectEdu">{{item.value}}</text>
             </view>
@@ -93,14 +85,14 @@
             </picker>
           </view>
 
-          <view class="section region">
-            <label class="title">地区</label>
-            <input class="picker" name="region" type="text" value="" placeholder="请选择省市信息" disabled="{{true}}" />
+          <view class="section region" bind:tap="showCityOptions">
+            <label class="title">目标区域</label>
+            <input class="picker" name="region" type="text" value="{{showSelRegStr}}" placeholder="请选择省市信息" disabled="{{true}}" />
           </view>
 
           <view class="section interest">
             <label class="title">兴趣</label>
-            <input type="text" placeholder="请选择您的兴趣(最多5项)" disabled="{{true}}"/>
+            <input type="text" placeholder="请选择目标兴趣(最多5项)" disabled="{{true}}"/>
             <view class="options_list clearfix">
               <text wx:for="{{interestsList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectInterest">{{item.value}}</text>
             </view>
@@ -116,8 +108,8 @@
   </view>
 </view>
 
-<view class="cover">
-  <view class="region_sel">
+<view class="cover" hidden="{{isCityOptionsHide}}" bind:tap="hideCityOptions">
+  <view class="region_sel" catch:tap="null">
     <view class="region_list">
       <!-- <checkbox-group bindchange="checkboxChange"> -->
         <view class="province_wrap" wx:for="{{provinceData}}" wx:key="{{p.pk}}" wx:for-item="p" wx:for-index="pi">

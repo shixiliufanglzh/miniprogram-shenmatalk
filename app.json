@@ -1,6 +1,5 @@
 {
   "pages": [
-    
     "pages/createRedPacket/createRedPacket",
     "pages/square/square",
     "pages/ranking/ranking",
