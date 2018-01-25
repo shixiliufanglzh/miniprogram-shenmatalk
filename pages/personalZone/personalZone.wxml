@@ -21,11 +21,11 @@
       <text class="title">红包记录</text>
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
     </navigator>
-    <navigator hover-class="none" url="/pages/jianbid/jianbid" open-type="navigate" wx:if="{{ pointInfo.showStatus == 2 }}">
+    <!-- <navigator hover-class="none" url="/pages/jianbid/jianbid" open-type="navigate" wx:if="{{ pointInfo.showStatus == 2 }}">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_mall.png"></image>
       <text class="title">减价拍商城</text>
       <image mode="aspectFit" class="arrow" src="../../images/arrow.png"></image>
-    </navigator>
+    </navigator> -->
     <navigator hover-class="none" url="/pages/QA/QA" open-type="navigate">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_q_a.png"></image>
       <text class="title">新手帮助</text>

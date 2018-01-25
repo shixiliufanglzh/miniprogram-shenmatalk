@@ -182,14 +182,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if(app.globalData.pointInfo.showStatus == 1){
-      wx.showModal({
-        title: '友情提示',
-        showCancel: false,
-        confirmText: '知道了',
-        content: '神马口令仅用于娱乐休闲使用，严禁发布包含污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽删除不良信息。'
-      })
-    }
 
     let that = this;
     wx.getSetting({
@@ -415,6 +407,15 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    if (app.globalData.pointInfo.showStatus == 1) {
+      wx.showModal({
+        title: '友情提示',
+        showCancel: false,
+        confirmText: '知道了',
+        content: '神马说说说仅用于娱乐休闲使用，严禁发布包含污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽删除不良信息。'
+      })
+    }
+    
     let that = this;
     getUserInfo(app, that, null);
     recorderManagerCreate.onStop(this.onVoiceStopCRP);
@@ -669,6 +670,7 @@ Page({
                     console.log(res);
                     const payMsg = res.data.data.payResult;
                     const payType = res.data.data.payType;
+                    const redId = res.data.data.redId
                     // console.log(payMsg)
                     app.globalData.pointInfo.money = res.data.data.money;
                     that.setData({
@@ -681,7 +683,7 @@ Page({
                         'package': payMsg.package,
                         'signType': 'MD5',
                         'paySign': payMsg.paySign,
-                        'success': function (res) {
+                        'success': function (wxres) {
                           //微信支付成功
                           wx.showToast({
                             title: '支付成功',
@@ -690,12 +692,12 @@ Page({
                             complete: function () {
                               that.init(e);
                               wx.navigateTo({
-                                url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
+                                url: '/pages/redPacketDetail/redPacketDetail?redId=' + redId
                               })
                             }
                           })
                         },
-                        'fail': function (res) {
+                        'fail': function (err) {
 
                         }
                       })
@@ -709,7 +711,7 @@ Page({
                         complete: function () {
                           that.init(e);
                           wx.navigateTo({
-                            url: '/pages/redPacketDetail/redPacketDetail?redId=' + res.data.data.redId
+                            url: '/pages/redPacketDetail/redPacketDetail?redId=' + redId
                           })
                         }
                       })
