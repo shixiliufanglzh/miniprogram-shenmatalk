@@ -6,7 +6,7 @@
     <text class="user_name">{{userInfo.nickName}}</text>
   </view>
   <view class="menu">
-    <view class="navigator" hover-class="none" url="" bind:tap="showPointInstruction">
+    <view class="navigator" hover-class="none" url="" bind:tap="{{pointInfo.showStatus == 2 ? 'showPointInstruction' : ''}}">
       <image mode="aspectFit" class="tab_icon" src="../../images/zone_virtual.png"></image>
       <text class="title">神马分数</text>
       <text class="prompt">{{pointInfo && pointInfo.point ? pointInfo.point : 0 }}</text>

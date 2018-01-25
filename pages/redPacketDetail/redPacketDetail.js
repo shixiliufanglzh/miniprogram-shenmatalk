@@ -492,16 +492,18 @@ Page({
 
   //显示神马分说明
   showPointInstruction: function () {
-    const animation = wx.createAnimation({
-      duration: 500,
-      timingFunction: 'ease',
-    })
-    this.animation = animation
-    animation.bottom(0).step();
-    this.setData({
-      animationData: animation.export(),
-      pointInstruState: true
-    })
+    if (this.data.pointInfo.showStatus && this.data.pointInfo.showStatus ==2 ){
+      const animation = wx.createAnimation({
+        duration: 500,
+        timingFunction: 'ease',
+      })
+      this.animation = animation
+      animation.bottom(0).step();
+      this.setData({
+        animationData: animation.export(),
+        pointInstruState: true
+      })
+    }
   },
   //隐藏神马分说明
   hidePointInstruction: function () {

@@ -18,7 +18,7 @@
   </view> -->
   <view class="header_simple">
     <view class="left">
-      <span bind:tap="showPointInstruction">我的神马分 {{pointInfo.point}} <image src="../../images/q_point.png" mode="aspectFit"></image></span>
+      <span bind:tap="{{pointInfo.showStatus == 2 ? 'showPointInstruction' : 'null'}}">我的神马分 {{pointInfo.point}} <image src="../../images/q_point.png" mode="aspectFit"></image></span>
     </view>
     <view class="right">
       <label bind:tap="toggleCheck" ><checkbox value="anonymous" checked="{{showPart}}" />仅显示未领红包</label>

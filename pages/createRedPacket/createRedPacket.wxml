@@ -9,7 +9,7 @@
   </view>
 </view>
 
-<view class="top-tab flex-wrp flex-tab" bind:tap="{{!optionsState ? 'hideOptions' : 'null'}}">
+<view class="top-tab flex-wrp flex-tab" bind:tap="{{!optionsState ? 'hideOptions' : 'null'}}" hidden='{{pointInfo.showStatus != 2}}'>
   <view class="toptab flex-item {{currentNavtab==idx ? 'active' : ''}}" wx:key="{{idx}}" wx:for="{{navTab}}" wx:for-index="idx" wx:for-item="itemName" data-idx="{{idx}}" bind:tap="switchTab">
     {{itemName}}
   </view>
@@ -26,7 +26,7 @@
             <view class="options" bind:tap="showOptions">
               <image src="../../images/expression.png" mode="aspectFit" class="example"></image>
             </view>
-            <input name="token" type="text" id="token" value="{{selectedToken}}" maxlength="24" class="input token" placeholder="输入或选择口令" bindinput='tokenInput' />
+            <input name="token" type="text" id="token" value="{{selectedToken}}" maxlength="24" class="input token" disabled='{{pointInfo.showStatus != 2}}' placeholder="{{ pointInfo.showStatus != 2 ? '选择口令':'输入或选择口令' }}" bindinput='tokenInput' />
           </view>
 
           <view class="section token_wrp" hidden="{{!recordMode}}">

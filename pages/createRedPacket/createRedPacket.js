@@ -407,12 +407,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (app.globalData.pointInfo.showStatus == 1) {
+    if (app.globalData.pointInfo.showStatus != 2) {
       wx.showModal({
         title: '友情提示',
         showCancel: false,
         confirmText: '知道了',
-        content: '神马说说说仅用于娱乐休闲使用，严禁发布包含污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽删除不良信息。'
+        content: '神马口令仅用于娱乐休闲使用，严禁发布包含污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽删除不良信息。'
       })
     }
     
@@ -691,9 +691,17 @@ Page({
                             duration: 1500,
                             complete: function () {
                               that.init(e);
-                              wx.navigateTo({
-                                url: '/pages/redPacketDetail/redPacketDetail?redId=' + redId
-                              })
+                              if (that.data.pointInfo.showStatus && that.data.pointInfo.showStatus == 2){
+                                wx.navigateTo({
+                                  url: '/pages/redPacketDetail/redPacketDetail?redId=' + redId
+                                })
+                              } else {
+                                wx.showModal({
+                                  title: '提示',
+                                  content: '红包已支付成功，请等待后台审核，审核通过可在【我的】-【红包记录】查看红包详情',
+                                  showCancel:false
+                                })
+                              }
                             }
                           })
                         },
@@ -710,9 +718,17 @@ Page({
                         mask: true,
                         complete: function () {
                           that.init(e);
-                          wx.navigateTo({
-                            url: '/pages/redPacketDetail/redPacketDetail?redId=' + redId
-                          })
+                          if (that.data.pointInfo.showStatus && that.data.pointInfo.showStatus == 2) {
+                            wx.navigateTo({
+                              url: '/pages/redPacketDetail/redPacketDetail?redId=' + redId
+                            })
+                          } else {
+                            wx.showModal({
+                              title: '提示',
+                              content: '红包已支付成功，请等待后台审核，审核通过可在【我的】-【红包记录】查看红包详情',
+                              showCancel: false
+                            })
+                          }
                         }
                       })
                     }

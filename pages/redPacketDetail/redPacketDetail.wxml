@@ -24,7 +24,7 @@
     <view class="interaction flex-wrp">
       <button class="flex-tab flex-item" bind:tap="goToEnchash"><image src="../../images/inter_cash.png" mode="aspectFit"></image>去提现</button>
       <button class="flex-tab flex-item" bind:tap="goToCreate"><image src="../../images/inter_record.png" mode="aspectFit"></image>我也玩</button>
-      <button class="flex-tab flex-item" bind:tap="goToShare"><image src="../../images/inter_share.png" mode="aspectFit"></image>去分享</button>
+      <button class="flex-tab flex-item" hidden="{{pointInfo.showStatus != 2}}" bind:tap="goToShare"><image src="../../images/inter_share.png" mode="aspectFit"></image>去分享</button>
     </view>
   </view>
 
