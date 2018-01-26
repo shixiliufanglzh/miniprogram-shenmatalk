@@ -42,7 +42,6 @@ const apiUrl = {
         break;
       case "4000":
         //登录
-        // if(that)
         reLogin(null,apiUrl,that);
         break;
       case "4001":

@@ -63,6 +63,10 @@ module.exports = (app, apiUrl, that) => {
                           id: res.data.data.id,
                           showStatus: res.data.data.showStatus
                         }
+                        that.setData({ //***
+                          pointInfo: _app.globalData.pointInfo,
+                        })
+                        that.onShow();
                       }
                     }
                   })
@@ -91,6 +95,7 @@ module.exports = (app, apiUrl, that) => {
                                   success: res => {
                                     console.log('微信后台拉取用户信息', res)
                                     that.globalData.userInfo = res.userInfo
+                                    that.onShow();//***
                                   }
                                 })
                                 wx.request({

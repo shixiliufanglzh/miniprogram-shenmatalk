@@ -66,12 +66,12 @@ Page({
     }
   },
 
-  showPic: function () {
-    wx.previewImage({
-      current: apiUrl.ADMIN + '/webr/qrbig.jpg', // 当前显示图片的http链接
-      urls: [apiUrl.ADMIN + '/webr/qrbig.jpg'] // 需要预览的图片http链接列表
-    })
-  },
+  // showPic: function () {
+  //   wx.previewImage({
+  //     current: apiUrl.ADMIN + '/webr/qrbig.jpg', // 当前显示图片的http链接
+  //     urls: [apiUrl.ADMIN + '/webr/qrbig.jpg'] // 需要预览的图片http链接列表
+  //   })
+  // },
 
   /**
    * 生命周期函数--监听页面初次渲染完成

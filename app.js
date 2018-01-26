@@ -4,9 +4,9 @@ const apiUrl = require('utils/constant.js');
 
 App({
   onLaunch: function (msg) {
-    wx.setEnableDebug({
-      enableDebug: true
-    })
+    // wx.setEnableDebug({
+    //   enableDebug: true
+    // })
 
     let that = this;
     that.globalData.shareTicket = msg.shareTicket;
@@ -189,7 +189,7 @@ App({
           title: '友情提示',
           showCancel: false,
           confirmText: '知道了',
-          content: '神马口令仅用于休闲娱乐，严禁发布污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽不良信息',
+          content: '神马口令仅用于休闲娱乐，严禁发布污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽不良信息。',
           success: function(){
             //登录态过期，调用登录接口
             reLogin(that, apiUrl);

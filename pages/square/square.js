@@ -1,6 +1,7 @@
 // pages/square/square.js
 const app = getApp();
 const apiUrl = require('../../utils/constant.js');
+const getUserInfo = require('../../utils/getUserInfo.js');
 const pageSize = 50;
 Page({
 
@@ -69,7 +70,10 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
+
   onLoad: function (options) {
+    // let that = this;
+    // getUserInfo(app, that, null);
     // this.setData({
     //   pointInfo: app.globalData.pointInfo,
     // })
@@ -88,7 +92,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let that = this;
+    // let that = this;
+    // getUserInfo(app, that, null);
     console.log('初始化广场红包数据')
     this.setData({
       pointInfo: app.globalData.pointInfo,
@@ -192,6 +197,7 @@ Page({
       },
       success: function (res) {
         console.log('获取广场列表',res)
+        console.log('that',that)
         apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data, that);
         if (res.data.responseCode == 2000) {
           const resData = res.data.data;

@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/createRedPacket/createRedPacket",
     "pages/square/square",
+    "pages/createRedPacket/createRedPacket",
     "pages/ranking/ranking",
     "pages/personalZone/personalZone",
     "pages/redPacketDetail/redPacketDetail",

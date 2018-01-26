@@ -184,6 +184,7 @@ Page({
   onLoad: function (options) {
 
     let that = this;
+    getUserInfo(app, that, null);
     wx.getSetting({
       success(res) {
         if (res.authSetting['scope.record']) {
@@ -407,17 +408,19 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (app.globalData.pointInfo.showStatus != 2) {
+    let that = this;
+    getUserInfo(app, that, null);
+
+    if (!!app.globalData.pointInfo.showStatus && app.globalData.pointInfo.showStatus != 2) {
       wx.showModal({
         title: '友情提示',
         showCancel: false,
         confirmText: '知道了',
-        content: '神马口令仅用于娱乐休闲使用，严禁发布包含污秽、色情、违禁、谣言等不良信息，一经发现永久封号，系统将自动屏蔽删除不良信息。'
+        content: '为避免用户传播污秽、色情、违禁、谣言等不良信息，禁止自定义口令，只能从系统预设口令中选择，所有提交的口令须经系统审核后才能发布。'
       })
     }
     
-    let that = this;
-    getUserInfo(app, that, null);
+    
     recorderManagerCreate.onStop(this.onVoiceStopCRP);
   },
 
@@ -779,7 +782,6 @@ Page({
       recordMode: false,
       currentNavtab: "0",
       hideCropper: true,
-      pointInfo: {},
       optionsState: true,
       selectedToken: "",
       recommendMoney: this.data.recommendMoney.map(item => {

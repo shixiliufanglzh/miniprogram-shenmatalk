@@ -38,7 +38,7 @@
     </button>
   </view>
   <view class="code" wx:if="{{ pointInfo.showStatus == 2 }}">
-    <image src="../../images/qr_code.png" mode="aspectFit" bind:tap="showPic"></image>
+    <image src="../../images/qr_code.png" mode="aspectFit"></image>
     <text>更多精彩请关注官方公众号</text>
   </view>
 </view>
