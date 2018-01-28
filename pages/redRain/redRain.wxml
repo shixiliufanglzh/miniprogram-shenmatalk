@@ -1,0 +1,10 @@
+<!--pages/redRain/redRain.wxml-->
+<view class="wrapper">
+  <!-- <image class="bg" src="" mode="aspectFill"></image> -->
+  <view class="red_rain">
+    <view class="red_item" wx:for="{{redList}}" wx:for-index="idx" wx:key="{{idx}}" wx:for-item="red" style="left:{{red.left}}rpx;top:{{red.top}}rpx;" data-idx="{{idx}}" bind:tap="getRed">
+      <image src="../../images/red.png" mode="aspectFit" style="transform:rotate({{red.rotate}}deg)" hidden="{{red.open}}"></image>
+      <text hidden="{{!red.open}}">+1</text>
+    </view>
+  </view>
+</view>

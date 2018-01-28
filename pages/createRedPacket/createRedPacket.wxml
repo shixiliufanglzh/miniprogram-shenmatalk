@@ -78,6 +78,18 @@
       <input name="count" type="number" id="count" class="input count" placeholder="请输入数量" />
     </view>
 
+    <view class="section token_wrp">
+      <label class="title" for="token">推广计划</label>
+      <picker bindchange="bindPlanChange" value="{{0}}" range="{{planPickNameArr}}">
+        <view class="options">
+          <image src="../../images/expression.png" mode="aspectFit" class="example"></image>
+        </view>
+        <input name="plan" type="text" id="plan" value="{{selectedPlanName}}" disabled='{{true}}' class="input" placeholder="选择计划" />
+      </picker>
+      
+    </view>
+
+
     <!-- <view class="section token_wrp">
       <label class="title" for="card">是否公开个人名片</label>
       <switch name="card" class="card_switch" checked="{{cardSwitch}}"/>
@@ -89,7 +101,7 @@
       </button>
       <button plain="{{true}}" size="mini" class="delete" hidden="{{!picUrl}}" bind:tap="deletePic">删除</button>
       <!-- <text class="pic_limit">*建议尺寸750*190</text>  -->
-      <input name="link" type="text" id="link" class="input link" placeholder="输入图片链接（选填，仅支持公众号文章链接）" hidden="{{!picUrl}}" />
+      <input name="link" type="text" id="link" class="input link" value='{{link}}' placeholder="输入图片链接（选填，仅支持公众号文章链接）" hidden="{{!picUrl}}" />
     </view>
 
     <view class="section">

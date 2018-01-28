@@ -3,9 +3,12 @@ const reLogin = require('login.js');
 // const apiAdmin = "http://47.96.186.64/red-api"; //test
 // const apiAdmin = "https://www.mypies.cn/red-api"; //prod
 // const apiAdmin = "https://red.jianbid.com/red-api"; //prod
-const apiAdmin = "https://www.jianbid.com/red-api"; //prod
+const apiAdmin = "http://www.jianbid.com:8080/red-api"; //prod
 // const apiAdmin = "https://sm.jianbid.com/red-api"; //prod
 // const apiAdmin = "";  //prod
+
+//appid = wx4e1d36acf776dd37  神马说说
+//appid = wxb3c0d9567950b78a  神马口令
 
 const apiUrl = {
   ADMIN: apiAdmin,

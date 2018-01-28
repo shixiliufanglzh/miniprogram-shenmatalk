@@ -1,0 +1,25 @@
+/* pages/redRain/redRain.wxss */
+page {
+  background-color: #f39943;
+}
+.wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.red_rain .red_item {
+  position: absolute
+  
+}
+.red_rain .red_item image {
+  width: 100rpx;
+  height: 120rpx;
+}
+.red_rain .red_item text {
+  color: #fff;
+  font-weight: 700;
+  font-size: 50rpx;
+  position: absolute;
+  top: 30rpx;
+  left: 20rpx;
+}

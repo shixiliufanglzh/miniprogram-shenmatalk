@@ -57,7 +57,11 @@ Page({
       "门上吊刀刀倒吊着门上吊刀刀倒吊着门上吊刀刀倒吊着",
       "我是单身狗抢我红包的美女快来私信我"
     ],
+    planPickNameArr: [1111,2222,3333],
+    planPickIdArr: [1,2,3],
     selectedToken: "",
+    selectedPlanName: "",
+    selectedPlanId: "",
     recommendMoney: [
       {
         id: 0,
@@ -96,7 +100,8 @@ Page({
         width: width,
         height: 95
       }
-    }
+    },
+    link: ''
   },
 
   switchTab: function (e) {
@@ -403,6 +408,45 @@ Page({
     })
   },
 
+  bindPlanChange: function (e) {
+    let that = this;
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    const val = e.detail.value;
+    const curId = this.data.planPickIdArr[val];
+    this.setData({
+      selectedPlanName: this.data.planPickNameArr[val],
+      selectedPlanId: curId
+    })
+
+    if (curId){
+      wx.request({
+        url: apiUrl.GET_PLAN_DETAIL,
+        method: "GET",
+        header: {
+          'content-type': 'application/x-www-form-urlencoded',
+          'sessionKey': app.globalData.sessionKey
+        },
+        data: {
+          planId: curId
+        },
+        success: function (res) {
+          apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+          if (res.data.responseCode == 2000) {
+            console.log('计划详情', res)
+
+            that.setData({
+              picUrl: res.data.data.adverPic,
+              link: res.data.data.adverLink
+            })
+          }
+        },
+        fail: function (err) {
+          console.log('获取计划详情失败: ', err)
+        }
+      })
+    }
+  },
+
   /**
    * 生命周期函数--监听页面显示
    */
@@ -410,6 +454,35 @@ Page({
     let that = this;
     getUserInfo(app, that, null);
     recorderManagerCreate.onStop(this.onVoiceStopCRP);
+
+    wx.request({
+      url: apiUrl.GET_PLAN_LIST,
+      method: "GET",
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'sessionKey': app.globalData.sessionKey
+      },
+      success: function (res) {
+        apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+        if (res.data.responseCode == 2000) {
+          console.log('计划列表', res)
+          const planData = res.data.data;
+          let planPickNameArr = [];
+          let planPickIdArr = [];
+          for (let i = 0; i < planData.length; i++){
+            planPickNameArr.push(planData[i].planName);
+            planPickIdArr.push(planData[i].id);
+          }
+          that.setData({
+            planPickNameArr,
+            planPickIdArr,
+          })
+        }
+      },
+      fail: function (err) {
+        console.log('获取计划列表失败: ', err)
+      }
+    })
   },
 
   /**
@@ -612,7 +685,8 @@ Page({
                 payType: useCash,
                 adverPic: that.data.picUrl,
                 adverLink: that.data.picUrl ? e.detail.value.link : '',
-                prepayId: e.detail.formId
+                prepayId: e.detail.formId,
+                planId: that.data.selectedPlanId
               }
             } else if (that.data.currentNavtab == 0 && that.data.recordMode) {
               submitMsg = {
@@ -628,7 +702,8 @@ Page({
                 payType: useCash,
                 adverPic: that.data.picUrl,
                 adverLink: that.data.picUrl ? e.detail.value.link : '',
-                prepayId: e.detail.formId
+                prepayId: e.detail.formId,
+                planId: that.data.selectedPlanId
               }
             }else {
               submitMsg = {
@@ -644,7 +719,8 @@ Page({
                 adverPic: that.data.picUrl,
                 adverLink: that.data.picUrl ? e.detail.value.link : '',
                 // showStatus: e.detail.value.card ? 1 : 2,
-                prepayId: e.detail.formId
+                prepayId: e.detail.formId,
+                planId: that.data.selectedPlanId
               }
             }
               console.log('发红包参数', submitMsg);

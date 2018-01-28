@@ -96,12 +96,20 @@
   right: 0;
   z-index: 999;
 }
+.cover .close {
+  width: 80rpx;
+  height: 80rpx;
+  position: absolute;
+  bottom: 100rpx;
+  left: 50%;
+  margin-left: -40rpx;
+}
 .region_sel {
   background-color: #fff;
   position: absolute;
   width: 640rpx;
   height: 800rpx;
-  top: 200rpx;
+  bottom: 240rpx;
   left: 50%;
   margin-left: -320rpx;
   border-radius: 10rpx;

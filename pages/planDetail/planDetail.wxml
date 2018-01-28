@@ -51,9 +51,20 @@
 
           <view class="section gender">
             <label class="title">选择性别</label>
-            <picker bindchange="bindGenderChange" value="{{gender ? gender : ''}}" range="{{genderPickArr}}">
-              <input name="gender" type="text" value="{{gender}}" placeholder="请选择您的性别" disabled="{{true}}" />
+            <picker bindchange="bindGenderChange" value="{{0}}" range="{{genderPickArr}}">
+              <input name="gender" type="text" value="{{gender}}" placeholder="请选择性别" disabled="{{true}}" />
             </picker>
+          </view>
+
+          <view class="section marry">
+            <label class="title">婚姻状态</label>
+            <picker bindchange="bindMarryChange" value="{{0}}" range="{{marryPickArr}}">
+              <input name="marry" type="text" value="{{marry}}" placeholder="请选择婚姻状态" disabled="{{true}}" />
+            </picker>
+
+            <!-- <view class="options_list clearfix">
+              <text wx:for="{{marryList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectMarry">{{item.value}}</text>
+            </view> -->
           </view>
 
           <view class="section career">
@@ -61,13 +72,6 @@
             <input type="text" placeholder="请选择目标职业(最多5项)" disabled="{{true}}"/>
             <view class="options_list clearfix">
               <text wx:for="{{jobList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectJob">{{item.value}}</text>
-            </view>
-          </view>
-
-          <view class="section marry">
-            <label class="title">婚姻状态</label>
-            <view class="options_list clearfix">
-              <text wx:for="{{marryList}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" data-idx="{{idx}}" class="item {{item.selected ? 'selected' : 'unselected'}}" bind:tap="selectMarry">{{item.value}}</text>
             </view>
           </view>
 
@@ -127,4 +131,5 @@
       <!-- </checkbox-group> -->
     </view>
   </view>
+  <image class="close" src='../../images/close.png' mode='aspectFit' bind:tap="hideCityOptions"></image>
 </view>

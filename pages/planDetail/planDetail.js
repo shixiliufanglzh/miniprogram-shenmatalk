@@ -22,14 +22,17 @@ Page({
 
     ageRange: [],
     gender: '',
+    marry: '',
     system: '',
     selProArr: [],
     selCityArr: [],
     showSelRegStr: '',
 
     agePickArr: [],
-    genderPickArr: ['不限','男', '女'],
-    systemPickArr: ['不限','android', 'ios'],
+    genderPickArr: ['不限', '男', '女'],
+    systemPickArr: ['不限', 'android', 'ios'],
+    marryPickArr: ['不限','未婚', '新婚', '已婚', '育儿'],
+
     jobList: [
       {value: '教育',selected: false},
       {value: '家居',selected: false},
@@ -49,12 +52,7 @@ Page({
       {value: '互联网/电子产品',selected: false},
       {value: '服饰鞋帽箱包',selected: false}
     ],
-    marryList: [
-      {value: '未婚',selected: false},
-      {value: '新婚',selected: false},
-      {value: '已婚',selected: false},
-      {value: '育儿',selected: false}
-    ],
+    
     eduList: [
       {value: '小学',selected: false},
       {value: '初中',selected: false},
@@ -146,7 +144,8 @@ Page({
               })
             }
           },
-          fail: function () {
+          fail: function (err) {
+            console.log('图片上传fail: ',err)
             wx.hideLoading();
             wx.showToast({
               title: '上传失败',
@@ -158,6 +157,12 @@ Page({
       } else {
         console.log('获取图片地址失败，请稍后重试')
       }
+    })
+  },
+
+  cancelSelected: function () {
+    this.setData({
+      hideCropper: true
     })
   },
 
@@ -199,18 +204,28 @@ Page({
       })
     }
   },
+
   bindGenderChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       gender: this.data.genderPickArr[e.detail.value]
     })
   },
+
+  bindMarryChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      marry: this.data.marryPickArr[e.detail.value]
+    })
+  },
+  
   bindSystemChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       system: this.data.systemPickArr[e.detail.value]
     })
   },
+
   selectJob: function (e) {
     let selectedCount = 0;
     const jobList = this.data.jobList;
@@ -269,6 +284,7 @@ Page({
       marryList: newArr
     })
   },
+
   selectEdu: function (e) {
     const newArr = this.data.eduList.map((item, idx) => {
       if (idx == e.target.dataset.idx) {
@@ -286,6 +302,7 @@ Page({
       eduList: newArr
     })
   },
+
   selectInterest: function (e) {
     let selectedCount = 0;
     const interestsList = this.data.interestsList;
@@ -413,6 +430,7 @@ Page({
       isCityOptionsHide: false
     })
   },
+
   hideCityOptions: function(){
     let proArr = [], cityArr = [];
     for (let i = 0; i < this.data.provinceData.length; i++) {
@@ -437,48 +455,139 @@ Page({
 
   formSubmit: function (e) {
     console.log('form发生了submit事件，携带数据为：', e.detail.value)
-    let userJobArr = [];
-    for(let i=0; i<this.data.jobList.length; i++){
-      if (this.data.jobList[i].selected) userJobArr.push(this.data.jobList[i].value)
-    }
-    //userJob: userJobArr.join(','),
+    if (! e.detail.value.planName){
+      wx.showModal({
+        title: '提示',
+        content: '请输入计划名称',
+        showCancel: false
+      })
+    }else {
+      let userJobArr = [];
+      for(let i=0; i<this.data.jobList.length; i++){
+        if (this.data.jobList[i].selected) userJobArr.push(this.data.jobList[i].value)
+      }
+      //userJob: userJobArr.join(','),
 
-    let userMarriageArr = [];
-    for (let i=0; i<this.data.marryList.length; i++) {
-      if (this.data.marryList[i].selected) userMarriageArr.push(this.data.marryList[i].value)
-    }
-    //userMarriage: userMarriageArr.join(','),
+      let userMarriageNum = 0;
+      if(this.data.marry === "未婚"){
+        userMarriageNum = 1
+      } else if (this.data.marry === "新婚") {
+        userMarriageNum = 2
+      } else if (this.data.marry === "已婚") {
+        userMarriageNum = 3
+      } else if (this.data.marry === "育儿") {
+        userMarriageNum = 4
+      }
+      //userMarriage: userMarriageArr.join(','),
 
-    let userEducationArr = [];
-    for (let i=0; i<this.data.eduList.length; i++) {
-      if (this.data.eduList[i].selected) userEducationArr.push(this.data.eduList[i].value)
-    }
-    //userEducation: userEducationArr.join(','),
+      let userEducationArr = [];
+      for (let i=0; i<this.data.eduList.length; i++) {
+        if (this.data.eduList[i].selected) userEducationArr.push(this.data.eduList[i].value)
+      }
+      //userEducation: userEducationArr.join(','),
 
-    let userInterestArr = [];
-    for (let i=0; i<this.data.interestsList.length; i++) {
-      if (this.data.interestsList[i].selected) userInterestArr.push(this.data.interestsList[i].value)
-    }
-    //userInterest: userInterestArr.join(','),
+      let userInterestArr = [];
+      for (let i=0; i<this.data.interestsList.length; i++) {
+        if (this.data.interestsList[i].selected) userInterestArr.push(this.data.interestsList[i].value)
+      }
+      //userInterest: userInterestArr.join(','),
 
-    let that = this;
-    const submitData = {
-      planName:e.detail.value.planName,
-      adverPic:this.data.picUrl,
-      adverLink:e.detail.value.link,
-      userSex:this.data.gender,
-      userMinAge:this.data.ageRange[0],
-      userMaxAge:this.data.ageRange[1],
-      userPhoneSys:this.data.system,
-      userJob: userJobArr.join(','),
-      userMarriage: userMarriageArr.join(','),
-      userEducation: userEducationArr.join(','),
-      userInterest: userInterestArr.join(','),
-      userProvince: that.data.selProArr.join(','),
-      userCity: that.data.selCityArr.join(',')
+      let that = this;
+      const submitData = {
+        planName:e.detail.value.planName,
+        adverPic:this.data.picUrl,
+        adverLink:e.detail.value.link,
+        userSex:this.data.gender,
+        userMarriage: userMarriageNum,
+        userMinAge: !!this.data.ageRange[0] ? this.data.ageRange[0] : '',
+        userMaxAge: !!this.data.ageRange[1] ? this.data.ageRange[1] : '',
+        userPhoneSys:this.data.system,
+        userJob: userJobArr.join(','),
+        userEducation: userEducationArr.join(','),
+        userInterest: userInterestArr.join(','),
+        userProvince: that.data.selProArr.join(','),
+        userCity: that.data.selCityArr.join(',')
+      }
+      console.log(submitData);
+      
+      wx.showLoading({
+        title: '保存中...',
+        mask: true
+      });
+      if(!!this.data.planId){
+        const planId = this.data.planId;
+        wx.request({
+          url: apiUrl.EDIT_PLAN,
+          method: "POST",
+          header: {
+            'content-type': 'application/x-www-form-urlencoded',
+            'sessionKey': app.globalData.sessionKey
+          },
+          data: {
+            ...submitData,
+            id: planId
+          },
+          success: function (res) {
+            wx.hideLoading();
+            apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+            if (res.data.responseCode == 2000) {
+              console.log('修改计划成功', res)
+              wx.showToast({
+                title: '提交成功',
+                icon: 'success',
+                duration: 1500,
+                mask: true,
+                complete: function () {
+                  setTimeout(function () {
+                    wx.navigateBack({
+                      delta: 1
+                    })
+                  }, 1500)
+                }
+              })
+            }
+          },
+          fail: function(err){
+            wx.hideLoading();
+            console.log('修改计划失败',err)
+          }
+        })
+      }else {
+        wx.request({
+          url: apiUrl.ADD_PLAN,
+          method: "POST",
+          header: {
+            'content-type': 'application/x-www-form-urlencoded',
+            'sessionKey': app.globalData.sessionKey
+          },
+          data: submitData,
+          success: function (res) {
+            wx.hideLoading();
+            apiUrl.responseCodeCallback(res.data.responseCode, res.data.responseDesc, res.data.data);
+            if (res.data.responseCode == 2000) {
+              console.log('添加计划成功', res)
+              wx.showToast({
+                title: '提交成功',
+                icon: 'success',
+                duration: 1500,
+                mask: true,
+                complete: function () {
+                  setTimeout(function () {
+                    wx.navigateBack({
+                      delta: 1
+                    })
+                  }, 1500)
+                }
+              })
+            }
+          },
+          fail: function (err) {
+            wx.hideLoading();
+            console.log('添加计划失败', err)
+          }
+        })
+      }
     }
-    console.log(submitData);
-
   },
   
 
@@ -549,7 +658,7 @@ Page({
           if (res.data.responseCode == 2000) {
             console.log('计划详情', res)
             //初始化工作
-            const jobSelected = res.data.data.userJob.split(',');
+            const jobSelected = res.data.data.userJob ? res.data.data.userJob.split(',') : [];
             const jobList = that.data.jobList.map(item => {
               if (jobSelected.indexOf(item.value) != -1) {
                 return {
@@ -561,19 +670,20 @@ Page({
               }
             })
             //初始化婚姻状态
-            const marSelected = res.data.data.userMarriage.split(',');
-            const marryList = that.data.marryList.map(item => {
-              if (marSelected.indexOf(item.value) != -1) {
-                return {
-                  ...item,
-                  selected: true
-                }
-              } else {
-                return item
-              }
-            })
+            let marSelected = '';
+            if (res.data.data.userMarriage == 0){
+              marSelected = "不限"
+            } else if (res.data.data.userMarriage == 1) {
+              marSelected = "未婚"
+            } else if (res.data.data.userMarriage == 2) {
+              marSelected = "新婚"
+            } else if (res.data.data.userMarriage == 3) {
+              marSelected = "已婚"
+            } else if (res.data.data.userMarriage == 4) {
+              marSelected = "育儿"
+            }
             //初始化学历
-            const eduSelected = res.data.data.userEducation.split(',');
+            const eduSelected = res.data.data.userEducation ? res.data.data.userEducation.split(',') : [];
             const eduList = that.data.eduList.map(item => {
               if (eduSelected.indexOf(item.value) != -1) {
                 return {
@@ -585,7 +695,7 @@ Page({
               }
             })
             //初始化兴趣
-            const inteSelected = res.data.data.userInterest.split(',');
+            const inteSelected = res.data.data.userInterest ? res.data.data.userInterest.split(',') : [];
             const interestsList = that.data.interestsList.map(item => {
               if (inteSelected.indexOf(item.value) != -1) {
                 return {
@@ -598,10 +708,12 @@ Page({
             })
 
             //初始化地区
-            const proSelected = res.data.data.userProvince.split(',');
-            const citySelected = res.data.data.userCity.split(',');
+            const proSelected = res.data.data.userProvince ? res.data.data.userProvince.split(',') : [];
+            const citySelected = res.data.data.userCity ? res.data.data.userCity.split(',') : [];
+            let showSelReg = [];
             let provinceData = that.data.provinceData.map(item => {
               if (proSelected.indexOf(item.name) != -1){
+                showSelReg.push(item.name)
                 return {
                   ...item,
                   selectAll: true
@@ -625,20 +737,19 @@ Page({
               }
             })
 
-
-            const picStrSplit = res.data.data.adverPic.split('/');
             that.setData({
               planDetail: res.data.data,
-              localPicPath: res.data.data.adverPic,
-              picUrl: picStrSplit[picStrSplit.length-1],
+              localPicPath: res.data.data.adverUrl,
+              picUrl: res.data.data.adverPic,
               ageRange: [res.data.data.userMinAge, res.data.data.userMaxAge],
               system: res.data.data.userPhoneSys,
               gender: res.data.data.userSex,
+              marry: marSelected,
               jobList,
-              marryList,
               eduList,
               interestsList,
-              provinceData
+              provinceData,
+              showSelRegStr: showSelReg.length > 3 ? showSelReg[0] + ',' + showSelReg[1] + ',' + showSelReg[2]+'...' : showSelReg.join(',')
             })
             // that.data.eduList
             // that.data.interestsList
