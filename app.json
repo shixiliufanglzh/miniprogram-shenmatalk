@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/redRain/redRain",
+    
     "pages/createRedPacket/createRedPacket",
     "pages/square/square",
     "pages/ranking/ranking",
@@ -17,7 +17,8 @@
     "pages/personalInfo/personalInfo",
     "pages/personalCard/personalCard",
     "pages/planDetail/planDetail",
-    "pages/plan/plan"
+    "pages/plan/plan",
+    "pages/redRain/redRain"
     
   ],
   "window": {
